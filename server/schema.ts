@@ -59,7 +59,7 @@ const types = gql`
 
   input AssociateActorAndMovieInput {
     movieId: ID!
-    acrorId: ID!
+    actorId: ID!
   }
 
   input UpdateNicknameInput {
