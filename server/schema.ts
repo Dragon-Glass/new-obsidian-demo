@@ -67,8 +67,6 @@ const types = gql`
     nickname: String!
   }
 
-
-
   type Query {
     movies(input: MovieInput): [Movie]!
     actors(input: ActorInput): [Actor]!
