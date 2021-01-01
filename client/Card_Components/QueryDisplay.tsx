@@ -1,4 +1,5 @@
 import { React, useObsidian } from '../../deps.ts';
+import CardsContainer from './CardsContainer.tsx'
 
 declare global {
   namespace JSX {
@@ -10,35 +11,13 @@ declare global {
 }
 
 const QueryDisplay = (props: any) => {
-  const [queryTime, setQueryTime] = (React as any).useState(0);
-
-  const { query, cache, clearCache } = useObsidian();
-
-  const allMoviesQuery = `{
-
-  }`
-
-  const allActorsQuery = `{
-
-  }`
-
-  const allMoviesByGenre = `{
-
-  }`
- 
-  const moviesByReleaseYear = `{
-
-  }`
-
   
-  const fetchData = (e: any) => {
-    const start = Date.now();
-    query(query, {
-      endpoint: '/graphql',
-    }).then((resp: any) => {
-      setQueryTime(Date.now() - start);
-      console.log('response', resp);
-      
-    });
-  };
-}
+  return (
+    <>
+    <div className="queryDisplay">
+      <button id="fetchAllMovies" onClick={fetchData}>
+      </button>
+      </div>
+    </>
+  )
+};
