@@ -69,7 +69,10 @@ Movies Ordered by Release Data
 
 Mutation Options
 Add Actor
-Add Movie, etc.
+Add Movie
+Delete Movie
+Update nickname
+Delete an actor
 */
 
 // Rick and Morty / Star Wars Esque
@@ -82,6 +85,4 @@ Add Movie, etc.
 // Cache structure
 // Time of Request
 
-// Add an actor
-// Update nickname
-// Delete an actor
+
