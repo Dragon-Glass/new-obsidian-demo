@@ -8,8 +8,8 @@ const types = gql`
     SCIFI
     DRAMA
     COMEDY
-    HORROR
     ROMANCE
+    ADVENTURE
   }
 
   enum ReleaseYearOrder {
@@ -73,12 +73,12 @@ const types = gql`
   }
 
   type Mutation {
-    addMovie(input: NewMovieInput): Movie!
+    addMovie(input: NewMovieInput!): Movie!
     deleteMovie(id: ID!): Movie!
-    addActor(input: NewActorInput): Actor!
+    addActor(input: NewActorInput!): Actor!
     deleteActor(id: ID!): Actor!
-    associateActorWithMovie(input: AssociateActorAndMovieInput): ActorOrMovie!
-    updateNickname(input: UpdateNicknameInput): Actor!
+    associateActorWithMovie(input: AssociateActorAndMovieInput!): ActorOrMovie
+    updateNickname(input: UpdateNicknameInput!): Actor!
   }
 `;
 
