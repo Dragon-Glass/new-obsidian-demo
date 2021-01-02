@@ -21,8 +21,10 @@ export const sqlTableCreate = `
     actor_id INTEGER NOT NULL,
     film_id INTEGER NOT NULL,
     FOREIGN KEY (film_id)
-      REFERENCES films (id),
+      REFERENCES films (id)
+      ON DELETE CASCADE,
     FOREIGN KEY (actor_id)
       REFERENCES actors (id) 
+      ON DELETE CASCADE
     );
 `;

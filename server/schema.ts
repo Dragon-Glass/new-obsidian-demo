@@ -15,6 +15,10 @@ const types = gql`
     ASC
     DESC
   }
+  enum RespType {
+    MOVIE
+    ACTOR
+  }
 
   union ActorOrMovie = Actor | Movie
   type Movie {
@@ -52,6 +56,7 @@ const types = gql`
   input AssociateActorAndMovieInput {
     movieId: ID!
     actorId: ID!
+    respType: RespType!
   }
   input UpdateNicknameInput {
     actorId: ID!

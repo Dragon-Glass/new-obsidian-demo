@@ -148,6 +148,17 @@ const resolvers = {
       }
     },
   },
+  ActorOrMovie: {
+    __resolveType(obj: any) {
+      if (obj.firstName || obj.lastName || obj.nickName || obj.movies) {
+        return 'Actor';
+      }
+      if (obj.title || obj.releaseYear || obj.genre || obj.actors) {
+        return 'Movie';
+      }
+      return null;
+    },
+  },
   Mutation: {
     addMovie: async (
       _: any,
@@ -164,16 +175,164 @@ const resolvers = {
             `,
           args: [input.title, input.releaseYear, input.genre],
         });
-        console.log(result.rows);
-        let resObj = result.rows.map((arr) => {
-          return {
-            id: arr[0],
-            title: arr[1],
-            genre: arr[2],
-            releaseYear: arr[3],
-          };
+        const newMovieArr = result.rows[0];
+        const newMovieObj = {
+          id: newMovieArr[0],
+          title: newMovieArr[1],
+          genre: newMovieArr[2],
+          releaseYear: newMovieArr[3],
+        };
+        return newMovieObj;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    deleteMovie: async (_: any, { id }: { id: String }) => {
+      try {
+        const result = await db.query({
+          text: `
+            DELETE FROM obsidian_demo_schema.films
+            WHERE id = $1
+            RETURNING *;
+            `,
+          args: [id],
         });
-        return resObj;
+        const deletedMovieArr = result.rows[0];
+        const deletedMovieObj = {
+          id: deletedMovieArr[0],
+          title: deletedMovieArr[1],
+          genre: deletedMovieArr[2],
+          releaseYear: deletedMovieArr[3],
+        };
+        return deletedMovieObj;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    addActor: async (
+      _: any,
+      {
+        input,
+      }: { input: { firstName: String; lastName: Number; nickname?: String } }
+    ) => {
+      try {
+        const result = await db.query({
+          text: `
+            INSERT INTO obsidian_demo_schema.actors (first_name,last_name, nickname)
+            VALUES ($1, $2, $3)
+            RETURNING *;
+            `,
+          args: [input.firstName, input.lastName, input.nickname],
+        });
+        const newActorArr = result.rows[0];
+        const newActorObj = {
+          id: newActorArr[0],
+          firstName: newActorArr[1],
+          lastName: newActorArr[2],
+          nickname: newActorArr[3],
+        };
+        return newActorObj;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    deleteActor: async (_: any, { id }: { id: String }) => {
+      try {
+        const result = await db.query({
+          text: `
+            DELETE FROM obsidian_demo_schema.actors
+            WHERE id = $1
+            RETURNING *;
+            `,
+          args: [id],
+        });
+        const deletedActorArr = result.rows[0];
+        const deletedActorObj = {
+          id: deletedActorArr[0],
+          firstName: deletedActorArr[1],
+          lastName: deletedActorArr[2],
+          nickname: deletedActorArr[3],
+        };
+        return deletedActorObj;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    updateNickname: async (
+      _: any,
+      { input }: { input: { actorId: String; nickname: String } }
+    ) => {
+      try {
+        const result = await db.query({
+          text: `
+            UPDATE obsidian_demo_schema.actors
+            SET nickname = $2
+            WHERE id = $1
+            RETURNING * ;
+            `,
+          args: [input.actorId, input.nickname],
+        });
+        const updatedActorArr = result.rows[0];
+        const updatedActorObj = {
+          id: updatedActorArr[0],
+          firstName: updatedActorArr[1],
+          lastName: updatedActorArr[2],
+          nickname: updatedActorArr[3],
+        };
+        return updatedActorObj;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    associateActorWithMovie: async (
+      _: any,
+      {
+        input,
+      }: { input: { movieId: String; actorId: String; respType: String } }
+    ) => {
+      try {
+        await db.query({
+          text: `
+          INSERT INTO obsidian_demo_schema.actor_films (film_id, actor_id)
+          VALUES ($1, $2)
+          `,
+          args: [input.movieId, input.actorId],
+        });
+        if (input.respType === 'MOVIE') {
+          const result = await db.query({
+            text: `
+              SELECT * FROM obsidian_demo_schema.films
+              WHERE id = $1
+              `,
+            args: [input.movieId],
+          });
+          console.log(result.rows);
+          const MovieArr = result.rows[0];
+          const MovieObj = {
+            id: MovieArr[0],
+            title: MovieArr[1],
+            genre: MovieArr[2],
+            releaseYear: MovieArr[3],
+          };
+          return MovieObj;
+        } else {
+          const result = await db.query({
+            text: `
+              SELECT * FROM obsidian_demo_schema.actors
+              WHERE id = $1
+              `,
+            args: [input.actorId],
+          });
+          console.log(result.rows);
+          const ActorArr = result.rows[0];
+          const ActorObj = {
+            id: ActorArr[0],
+            firstName: ActorArr[1],
+            lastName: ActorArr[2],
+            nickname: ActorArr[3],
+          };
+          return ActorObj;
+        }
       } catch (err) {
         console.log(err);
       }
