@@ -1,7 +1,6 @@
-import { React, ReactDOMServer } from '../../deps.ts';
-import cacheDisplay from './cacheDisplay.tsx';
-import responseDisplay from './responseDisplay.tsx';
-import timerQuery from './timerQuery.tsx';
+import { React, useObsidian } from '../../../deps.ts';
+import CacheResponseDisplay from './CacheResponse&Display.tsx';
+import TimerQueryDisplay from './Timer&QueryDisplay.tsx';
 
 declare global {
   namespace JSX {
@@ -13,3 +12,13 @@ declare global {
     }
   }
 }
+const Dashboard = (props: any) => {
+  // const { query, cache, clearCache } = useObsidian();
+  return (
+    <div className="dashboard">
+      <TimerQueryDisplay />
+      <CacheResponseDisplay />
+    </div>
+  );
+};
+export default Dashboard;
