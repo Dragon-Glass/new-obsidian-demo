@@ -323,7 +323,6 @@ const resolvers = {
               `,
             args: [input.actorId],
           });
-          console.log(result.rows);
           const ActorArr = result.rows[0];
           const ActorObj = {
             id: ActorArr[0],
