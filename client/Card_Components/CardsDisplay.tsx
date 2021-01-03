@@ -10,18 +10,18 @@ declare global {
     }
   }
 
-  const CardsDisplay = (props: any) => {
-      const [display, setDisplay] = (React as any).useState('')
-      const {cache} = useObsidian();
-      const cards =[]
+  // const CardsDisplay = (props: any) => {
+  //     const [display, setDisplay] = (React as any).useState('')
+  //     const {cache} = useObsidian();
+  //     const cards =[]
       
-      render() {
-      if(!cache.ROOT_QUERY){ 
-        return(
-            <div>
-                <h1> No data to be displayed </h1>
-            </div>
-        )
-      }
-      } 
-  }
+  //     render() {
+  //     if(!cache.ROOT_QUERY){ 
+  //       return(
+  //           <div>
+  //               <h1> No data to be displayed </h1>
+  //           </div>
+  //       )
+  //     }
+  //     } 
+  // }

@@ -1,5 +1,5 @@
-import { React, useObsidia } from '../../deps.ts';
-import CardsDisplay from './CardsDisplay.tsx';
+import { React } from '../../deps.ts';
+// import CardsDisplay from './CardsDisplay.tsx';
 import QueryDisplay from './QueryDisplay.tsx';
 import MutationDisplay from './MutationDisplay.tsx';
 
@@ -10,14 +10,27 @@ declare global {
     }
   }
 }
+const useInput = (init: any) => {
+  const [value, setValue] = (React as any).useState(init);
+  const onChange = (e: any) => {
+    setValue(e.target.value);
+  };
+  // return the value with the onChange function instead of setValue function
+  return [value, onChange];
+};
 
 const CardsContainer = () => {
+  // const { query, mutate, cache, clearCache } = useObsidian();
   const [queryTime, setQueryTime] = (React as any).useState(0);
   const [response, setResponse] = (React as any).useState('');
   const [display, setDisplay] = (React as any).useState('');
-
-  const { query, cache, clearCache } = useObsidian();
-  const [genre, setGenre] = (React as any).useState('');
+  const [dropGenre, setDropGenre] = useInput('')
+  const [genre, setGenre] = useInput('');
+  const [title, setTitle] = useInput('');
+  const [releaseYear, setReleaseYear] = useInput('');
+  const [firstName, setFirstName] = useInput('');
+  const [lastName, setLastName] = useInput('');
+  const [nickname, setNickname] = useInput('');
   // change state dependent on fetch request
 
   const allMoviesQuery = `
@@ -57,7 +70,7 @@ const CardsContainer = () => {
 
   const allMoviesByGenre = `
     query {
-      movies(input: ${genre}){
+      movies(input: ${dropGenre}){
         __typename
         id
         title
@@ -73,7 +86,7 @@ const CardsContainer = () => {
 
   const moviesByReleaseYear = `{
     query {
-      movies(input: ASC) {
+      movies(input: { release: ASC} ) {
         __typename
         id
         title
@@ -88,31 +101,239 @@ const CardsContainer = () => {
     }
   `;
 
+  const addMovie = `
+    mutation AddMovie {
+    addMovie(input: {title: ${title}, releaseYear: ${releaseYear}, genre: ${genre} }) {
+      __typename
+      id
+      title
+      releaseYear
+      genre
+    }
+  }
+  `;
+
+  const addActor = `
+    mutation AddActor {
+    addActor(input: {firstName: ${firstName}, lastName: ${lastName}, nickname: ${nickname} }) {
+      __typename
+      id
+      firstName
+      lastName
+      nickname
+    }
+  }
+  `;
+
   const fetchAllMovies = (e: any) => {
-    const start = Date.now();
-    query(query, {
-      endpoint: '/graphql',
-    }).then((resp: any) => {
-      setQueryTime(Date.now() - start);
-      console.log('response', resp);
-      // display respObj
-      setResponse(JSON.stringify(resp.data));
-      setDisplay('all movies')
-      
-    });
+    // const start = Date.now();
+    // query(allMoviesQuery).then((resp: any) => {
+    //   setQueryTime(Date.now() - start);
+    //   setResponse(resp.data.movies);
+    //   setDisplay('all movies');
+    // });
+    const respObj = {
+      data: {
+        movies: [
+          {
+            id: '1',
+            title: 'Indiana Jones and the Last Crusade',
+            genre: 'ACTION',
+            releaseYear: 1989,
+          },
+          {
+            id: '4',
+            title: 'Air Force One',
+            genre: 'ACTION',
+            releaseYear: 1997,
+          },
+        ],
+      },
+    };
+    console.log(respObj);
+    return respObj;
   };
 
-  const 
-  
+  const fetchAllActors = (e: any) => {
+    // const start = Date.now();
+    // query(allActorsQuery).then((resp: any) => {
+    //   setQueryTime(Date.now() - start);
+    //   setResponse(resp.data.actors);
+    //   setDisplay('all actors');
+    // });
+    const respObj = {
+      data: {
+        movies: [
+          {
+            id: '1',
+            title: 'Indiana Jones and the Last Crusade',
+            genre: 'ACTION',
+            releaseYear: 1989,
+          },
+          {
+            id: '4',
+            title: 'Air Force One',
+            genre: 'ACTION',
+            releaseYear: 1997,
+          },
+        ],
+      },
+    };
+    console.log(respObj);
+    return respObj;
+  };
+
+  const fetchMoviesByGenre = (e: any) => {
+    // const start = Date.now();
+    // query(allMoviesByGenre).then((resp: any) => {
+    //   setQueryTime(Date.now() - start);
+    //   setResponse(resp.data.movies);
+    //   setDisplay('by genre');
+    // });
+    const respObj = {
+      data: {
+        movies: [
+          {
+            id: '1',
+            title: 'Indiana Jones and the Last Crusade',
+            genre: 'SCIFI',
+            releaseYear: 1989,
+          },
+          {
+            id: '4',
+            title: 'Air Force One',
+            genre: 'SCIFI',
+            releaseYear: 1997,
+          },
+        ],
+      },
+    };
+    console.log(respObj);
+    return respObj;
+  };
+
+  const fetchReleaseYear = (e: any) => {
+    // const start = Date.now();
+    // query(moviesByReleaseYear).then((resp: any) => {
+    //   setQueryTime(Date.now() - start);
+    //   setResponse(resp.data.movies);
+    //   setDisplay('by year');
+    // });
+    const respObj = {
+      data: {
+        movies: [
+          {
+            id: '1',
+            title: 'Indiana Jones and the Last Crusade',
+            genre: 'ACTION',
+            releaseYear: 1989,
+          },
+          {
+            id: '4',
+            title: 'Air Force One',
+            genre: 'ACTION',
+            releaseYear: 1997,
+          },
+        ],
+      },
+    };
+    console.log(respObj);
+    return respObj;
+  };
+
+  const addMovieCard = (e: any) => {
+    // const start = Date.now();
+    // mutate(addMovie, {
+    //   endpoint: '/graphql',
+    // }).then((resp: any) => {
+    //   setQueryTime(Date.now() - start);
+    //   setResponse(resp.data.movies);
+    //   setDisplay('all movies');
+    // });
+    const respObj = {
+      data: {
+        movies: [
+          {
+            id: '1',
+            title: 'Indiana Jones and the Last Crusade',
+            genre: 'ACTION',
+            releaseYear: 1989,
+          },
+          {
+            id: '4',
+            title: 'Air Force One',
+            genre: 'ACTION',
+            releaseYear: 1997,
+          },
+        ],
+      },
+    };
+    console.log(respObj);
+    return respObj;
+  };
+
+  setTimeout(() => setCache(newCache(cache.storage)), 1)
+
+  const addActorCard = (e: any) => {
+    // const start = Date.now();
+    // mutate(addActor, {
+    //   endpoint: '/graphql',
+    // }).then((resp: any) => {
+    //   setQueryTime(Date.now() - start);
+    //   setResponse(resp.data.actor);
+    //   setDisplay('all actors');
+    // });
+    const respObj = {
+      data: {
+        movies: [
+          {
+            id: '1',
+            title: 'Indiana Jones and the Last Crusade',
+            genre: 'ACTION',
+            releaseYear: 1989,
+          },
+          {
+            id: '4',
+            title: 'Air Force One',
+            genre: 'ACTION',
+            releaseYear: 1997,
+          },
+        ],
+      },
+    };
+    console.log(respObj);
+    return respObj;
+  };
+
   return (
-    <>
-    <div className='cardsContainer'>
-        <CardsDisplay />
-        <QueryDisplay />
-        <MutationDisplay />
+    <div className="cardsContainer">
+      {/* <CardsDisplay display={display} /> */}
+      <QueryDisplay
+        allMovies={fetchAllMovies}
+        allActors={fetchAllActors}
+        byGenre={fetchMoviesByGenre}
+        byYear={fetchReleaseYear}
+        dropGenre={dropGenre}
+        setDropGenre={setDropGenre}
+      />
+      <MutationDisplay
+        addMovieCard={addMovieCard}
+        addActorCard={addActorCard}
+        firstName={firstName}
+        lastName={lastName}
+        nickname={nickname}
+        title={title}
+        releaseYear={releaseYear}
+        genre={genre}
+        setTitle={setTitle}
+        setFirstName={setFirstName}
+        setLastName={setLastName}
+        setNickname={setNickname}
+        setReleaseYear={setReleaseYear}
+        setGenre={setGenre}
+      />
     </div>
-    </>
-  )
-}
+  );
+};
 
 export default CardsContainer;

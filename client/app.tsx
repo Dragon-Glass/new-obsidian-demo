@@ -1,4 +1,5 @@
-import { React, ReactDOMServer } from "../deps.ts";
+import { React, ReactDOMServer, ObsidianWrapper } from '../deps.ts';
+import CardsContainer from './Card_Components/CardsContainer.tsx';
 
 declare global {
   namespace JSX {
@@ -12,9 +13,12 @@ declare global {
 }
 const App = () => {
   return (
-    <div className="app">
-      <h1>Hello! i was ready before i got here</h1>
-    </div>
+    <ObsidianWrapper>
+      <div className="app">
+        <h1>Hello! i was ready before i got here</h1>
+        <CardsContainer />
+      </div>
+    </ObsidianWrapper>
   );
-}
+};
 export default App;
