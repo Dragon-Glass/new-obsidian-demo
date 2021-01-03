@@ -1,4 +1,4 @@
-import { React, ReactDOMServer } from '../deps.ts';
+import { React, ReactDOMServer, ObsidianWrapper } from '../deps.ts';
 import Dashboard from './Components/Dashboard/Dashboard.tsx';
 declare global {
   namespace JSX {
@@ -12,18 +12,20 @@ declare global {
 }
 const App = () => {
   return (
-    <div className="app">
-      {/* <h1>Hello!!!!! i was ready before i got here</h1> */}
-      <div className="cardsContainer">
-        <div>
-          <h1>Here the cards</h1>
+    <ObsidianWrapper>
+      <div className="app">
+        {/* <h1>Hello!!!!! i was ready before i got here</h1> */}
+        <div className="cardsContainer">
+          <div>
+            <h1>Here the cards</h1>
+          </div>
+          <div>
+            <h1>Here the Queries/Mutations</h1>
+          </div>
         </div>
-        <div>
-          <h1>Here the Queries/Mutations</h1>
-        </div>
+        <Dashboard />
       </div>
-      <Dashboard />
-    </div>
+    </ObsidianWrapper>
   );
 };
 export default App;
