@@ -11,14 +11,16 @@ const types = gql`
     ROMANCE
     ADVENTURE
   }
-
   enum ReleaseYearOrder {
     ASC
     DESC
   }
-  
-  union ActorOrMovie = Actor | Movie
+  enum RespType {
+    MOVIE
+    ACTOR
+  }
 
+  union ActorOrMovie = Actor | Movie
   type Movie {
     id: ID!
     title: String!
@@ -26,7 +28,6 @@ const types = gql`
     actors: [Actor!]!
     genre: MovieGenre!
   }
-
   type Actor {
     id: ID!
     firstName: String!
@@ -34,44 +35,37 @@ const types = gql`
     nickname: String
     movies: [Movie!]!
   }
-
   input MovieInput {
     genre: MovieGenre
     order: ReleaseYearOrder
     actor: ID
   }
-
   input ActorInput {
     film: ID
   }
-
   input NewMovieInput {
     title: String!
     releaseYear: Int!
     genre: MovieGenre!
   }
-
   input NewActorInput {
     firstName: String!
     lastName: String!
     nickname: String
   }
-
   input AssociateActorAndMovieInput {
     movieId: ID!
     actorId: ID!
+    respType: RespType!
   }
-
   input UpdateNicknameInput {
     actorId: ID!
     nickname: String!
   }
-
   type Query {
     movies(input: MovieInput): [Movie]!
     actors(input: ActorInput): [Actor]!
   }
-
   type Mutation {
     addMovie(input: NewMovieInput!): Movie!
     deleteMovie(id: ID!): Movie!

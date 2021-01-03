@@ -1,6 +1,7 @@
 import { Application, Router } from 'https://deno.land/x/oak@v6.0.1/mod.ts';
 import { React, ReactDOMServer } from '../deps.ts';
 import { ObsidianRouter } from '../serverDeps.ts';
+import { createDb } from './db/db.ts';
 import resolvers from './resolvers.ts';
 import types from './schema.ts';
 import App from '../client/app.tsx';
@@ -8,12 +9,15 @@ import App from '../client/app.tsx';
 const PORT = 3000;
 const app = new Application();
 
+// create and seed DB
+await createDb();
+
 // Create Route
 const router = new Router();
 
 router.get('/', (ctx: any) => {
-    const body = (ReactDOMServer as any).renderToString(<App />);
-    ctx.response.body = `<!DOCTYPE html>
+  const body = (ReactDOMServer as any).renderToString(<App />);
+  ctx.response.body = `<!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
@@ -52,7 +56,7 @@ const GraphQLRouter = await ObsidianRouter<ObsRouter>({
   redisPort: 6379,
 });
 
-// app.use(GraphQLRouter.routes(), GraphQLRouter.allowedMethods());
+app.use(GraphQLRouter.routes(), GraphQLRouter.allowedMethods());
 
 app.addEventListener('listen', () => {
   console.log(`listening on localhost:${PORT}`);
