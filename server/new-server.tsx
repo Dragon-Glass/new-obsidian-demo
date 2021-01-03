@@ -17,18 +17,19 @@ await createDb();
 const router = new Router();
 
 router.get('/', (ctx: any) => {
-  const body = (ReactDOMServer as any).renderToString(<App />);
-  ctx.response.body = `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>Obsidian</title>
-    </head>
-    <body >
-      <div id="root">${body}</div>
-      <script  src="/static/client.js" defer></script>
-    </body>
-    </html>`;
+  try {
+    const body = (ReactDOMServer as any).renderToString(<App />);
+    ctx.response.body = `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Obsidian</title>
+      </head>
+      <body >
+        <div id="root">${body}</div>
+        <script  src="/static/client.js" defer></script>
+      </body>
+      </html>`;
   } catch (err) {
     console.log('error', err);
   }

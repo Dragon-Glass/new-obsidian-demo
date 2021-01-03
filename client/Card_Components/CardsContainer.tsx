@@ -1,4 +1,4 @@
-import { React } from '../../deps.ts';
+import { React, useObsidian } from '../../deps.ts';
 // import CardsDisplay from './CardsDisplay.tsx';
 import QueryDisplay from './QueryDisplay.tsx';
 import MutationDisplay from './MutationDisplay.tsx';
@@ -15,16 +15,15 @@ const useInput = (init: any) => {
   const onChange = (e: any) => {
     setValue(e.target.value);
   };
-  // return the value with the onChange function instead of setValue function
   return [value, onChange];
 };
 
 const CardsContainer = () => {
-  // const { query, mutate, cache, clearCache } = useObsidian();
+  const { query, mutate, cache, setCache, clearCache } = useObsidian();
   const [queryTime, setQueryTime] = (React as any).useState(0);
   const [response, setResponse] = (React as any).useState('');
   const [display, setDisplay] = (React as any).useState('');
-  const [dropGenre, setDropGenre] = useInput('')
+  const [dropGenre, setDropGenre] = useInput('');
   const [genre, setGenre] = useInput('');
   const [title, setTitle] = useInput('');
   const [releaseYear, setReleaseYear] = useInput('');
@@ -126,183 +125,112 @@ const CardsContainer = () => {
   `;
 
   const fetchAllMovies = (e: any) => {
-    // const start = Date.now();
-    // query(allMoviesQuery).then((resp: any) => {
-    //   setQueryTime(Date.now() - start);
-    //   setResponse(resp.data.movies);
-    //   setDisplay('all movies');
-    // });
-    const respObj = {
-      data: {
-        movies: [
-          {
-            id: '1',
-            title: 'Indiana Jones and the Last Crusade',
-            genre: 'ACTION',
-            releaseYear: 1989,
-          },
-          {
-            id: '4',
-            title: 'Air Force One',
-            genre: 'ACTION',
-            releaseYear: 1997,
-          },
-        ],
-      },
-    };
-    console.log(respObj);
-    return respObj;
+    const start = Date.now();
+    const res = query(allMoviesQuery).then((resp: any) => {
+      setQueryTime(Date.now() - start);
+      setResponse(resp.data.movies);
+      setDisplay('all movies');
+    });
+    console.log(res);
+    // const respObj = {
+    //   data: {
+    //     movies: [
+    //       {
+    //         id: '1',
+    //         title: 'Indiana Jones and the Last Crusade',
+    //         genre: 'ACTION',
+    //         releaseYear: 1989,
+    //       },
+    //       {
+    //         id: '4',
+    //         title: 'Air Force One',
+    //         genre: 'ACTION',
+    //         releaseYear: 1997,
+    //       },
+    //     ],
+    //   },
+    // };
+    // console.log(respObj);
+    // return respObj;
   };
 
   const fetchAllActors = (e: any) => {
-    // const start = Date.now();
-    // query(allActorsQuery).then((resp: any) => {
-    //   setQueryTime(Date.now() - start);
-    //   setResponse(resp.data.actors);
-    //   setDisplay('all actors');
-    // });
-    const respObj = {
-      data: {
-        movies: [
-          {
-            id: '1',
-            title: 'Indiana Jones and the Last Crusade',
-            genre: 'ACTION',
-            releaseYear: 1989,
-          },
-          {
-            id: '4',
-            title: 'Air Force One',
-            genre: 'ACTION',
-            releaseYear: 1997,
-          },
-        ],
-      },
-    };
-    console.log(respObj);
-    return respObj;
+    const start = Date.now();
+    const res = query(allActorsQuery).then((resp: any) => {
+      setQueryTime(Date.now() - start);
+      setResponse(resp.data.actors);
+      setDisplay('all actors');
+    });
+    console.log(res);
+
+    // const respObj = {
+    //   data: {
+    //     movies: [
+    //       {
+    //         id: '1',
+    //         title: 'Indiana Jones and the Last Crusade',
+    //         genre: 'ACTION',
+    //         releaseYear: 1989,
+    //       },
+    //       {
+    //         id: '4',
+    //         title: 'Air Force One',
+    //         genre: 'ACTION',
+    //         releaseYear: 1997,
+    //       },
+    //     ],
+    //   },
+    // };
+    // console.log(respObj);
+    // return respObj;
   };
 
   const fetchMoviesByGenre = (e: any) => {
-    // const start = Date.now();
-    // query(allMoviesByGenre).then((resp: any) => {
-    //   setQueryTime(Date.now() - start);
-    //   setResponse(resp.data.movies);
-    //   setDisplay('by genre');
-    // });
-    const respObj = {
-      data: {
-        movies: [
-          {
-            id: '1',
-            title: 'Indiana Jones and the Last Crusade',
-            genre: 'SCIFI',
-            releaseYear: 1989,
-          },
-          {
-            id: '4',
-            title: 'Air Force One',
-            genre: 'SCIFI',
-            releaseYear: 1997,
-          },
-        ],
-      },
-    };
-    console.log(respObj);
-    return respObj;
+    const start = Date.now();
+    const res = query(allMoviesByGenre).then((resp: any) => {
+      setQueryTime(Date.now() - start);
+      setResponse(resp.data.movies);
+      setDisplay('by genre');
+    });
+    console.log(res);
+    setTimeout(() => setCache(newCache(cache.storage)), 1);
   };
 
   const fetchReleaseYear = (e: any) => {
-    // const start = Date.now();
-    // query(moviesByReleaseYear).then((resp: any) => {
-    //   setQueryTime(Date.now() - start);
-    //   setResponse(resp.data.movies);
-    //   setDisplay('by year');
-    // });
-    const respObj = {
-      data: {
-        movies: [
-          {
-            id: '1',
-            title: 'Indiana Jones and the Last Crusade',
-            genre: 'ACTION',
-            releaseYear: 1989,
-          },
-          {
-            id: '4',
-            title: 'Air Force One',
-            genre: 'ACTION',
-            releaseYear: 1997,
-          },
-        ],
-      },
-    };
-    console.log(respObj);
-    return respObj;
+    const start = Date.now();
+    const res = query(moviesByReleaseYear).then((resp: any) => {
+      setQueryTime(Date.now() - start);
+      setResponse(resp.data.movies);
+      setDisplay('by year');
+    });
+    console.log(res);
+    setTimeout(() => setCache(newCache(cache.storage)), 1);
   };
 
   const addMovieCard = (e: any) => {
-    // const start = Date.now();
-    // mutate(addMovie, {
-    //   endpoint: '/graphql',
-    // }).then((resp: any) => {
-    //   setQueryTime(Date.now() - start);
-    //   setResponse(resp.data.movies);
-    //   setDisplay('all movies');
-    // });
-    const respObj = {
-      data: {
-        movies: [
-          {
-            id: '1',
-            title: 'Indiana Jones and the Last Crusade',
-            genre: 'ACTION',
-            releaseYear: 1989,
-          },
-          {
-            id: '4',
-            title: 'Air Force One',
-            genre: 'ACTION',
-            releaseYear: 1997,
-          },
-        ],
-      },
-    };
-    console.log(respObj);
-    return respObj;
+    const start = Date.now();
+    const res = mutate(addMovie, {
+      endpoint: '/graphql',
+    }).then((resp: any) => {
+      setQueryTime(Date.now() - start);
+      setResponse(resp.data.movies);
+      setDisplay('all movies');
+    });
+    console.log(res);
+    setTimeout(() => setCache(newCache(cache.storage)), 1);
   };
 
-  setTimeout(() => setCache(newCache(cache.storage)), 1)
-
   const addActorCard = (e: any) => {
-    // const start = Date.now();
-    // mutate(addActor, {
-    //   endpoint: '/graphql',
-    // }).then((resp: any) => {
-    //   setQueryTime(Date.now() - start);
-    //   setResponse(resp.data.actor);
-    //   setDisplay('all actors');
-    // });
-    const respObj = {
-      data: {
-        movies: [
-          {
-            id: '1',
-            title: 'Indiana Jones and the Last Crusade',
-            genre: 'ACTION',
-            releaseYear: 1989,
-          },
-          {
-            id: '4',
-            title: 'Air Force One',
-            genre: 'ACTION',
-            releaseYear: 1997,
-          },
-        ],
-      },
-    };
-    console.log(respObj);
-    return respObj;
+    const start = Date.now();
+    const res = mutate(addActor, {
+      endpoint: '/graphql',
+    }).then((resp: any) => {
+      setQueryTime(Date.now() - start);
+      setResponse(resp.data.actor);
+      setDisplay('all actors');
+    });
+    console.log(res);
+    setTimeout(() => setCache(newCache(cache.storage)), 1);
   };
 
   return (

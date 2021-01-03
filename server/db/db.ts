@@ -1,4 +1,4 @@
-import { Client } from 'https://deno.land/x/postgres/mod.ts';
+import { Client } from 'https://deno.land/x/postgres@v0.4.6/mod.ts';
 import { sqlTableCreate } from './db-init.js';
 import { filmsData } from './test-data/films.js';
 import { actorsData } from './test-data/actors.js';
@@ -6,7 +6,8 @@ import { actorFilmsData } from './test-data/actor_films.js';
 import 'https://deno.land/x/dotenv/load.ts';
 
 // connect to db
-const config = Deno.env.get('PG_URI');
+const config = Deno.env.get('PG_URI'
+);
 export const db = new Client(config);
 await db.connect();
 
