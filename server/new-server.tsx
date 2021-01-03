@@ -1,6 +1,7 @@
 import { Application, Router } from 'https://deno.land/x/oak@v6.0.1/mod.ts';
 import { React, ReactDOMServer } from '../deps.ts';
 import { ObsidianRouter } from '../serverDeps.ts';
+import { createDb } from './db/db.ts';
 import resolvers from './resolvers.ts';
 import types from './schema.ts';
 import App from '../client/app.tsx';
@@ -9,27 +10,15 @@ import { staticFileMiddleware } from '../../obsidian-website/staticFileMiddlewar
 const PORT = 3000;
 const app = new Application();
 
-// Track response time in headers of responses
-app.use(async (ctx, next) => {
-  await next();
-  const rt = ctx.response.headers.get('X-Response-Time');
-  console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`);
-});
-
-app.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  ctx.response.headers.set('X-Response-Time', `${ms}ms`);
-});
+// create and seed DB
+await createDb();
 
 // Create Route
 const router = new Router();
 
 router.get('/', (ctx: any) => {
-  try {
-    const body = (ReactDOMServer as any).renderToString(<App />);
-    ctx.response.body = `<!DOCTYPE html>
+  const body = (ReactDOMServer as any).renderToString(<App />);
+  ctx.response.body = `<!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
