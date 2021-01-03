@@ -16,6 +16,7 @@ const Dashboard = (props: any) => {
   // const { query, cache, clearCache } = useObsidian();
   return (
     <div className="dashboard">
+      <h1>Dashboard</h1>
       <TimerQueryDisplay />
       <CacheResponseDisplay />
     </div>

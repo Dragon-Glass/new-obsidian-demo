@@ -1,10 +1,9 @@
 .app,
 #root {
   /* font-size: 14px; */
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  width: 100vw;
+
+  /* height: 100vh;
+  width: 100vw; */
 }
 
 body {
@@ -12,22 +11,56 @@ body {
 }
 
 #root {
+  margin: 0;
+  padding: 0;
   background-image: url(https://images.unsplash.com/photo-1597871119022-42906cd7c9b9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80);
-  background-repeat: no-repeat;
-  background-size: cover;
-
+  background-repeat: repeat;
+  background-size: contain;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
+#cacheDisplay {
+  display: grid;
+  grid-template-rows: 0.5fr 5fr 0.5fr;
+  align-content: center;
+  align-items: center;
+}
+#clear-cache {
+  align-self: center;
+  background-color: #cc99ff;
+  border: none;
+  color: black;
+  padding: 0.6rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 0 2rem 0 2rem;
+}
+.dashboard {
+  align-items: center;
+  max-width: 30vw;
+  min-width: 30vw;
+  top: 0px;
+  right: 0px;
+}
+.dashboard h1 {
+  text-align: center;
+  color: #cc99ff;
+}
 .app {
-  display: flex;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
   justify-content: space-between;
   align-items: center;
   background: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
 }
-
+.cardsContainer h1 {
+  color: #cc99ff;
+}
 .pinkATags a {
   color: #e83e8c !important;
   text-decoration: none;
@@ -241,12 +274,12 @@ path.bullHead {
 /* Demo Styling */
 
 .pre-block {
-  width: 60%;
   border: 1px solid black;
   display: block;
   background-color: #fff;
   padding: 10px;
   margin: 1vw;
+  border-radius: 3px;
 }
 /* .pre-block, */
 .code-block {
@@ -254,8 +287,13 @@ path.bullHead {
   display: block;
   padding: 20px;
   margin: 1vw;
+  max-height: 200px;
+  overflow: scroll;
+  scroll-behavior: smooth;
 }
-
+.code-block::-webkit-scrollbar {
+  display: none;
+}
 .code-block p {
   margin-top: 1rem;
 }
@@ -291,20 +329,23 @@ pre {
 .query-timer {
   font-size: 1.7rem;
 }
-
+.timer {
+  width: 100%;
+}
+#timer {
+  color: white;
+}
 .buildQueryTitle {
   text-align: center;
   font-size: 3em;
 }
 
-.showQuery,
 .buildQuery {
   display: inline-block;
 }
 
 #stretchQuery {
   margin: auto;
-  width: 80%;
 }
 
 .buildQuery {
@@ -320,12 +361,12 @@ pre {
 }
 
 .showQuery {
-  width: 40%;
+  color: rgb(114, 163, 226);
 }
 
-#code-black {
+.code-black {
   background-color: rgb(20, 20, 20);
-  color: white;
+  color: rgb(114, 163, 226);
 }
 
 #code-yellow {

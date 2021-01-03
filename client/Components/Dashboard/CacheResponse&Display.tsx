@@ -1,4 +1,7 @@
 import { React, useObsidian } from '../../../deps.ts';
+import reactBootstrap from 'https://cdn.skypack.dev/react-bootstrap';
+// import { Button } from 'https://cdn.skypack.dev/react-bootstrap';
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -8,22 +11,90 @@ declare global {
       br: any;
       pre: any;
       code: any;
+      Button: any;
     }
   }
 }
 
 const CacheResponseDisplay = (props: any) => {
-  let cache = {
-    ROOT_QUERY: {},
-    ROOT_MUTATION: {},
-  };
-  function clearCache() {
-    cache = {
+  const [cache, setCache] = (React as any).useState({
+    ROOT_QUERY: {
+      'movies(sort:{release:ASC})': ['Movie~1', 'Movie~5', 'Movie~4'],
+    },
+    ROOT_MUTATION: {
+      "addMovie(input:{title:'TheFugitive',releaseYear:1993,genre:ACTION})":
+        'Movie~5',
+    },
+
+    'Movie~1': {
+      id: '1',
+      title: 'Indiana Jones and the Last Crusade',
+      genre: 'ACTION',
+      releaseYear: 1989,
+      isFavorite: false,
+    },
+    'Movie~4': {
+      id: '4',
+      title: 'Air Force One',
+      genre: 'ACTION',
+      releaseYear: 1997,
+      isFavorite: false,
+    },
+
+    'Movie~5': {
+      id: '5',
+      title: 'The Fugitive',
+      genre: 'ACTION',
+      releaseYear: 1993,
+      isFavorite: false,
+    },
+  });
+  function clearCache(e: any) {
+    e.preventDefault();
+    console.log('clicked');
+    setCache({
       ROOT_QUERY: {},
       ROOT_MUTATION: {},
-    };
+    });
   }
-  const response = 'response here';
+  const response = `{
+    data: {
+      movies: [
+        {
+          id: '1',
+          title: 'Indiana Jones and the Last Crusade',
+          actors: [
+            { id: '1', firstName: 'Harrison' },
+            { id: '2', firstName: 'Sean' },
+          ],
+        },
+        {
+          id: '2',
+          title: 'Empire Strikes Back',
+          actors: [
+            { id: '1', firstName: 'Harrison' },
+            { id: '3', firstName: 'Mark' },
+          ],
+        },
+        {
+          id: '3',
+          title: 'Witness',
+          actors: [
+            { id: '1', firstName: 'Harrison' },
+            { id: '4', firstName: 'Patti' },
+          ],
+        },
+        {
+          id: '4',
+          title: 'Air Force One',
+          actors: [
+            { id: '1', firstName: 'Harrison' },
+            { id: '5', firstName: 'Gary' },
+          ],
+        },
+      ],
+    },
+  }`;
 
   function createCache() {
     return Object.entries(cache).reduce((acc: any, pair: any, i) => {
@@ -60,14 +131,16 @@ const CacheResponseDisplay = (props: any) => {
   return (
     <div>
       <div className="cacheDisplay">
-        <button onClick={clearCache}>Clear Cache</button>
-        <pre className="pre-block">
+        <pre className="pre-block" id="cacheDisplay">
           Cache:
           <code className="code-block" id="code-pink">
             {'{'}
             {cachedPair}
             {'}'}
           </code>
+          <button id="clear-cache" onClick={clearCache}>
+            Clear Cache
+          </button>
         </pre>
       </div>
       <div className="responseDisplay">

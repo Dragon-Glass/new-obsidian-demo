@@ -13,7 +13,15 @@ declare global {
 const App = () => {
   return (
     <div className="app">
-      <h1>Hello! i was ready before i got here</h1>
+      {/* <h1>Hello!!!!! i was ready before i got here</h1> */}
+      <div className="cardsContainer">
+        <div>
+          <h1>Here the cards</h1>
+        </div>
+        <div>
+          <h1>Here the Queries/Mutations</h1>
+        </div>
+      </div>
       <Dashboard />
     </div>
   );

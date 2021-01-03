@@ -17,24 +17,33 @@ declare global {
 
 const TimerQueryDisplay = (props: any) => {
   const queryTime = 0;
-  const query = 'this is the query';
+  const query = `query AllMoviesByDate {
+    movies(sort: { release: ASC }) {
+      __typename
+      id
+      title
+      releaseYear
+      genre
+      isFavorite
+    }
+  }
+`;
   // const [queryTime, setQueryTime] = (React as any).useState(0);
   // const start = Date.now();
   // setQueryTime(Date.now() - start);
+  // id="stretchQuery"
   return (
     <div className="timer-query">
       <div className="timer">
-        <code className="code-block query-timer" id="code-black">
+        <code className="code-block query-timer code-black" id="timer">
           {`Request Timer: ${queryTime}ms`}
         </code>
       </div>
       <div className="query">
         <div className="showQuery">
-          <pre className="pre-block" id="stretchQuery">
+          <pre className="pre-block">
             Query:
-            <code className="code-block" id="code-black">
-              {query}
-            </code>
+            <code className="code-block code-black">{query}</code>
           </pre>
         </div>
       </div>
