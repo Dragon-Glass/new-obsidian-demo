@@ -40,10 +40,13 @@ body {
   margin: 0 2rem 0 2rem;
 }
 .app h1 {
+  color: #cc99ff;
+  text-align: center;
+  font-size: 5rem;
 }
 #cardsContainer {
   display: grid;
-  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-columns: 1fr 3.5fr 1fr;
   justify-content: space-between;
   align-items: center;
   background: rgba(0, 0, 0, 0.6);
@@ -58,17 +61,42 @@ body {
   /* max-width: 10vw; */
   grid-column: 3/4;
 }
-#dashboard h1 {
-  text-align: center;
-  color: #cc99ff;
+#dashboard h2 {
+  text-align: center !important;
+  color: #cc99ff !important;
 }
 #query-mutation {
   align-items: center;
-  max-width: 30vw;
-  min-width: 30vw;
   grid-column: 1/2;
-  color: white;
+  border: 1px solid black;
+  display: block;
+  background-color: #fff;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 3px;
+  text-align: center;
 }
+#query-mutation button,
+.query-display input {
+  align-self: center;
+  background-color: #a563e7;
+  border: none;
+  color: black;
+  padding: 0.6rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 1rem;
+}
+#query-mutation h2 {
+  color: #e83e8c;
+}
+.mutation-display label {
+  margin-top: 0.6rem;
+}
+
 #cards-display {
   align-items: center;
   grid-column: 2/3;

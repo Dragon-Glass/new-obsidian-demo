@@ -10,6 +10,7 @@ declare global {
       div: any;
       h1: any;
       p: any;
+      h2: any;
     }
   }
 }
@@ -19,7 +20,7 @@ const Dashboard = (props: any) => {
   return (
     // <CardsContainer>
     <div>
-      <h1>Dashboard</h1>
+      <h2 style={{ color: '#e83e8c', textAlign: 'center' }}>Dashboard</h2>
       <TimerQueryDisplay queryTime={queryTime} gqlRequest={gqlRequest} />
       <CacheResponseDisplay response={response} />
     </div>
