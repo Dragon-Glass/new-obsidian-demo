@@ -1,5 +1,7 @@
 import { React, ReactDOMServer, ObsidianWrapper } from '../deps.ts';
-import Dashboard from './Components/Dashboard/Dashboard.tsx';
+// import Dashboard from './Components/Dashboard/Dashboard.tsx';
+import { CardsContainer } from './Components/Card_Components/CardsContainer.tsx';
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -15,15 +17,7 @@ const App = () => {
     <ObsidianWrapper>
       <div className="app">
         {/* <h1>Hello!!!!! i was ready before i got here</h1> */}
-        <div className="cardsContainer">
-          <div>
-            <h1>Here the cards</h1>
-          </div>
-          <div>
-            <h1>Here the Queries/Mutations</h1>
-          </div>
-        </div>
-        <Dashboard />
+        <CardsContainer />
       </div>
     </ObsidianWrapper>
   );

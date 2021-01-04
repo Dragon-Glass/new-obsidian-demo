@@ -1,4 +1,5 @@
 import { React, useObsidian } from '../../../deps.ts';
+// import { useQueriesContext } from '../Card_Components/CardsContainer.tsx';
 // import reactBootstrap from 'https://cdn.skypack.dev/react-bootstrap';
 // import { Button } from 'https://cdn.skypack.dev/react-bootstrap';
 
@@ -17,7 +18,9 @@ declare global {
 }
 
 const CacheResponseDisplay = (props: any) => {
+  // const { queryTime, gqlRequest, response } = useQueriesContext();
   const { cache, clearCache, setCache } = useObsidian();
+  const { response } = props;
   // const [cache, setCache] = (React as any).useState({
   //   ROOT_QUERY: {
   //     'movies(sort:{release:ASC})': ['Movie~1', 'Movie~5', 'Movie~4'],
@@ -58,44 +61,45 @@ const CacheResponseDisplay = (props: any) => {
   //     ROOT_MUTATION: {},
   //   });
   // }
-  const response = `{
-    data: {
-      movies: [
-        {
-          id: '1',
-          title: 'Indiana Jones and the Last Crusade',
-          actors: [
-            { id: '1', firstName: 'Harrison' },
-            { id: '2', firstName: 'Sean' },
-          ],
-        },
-        {
-          id: '2',
-          title: 'Empire Strikes Back',
-          actors: [
-            { id: '1', firstName: 'Harrison' },
-            { id: '3', firstName: 'Mark' },
-          ],
-        },
-        {
-          id: '3',
-          title: 'Witness',
-          actors: [
-            { id: '1', firstName: 'Harrison' },
-            { id: '4', firstName: 'Patti' },
-          ],
-        },
-        {
-          id: '4',
-          title: 'Air Force One',
-          actors: [
-            { id: '1', firstName: 'Harrison' },
-            { id: '5', firstName: 'Gary' },
-          ],
-        },
-      ],
-    },
-  }`;
+  // const response = `{
+  //   data: {
+  //     movies: [
+  //       {
+  //         id: '1',
+  //         title: 'Indiana Jones and the Last Crusade',
+  //         actors: [
+  //           { id: '1', firstName: 'Harrison' },
+  //           { id: '2', firstName: 'Sean' },
+  //         ],
+  //       },
+  //       {
+  //         id: '2',
+  //         title: 'Empire Strikes Back',
+  //         actors: [
+  //           { id: '1', firstName: 'Harrison' },
+  //           { id: '3', firstName: 'Mark' },
+  //         ],
+  //       },
+  //       {
+  //         id: '3',
+  //         title: 'Witness',
+  //         actors: [
+  //           { id: '1', firstName: 'Harrison' },
+  //           { id: '4', firstName: 'Patti' },
+  //         ],
+  //       },
+  //       {
+  //         id: '4',
+  //         title: 'Air Force One',
+  //         actors: [
+  //           { id: '1', firstName: 'Harrison' },
+  //           { id: '5', firstName: 'Gary' },
+  //         ],
+  //       },
+  //     ],
+  //   },
+  // }`;
+
   function onClick() {
     console.log('clicked');
     clearCache();
@@ -125,8 +129,6 @@ const CacheResponseDisplay = (props: any) => {
           </p>
         );
       }
-
-      console.log('acc', acc);
       return acc;
     }, []);
   }

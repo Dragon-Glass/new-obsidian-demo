@@ -1,6 +1,7 @@
 import { React, useObsidian } from '../../../deps.ts';
 import CacheResponseDisplay from './CacheResponse&Display.tsx';
 import TimerQueryDisplay from './Timer&QueryDisplay.tsx';
+import { CardsContainer } from '../Card_Components/CardsContainer.tsx';
 
 declare global {
   namespace JSX {
@@ -13,13 +14,16 @@ declare global {
   }
 }
 const Dashboard = (props: any) => {
+  const { queryTime, gqlRequest, response } = props;
   const { query, cache, setCache, clearCache } = useObsidian();
   return (
+    // <CardsContainer>
     <div className="dashboard">
       <h1>Dashboard</h1>
-      <TimerQueryDisplay />
-      <CacheResponseDisplay />
+      <TimerQueryDisplay queryTime={queryTime} gqlRequest={gqlRequest} />
+      <CacheResponseDisplay response={response} />
     </div>
+    /* </CardsContainer> */
   );
 };
 export default Dashboard;
