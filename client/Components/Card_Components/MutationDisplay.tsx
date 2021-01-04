@@ -67,7 +67,7 @@ const MutationDisplay = (props: any) => {
             htmlFor="las
         tName"
           >
-            Last Name:{' '}
+            Last Name:
           </label>
           <input
             name="lastName"

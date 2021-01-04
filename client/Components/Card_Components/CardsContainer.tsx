@@ -1,5 +1,5 @@
 import { React, useObsidian } from '../../../deps.ts';
-// import CardsDisplay from './CardsDisplay.tsx';
+import CardsDisplay from './CardsDisplay.tsx';
 import QueryDisplay from './QueryDisplay.tsx';
 import MutationDisplay from './MutationDisplay.tsx';
 import { Cache } from '../../../../obsidian/src/CacheClassBrowser.js';
@@ -11,7 +11,6 @@ declare global {
     }
   }
 }
-// const QueriesMutationsContext = (React as any).createContext();
 const useInput = (init: any) => {
   const [value, setValue] = (React as any).useState(init);
   const onChange = (e: any) => {
@@ -35,8 +34,7 @@ function CardsContainer(props: any) {
   const [nickname, setNickname] = useInput('');
   // change state dependent on fetch request
 
-  const allMoviesQuery = `
-    query { 
+  const allMoviesQuery = `query { 
       movies {
         id
         title
@@ -51,8 +49,7 @@ function CardsContainer(props: any) {
     }
   `;
 
-  const allActorsQuery = `
-    query {
+  const allActorsQuery = `query {
       actors {
         id
         firstName
@@ -68,8 +65,7 @@ function CardsContainer(props: any) {
     }
   `;
 
-  const allMoviesByGenre = `
-    query {
+  const allMoviesByGenre = `query {
       movies(input: {genre: ${dropGenre}}){
         id
         title
@@ -83,8 +79,7 @@ function CardsContainer(props: any) {
     }
   `;
 
-  const moviesByReleaseYear = `
-  query {
+  const moviesByReleaseYear = `query {
     movies(input: {order : ASC }) {
       id
       title
@@ -99,8 +94,7 @@ function CardsContainer(props: any) {
 }
   `;
 
-  const addMovie = `
-    mutation {
+  const addMovie = `mutation {
     addMovie(input: {title: "${title}", releaseYear: ${releaseYear}, genre: ${dropGenre} }) {
       id
       title
@@ -110,8 +104,7 @@ function CardsContainer(props: any) {
   }
   `;
 
-  const addActor = `
-    mutation {
+  const addActor = `mutation {
     addActor(input: {firstName: "${firstName}", lastName: "${lastName}", nickname: "${nickname}" }) {
       id
       firstName
@@ -126,7 +119,7 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allMoviesQuery);
     setQueryTime(Date.now() - start);
-    setResponse(JSON.stringify(res));
+    setResponse(JSON.stringify(res.data));
     console.log('data', JSON.stringify(res));
     console.log('response', response);
     setDisplay('all movies');
@@ -139,7 +132,7 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allActorsQuery);
     setQueryTime(Date.now() - start);
-    setResponse(res.data.actor);
+    setResponse(JSON.stringify(res.data));
     setDisplay('all actors');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     console.log('all actors', res);
@@ -150,7 +143,7 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allMoviesByGenre);
     setQueryTime(Date.now() - start);
-    setResponse(res.data.movies);
+    setResponse(JSON.stringify(res.data));
     setDisplay('by genre');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     console.log('by genre', res);
@@ -161,7 +154,7 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(moviesByReleaseYear);
     setQueryTime(Date.now() - start);
-    setResponse(res.data.movies);
+    setResponse(JSON.stringify(res.data));
     setDisplay('by year');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     console.log('by year', res);
@@ -173,7 +166,7 @@ function CardsContainer(props: any) {
     const res = await mutate(addMovie);
     // option obj with update key on
     setQueryTime(Date.now() - start);
-    setResponse(res.data.addMovie);
+    setResponse(JSON.stringify(res.data));
     setDisplay('all movies');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     console.log('add movie', res);
@@ -187,7 +180,7 @@ function CardsContainer(props: any) {
       res.data.addActor.nickname = null;
     }
     setQueryTime(Date.now() - start);
-    setResponse(res.data.addActor);
+    setResponse(JSON.stringify(res.data));
     setDisplay('all actors');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
 
@@ -196,50 +189,43 @@ function CardsContainer(props: any) {
   };
 
   return (
-    // <QueriesMutationsContext.provider
-    //   value={{
-    //     queryTime,
-    //     gqlRequest,
-    //     response,
-    //   }}
-    // >
-    <div className="cardsContainer">
-      {/* <CardsDisplay display={display} /> */}
+    <div id="cardsContainer">
+      <div id="query-mutation">
+        <QueryDisplay
+          id="query-display"
+          allMovies={fetchAllMovies}
+          allActors={fetchAllActors}
+          byGenre={fetchMoviesByGenre}
+          byYear={fetchReleaseYear}
+          dropGenre={dropGenre}
+          setDropGenre={setDropGenre}
+        />
+        <MutationDisplay
+          id="mutation-display"
+          addMovieCard={addMovieCard}
+          addActorCard={addActorCard}
+          firstName={firstName}
+          lastName={lastName}
+          nickname={nickname}
+          title={title}
+          releaseYear={releaseYear}
+          dropGenre={dropGenre}
+          setDropGenre={setDropGenre}
+          setTitle={setTitle}
+          setFirstName={setFirstName}
+          setLastName={setLastName}
+          setNickname={setNickname}
+          setReleaseYear={setReleaseYear}
+        />
+      </div>
+      <CardsDisplay id="cards-display" display={display} />
       <Dashboard
+        id="dashboard"
         queryTime={queryTime}
         gqlRequest={gqlRequest}
         response={response}
       />
-      <QueryDisplay
-        allMovies={fetchAllMovies}
-        allActors={fetchAllActors}
-        byGenre={fetchMoviesByGenre}
-        byYear={fetchReleaseYear}
-        dropGenre={dropGenre}
-        setDropGenre={setDropGenre}
-      />
-      <MutationDisplay
-        addMovieCard={addMovieCard}
-        addActorCard={addActorCard}
-        firstName={firstName}
-        lastName={lastName}
-        nickname={nickname}
-        title={title}
-        releaseYear={releaseYear}
-        dropGenre={dropGenre}
-        setDropGenre={setDropGenre}
-        setTitle={setTitle}
-        setFirstName={setFirstName}
-        setLastName={setLastName}
-        setNickname={setNickname}
-        setReleaseYear={setReleaseYear}
-      />
     </div>
-    /* </QueriesMutationsContext.provider> */
   );
 }
-// function useQueriesContext() {
-//   // React useContext hook to access the global provider by any of the consumed components
-//   return (React as any).useContext(QueriesMutationsContext);
-// }
 export { CardsContainer };

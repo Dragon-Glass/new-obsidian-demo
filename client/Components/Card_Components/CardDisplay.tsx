@@ -13,32 +13,41 @@ declare global {
 }
 
 const cardDisplay = (props: any) => {
-  const { title, releaseYear, actors = [], genre } = props.info;
-  if (props.display === 'Movies') {
-    return (
-      <article className="card movieCard">
-        <div className="movieHeadContainer">
-          <h3 className="movieTitle">{title}</h3>
-        </div>
-        <ul className="movieDetailsList">
-          <li className="movDetail"> Release Year: {releaseYear}</li>
-          <li className="movDetail"> Actors: {actors}</li>
-          <li className="movDetail"> Genre: {genre}</li>
-        </ul>
-      </article>
-    );
-  }
-  const { firstName, lastName, movies = [], nickname = '' } = props.info;
+  // const { title, releaseYear, actors = [], genre } = props.info;
+  // if (props.display === 'Movies') {
   return (
-    <article className="card actorCard">
-      <div className="actorHeadContainer">
-        <h3 className="actorName">{firstName}</h3>
+    <article className="card movieCard">
+      <div className="movieHeadContainer">
+        <h3 className="movieTitle">MOVIE 1</h3>
+        <ul className="movieDetailsList">
+          <li className="movDetail"> Release Year: </li>
+          <li className="movDetail"> Actors: </li>
+          <li className="movDetail"> Genre: </li>
+        </ul>
       </div>
-      <ul className="actorDetailsList">
-        <li className="actorDetail"> Last Name: {releaseYear}</li>
-        <li className="actorDetail"> Movies: {Movies}</li>
-        <li className="actorDetail"> Nickname: {nickname}</li>
-      </ul>
+      <div className="actorHeadContainer">
+        <h3 className="actorName">ACTOR 1</h3>
+        <ul className="actorDetailsList">
+          <li className="actorDetail"> Last Name: </li>
+          <li className="actorDetail"> Movies:</li>
+          <li className="actorDetail"> Nickname: </li>
+        </ul>
+      </div>
     </article>
   );
+  // }
+  // const { firstName, lastName, movies = [], nickname = '' } = props.info;
+  // return (
+  //   <article className="card actorCard">
+  //     <div className="actorHeadContainer">
+  //       <h3 className="actorName"></h3>
+  //       <ul className="actorDetailsList">
+  //         <li className="actorDetail"> Last Name: </li>
+  //         <li className="actorDetail"> Movies:</li>
+  //         <li className="actorDetail"> Nickname: </li>
+  //       </ul>
+  //     </div>
+  //   </article>
+  // );
 };
+export default cardDisplay;

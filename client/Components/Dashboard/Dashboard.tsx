@@ -18,7 +18,7 @@ const Dashboard = (props: any) => {
   const { query, cache, setCache, clearCache } = useObsidian();
   return (
     // <CardsContainer>
-    <div className="dashboard">
+    <div>
       <h1>Dashboard</h1>
       <TimerQueryDisplay queryTime={queryTime} gqlRequest={gqlRequest} />
       <CacheResponseDisplay response={response} />

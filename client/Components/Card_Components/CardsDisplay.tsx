@@ -1,4 +1,4 @@
-import { react, useObsidian } from '../../../deps.ts';
+import { React, useObsidian } from '../../../deps.ts';
 import CardDisplay from './CardDisplay.tsx';
 
 declare global {
@@ -10,18 +10,16 @@ declare global {
   }
 }
 
-// const CardsDisplay = (props: any) => {
-//     const [display, setDisplay] = (React as any).useState('')
-//     const {cache} = useObsidian();
-//     const cards =[]
+const CardsDisplay = (props: any) => {
+  // const [display, setDisplay] = (React as any).useState('');
+  // const { cache } = useObsidian();
+  // const cards = [];
 
-//     render() {
-//     if(!cache.ROOT_QUERY){
-//       return(
-//           <div>
-//               <h1> No data to be displayed </h1>
-//           </div>
-//       )
-//     }
-//     }
-// }
+  return (
+    <div>
+      <h1> Here The Cards </h1>
+      <CardDisplay display={props.display} />
+    </div>
+  );
+};
+export default CardsDisplay;

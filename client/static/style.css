@@ -39,27 +39,39 @@ body {
   border-radius: 5px;
   margin: 0 2rem 0 2rem;
 }
-.dashboard {
-  align-items: center;
-  max-width: 30vw;
-  min-width: 30vw;
-  top: 0px;
-  right: 0px;
+.app h1 {
 }
-.dashboard h1 {
-  text-align: center;
-  color: #cc99ff;
-}
-.app {
+#cardsContainer {
   display: grid;
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: 1fr 4fr 1fr;
   justify-content: space-between;
   align-items: center;
   background: rgba(0, 0, 0, 0.6);
   padding: 1rem;
 }
-.cardsContainer h1 {
+#cardsContainer h1 {
   color: #cc99ff;
+}
+#dashboard {
+  max-width: 300px;
+  align-items: center;
+  /* max-width: 10vw; */
+  grid-column: 3/4;
+}
+#dashboard h1 {
+  text-align: center;
+  color: #cc99ff;
+}
+#query-mutation {
+  align-items: center;
+  max-width: 30vw;
+  min-width: 30vw;
+  grid-column: 1/2;
+  color: white;
+}
+#cards-display {
+  align-items: center;
+  grid-column: 2/3;
 }
 .pinkATags a {
   color: #e83e8c !important;
@@ -288,8 +300,11 @@ path.bullHead {
   padding: 20px;
   margin: 1vw;
   max-height: 200px;
-  overflow: scroll;
+  /* overflow: scroll; */
+  overflow-y: scroll;
+  overflow-x: hidden;
   scroll-behavior: smooth;
+  max-width: 20vw;
 }
 .code-block::-webkit-scrollbar {
   display: none;
