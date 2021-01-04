@@ -213,7 +213,7 @@ const resolvers = {
       _: any,
       {
         input,
-      }: { input: { firstName: String; lastName: Number; nickname?: String } }
+      }: { input: { firstName: String; lastName: String; nickname?: String } }
     ) => {
       try {
         const result = await db.query({

@@ -14,10 +14,11 @@ declare global {
 }
 
 const MutationDisplay = (props: any) => {
-
+  const [reset, setReset] = (React as any).useState('');
+  
   return (
-    <div className="muationDisplay">
-      <article className="create-movieCard">
+    <div className="mutationDisplay">
+      <form className="create-movieCard">
         <h3>Enter your movie details</h3>
         <div className="createCharFields">
           <label htmlFor="title">Title: </label>
@@ -33,14 +34,25 @@ const MutationDisplay = (props: any) => {
         </div>
         <div className="createCharFields">
           <label htmlFor="genre">Genre: </label>
-          <input name="genre" value={props.genre} onChange={props.setGenre} />
+          <select
+            id="genres"
+            value={props.dropGenre}
+            onChange={props.setDropGenre}
+          >
+            <option value="ACTION">ACTION</option>
+            <option value="SCIFI">SCIFI</option>
+            <option value="DRAMA">DRAMA</option>
+            <option value="COMEDY">COMEDY</option>
+            <option value="ROMANCE">ROMANCE</option>
+            <option value="ADVENTURE">ADVENTURE</option>
+          </select>
         </div>
         <button type="button" onClick={props.addMovieCard}>
           Add Movie
         </button>
-      </article>
+      </form>
 
-      <article className="create-movieCard">
+      <form className="create-movieCard">
         <h3>Enter your actor details</h3>
         <div className="createCharFields">
           <label htmlFor="firstName">First Name: </label>
@@ -74,7 +86,7 @@ const MutationDisplay = (props: any) => {
         <button type="button" onClick={props.addActorCard}>
           Add Actor
         </button>
-      </article>
+      </form>
     </div>
   );
 };

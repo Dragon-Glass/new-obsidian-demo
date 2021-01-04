@@ -2,6 +2,7 @@ import { React, useObsidian } from '../../deps.ts';
 // import CardsDisplay from './CardsDisplay.tsx';
 import QueryDisplay from './QueryDisplay.tsx';
 import MutationDisplay from './MutationDisplay.tsx';
+import { Cache } from '../../../obsidian/src/CacheClassBrowser.js';
 
 declare global {
   namespace JSX {
@@ -35,7 +36,6 @@ const CardsContainer = () => {
   const allMoviesQuery = `
     query { 
       movies {
-        __typename
         id
         title
         releaseYear
@@ -52,7 +52,6 @@ const CardsContainer = () => {
   const allActorsQuery = `
     query {
       actors {
-        __typename
         id
         firstName
         lastName
@@ -69,8 +68,7 @@ const CardsContainer = () => {
 
   const allMoviesByGenre = `
     query {
-      movies(input: ${dropGenre}){
-        __typename
+      movies(input: {genre: ${dropGenre}}){
         id
         title
         releaseYear
@@ -83,27 +81,25 @@ const CardsContainer = () => {
     }
   `;
 
-  const moviesByReleaseYear = `{
-    query {
-      movies(input: { release: ASC} ) {
-        __typename
+  const moviesByReleaseYear = `
+  query {
+    movies(input: {order : ASC }) {
+      id
+      title
+      releaseYear
+      actors {
         id
-        title
-        releaseYear
-        actors {
-          id
-          firstName
-          lastName
-        }
-        genre
+        firstName
+        lastName
       }
+      genre
     }
+}
   `;
 
   const addMovie = `
-    mutation AddMovie {
-    addMovie(input: {title: ${title}, releaseYear: ${releaseYear}, genre: ${genre} }) {
-      __typename
+    mutation {
+    addMovie(input: {title: "${title}", releaseYear: ${releaseYear}, genre: ${dropGenre} }) {
       id
       title
       releaseYear
@@ -113,9 +109,8 @@ const CardsContainer = () => {
   `;
 
   const addActor = `
-    mutation AddActor {
-    addActor(input: {firstName: ${firstName}, lastName: ${lastName}, nickname: ${nickname} }) {
-      __typename
+    mutation {
+    addActor(input: {firstName: "${firstName}", lastName: "${lastName}", nickname: "${nickname}" }) {
       id
       firstName
       lastName
@@ -124,113 +119,70 @@ const CardsContainer = () => {
   }
   `;
 
-  const fetchAllMovies = (e: any) => {
+  const fetchAllMovies = async (e: any) => {
     const start = Date.now();
-    const res = query(allMoviesQuery).then((resp: any) => {
-      setQueryTime(Date.now() - start);
-      setResponse(resp.data.movies);
-      setDisplay('all movies');
-    });
-    console.log(res);
-    // const respObj = {
-    //   data: {
-    //     movies: [
-    //       {
-    //         id: '1',
-    //         title: 'Indiana Jones and the Last Crusade',
-    //         genre: 'ACTION',
-    //         releaseYear: 1989,
-    //       },
-    //       {
-    //         id: '4',
-    //         title: 'Air Force One',
-    //         genre: 'ACTION',
-    //         releaseYear: 1997,
-    //       },
-    //     ],
-    //   },
-    // };
-    // console.log(respObj);
-    // return respObj;
+    const res = await query(allMoviesQuery);
+    setQueryTime(Date.now() - start);
+    setResponse(res.data.movie);
+    setDisplay('all movies');
+    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    console.log('all movies', res);
   };
 
-  const fetchAllActors = (e: any) => {
+  const fetchAllActors = async (e: any) => {
     const start = Date.now();
-    const res = query(allActorsQuery).then((resp: any) => {
-      setQueryTime(Date.now() - start);
-      setResponse(resp.data.actors);
-      setDisplay('all actors');
-    });
-    console.log(res);
-
-    // const respObj = {
-    //   data: {
-    //     movies: [
-    //       {
-    //         id: '1',
-    //         title: 'Indiana Jones and the Last Crusade',
-    //         genre: 'ACTION',
-    //         releaseYear: 1989,
-    //       },
-    //       {
-    //         id: '4',
-    //         title: 'Air Force One',
-    //         genre: 'ACTION',
-    //         releaseYear: 1997,
-    //       },
-    //     ],
-    //   },
-    // };
-    // console.log(respObj);
-    // return respObj;
+    const res = await query(allActorsQuery);
+    setQueryTime(Date.now() - start);
+    setResponse(res.data.actor);
+    setDisplay('all actors');
+    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    console.log('all actors', res);
   };
 
-  const fetchMoviesByGenre = (e: any) => {
+  const fetchMoviesByGenre = async (e: any) => {
     const start = Date.now();
-    const res = query(allMoviesByGenre).then((resp: any) => {
-      setQueryTime(Date.now() - start);
-      setResponse(resp.data.movies);
-      setDisplay('by genre');
-    });
-    console.log(res);
-    setTimeout(() => setCache(newCache(cache.storage)), 1);
+    const res = await query(allMoviesByGenre);
+    setQueryTime(Date.now() - start);
+    setResponse(res.data.movies);
+    setDisplay('by genre');
+    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    console.log('by genre', res);
   };
 
-  const fetchReleaseYear = (e: any) => {
+  const fetchReleaseYear = async (e: any) => {
     const start = Date.now();
-    const res = query(moviesByReleaseYear).then((resp: any) => {
-      setQueryTime(Date.now() - start);
-      setResponse(resp.data.movies);
-      setDisplay('by year');
-    });
-    console.log(res);
-    setTimeout(() => setCache(newCache(cache.storage)), 1);
+    const res = await query(moviesByReleaseYear);
+    setQueryTime(Date.now() - start);
+    setResponse(res.data.movies);
+    setDisplay('by year');
+    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    console.log('by year', res);
   };
 
-  const addMovieCard = (e: any) => {
+  const addMovieCard = async (e: any) => {
     const start = Date.now();
-    const res = mutate(addMovie, {
-      endpoint: '/graphql',
-    }).then((resp: any) => {
-      setQueryTime(Date.now() - start);
-      setResponse(resp.data.movies);
-      setDisplay('all movies');
-    });
-    console.log(res);
-    setTimeout(() => setCache(newCache(cache.storage)), 1);
+    const res = await mutate(addMovie);
+    // option obj with update key on
+    setQueryTime(Date.now() - start);
+    setResponse(res.data.addMovie);
+    setDisplay('all movies');
+    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    console.log('add movie', res);
   };
 
-  const addActorCard = (e: any) => {
+  const addActorCard = async (e: any) => {
     const start = Date.now();
-    const res = mutate(addActor, {
-      endpoint: '/graphql',
-    }).then((resp: any) => {
-      setQueryTime(Date.now() - start);
-      setResponse(resp.data.actor);
-      setDisplay('all actors');
-    });
-    console.log(res);
-    setTimeout(() => setCache(newCache(cache.storage)), 1);
+    const res = await mutate(addActor);
+    if (res.data.addActor.nickname === '') {
+      res.data.addActor.nickname = null;
+    }
+    setQueryTime(Date.now() - start);
+    setResponse(res.data.addActor);
+    setDisplay('all actors');
+    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+
+    console.log('add card', res);
+    console.log('cache', cache.storage);
   };
 
   return (
@@ -252,13 +204,13 @@ const CardsContainer = () => {
         nickname={nickname}
         title={title}
         releaseYear={releaseYear}
-        genre={genre}
+        dropGenre={dropGenre}
+        setDropGenre={setDropGenre}
         setTitle={setTitle}
         setFirstName={setFirstName}
         setLastName={setLastName}
         setNickname={setNickname}
         setReleaseYear={setReleaseYear}
-        setGenre={setGenre}
       />
     </div>
   );

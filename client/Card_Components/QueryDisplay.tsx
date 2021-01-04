@@ -18,8 +18,7 @@ declare global {
 const QueryDisplay = (props: any) => {
   
   const handleSubmit = (e: any) => {
-    // props.byGenre(genre.value)
-    alert('Favorite genre:' + props.dropGenre);
+    props.byGenre(props.dropGenre)
     e.preventDefault();
   };
 
@@ -33,8 +32,8 @@ const QueryDisplay = (props: any) => {
           All Actors
         </button>
         <form onSubmit={handleSubmit}>
-          <label id="genre-label">
-            Movies by Genre
+          {/* <label id="genre-label">
+            Movies by Genre */}
             <div id="dropdown-content">
               <select
                 id="genres"
@@ -49,8 +48,8 @@ const QueryDisplay = (props: any) => {
                 <option value="ADVENTURE">ADVENTURE</option>
               </select>
             </div>
-          </label>
-          <input type="submit" value="Submit" />
+          {/* </label> */}
+          <input type="submit" value="Movies by Genre" />
         </form>
         <button type="button" id="fetchByYear" onClick={props.byYear}>
           Movies by Release Year
