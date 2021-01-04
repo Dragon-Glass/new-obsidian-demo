@@ -1,5 +1,4 @@
-import { React, useObsidian } from '../deps.ts';
-import { Cache } from '../../obsidian/src/CacheClassBrowser.js';
+import { BrowserCache, React, useObsidian } from '../deps.ts';
 
 declare global {
   namespace JSX {
@@ -39,12 +38,12 @@ const Test = () => {
     const result = await query(queryStr);
     console.log('result from query', result);
     // forceUpdate();
-    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
   }
   async function handleClick2() {
     const result = await mutate(mutationStr);
     console.log('result from mutation', result);
-    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     // forceUpdate();
   }
   return (

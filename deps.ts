@@ -4,5 +4,13 @@ import ReactDom from 'https://dev.jspm.io/react-dom';
 import {
   ObsidianWrapper,
   useObsidian,
-} from '../obsidian/src/ObsidianWrapper.jsx';
-export { ObsidianWrapper, useObsidian, React, ReactDOMServer, ReactDom };
+  BrowserCache,
+} from 'https://github.com/oslabs-beta/obsidian/raw/master/clientMod.ts';
+export {
+  BrowserCache,
+  ObsidianWrapper,
+  useObsidian,
+  React,
+  ReactDOMServer,
+  ReactDom,
+};
