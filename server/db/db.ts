@@ -6,8 +6,9 @@ import { actorFilmsData } from './test-data/actor_films.js';
 import 'https://deno.land/x/dotenv/load.ts';
 
 // connect to db
-const config = Deno.env.get('PG_URI');
-export const db = new Client(config);
+PG_URI=postgres://uiikgqgj:cSjcLEFvsuAb7Q3bc6O5p2LYbyjWlw5t@suleiman.db.elephantsql.com:5432/uiikgqgj
+;
+export const db = new Client(PG_URI);
 await db.connect();
 
 export async function createDb() {
