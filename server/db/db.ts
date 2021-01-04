@@ -1,4 +1,4 @@
-import { Client } from 'https://deno.land/x/postgres/mod.ts';
+import { Client } from 'https://deno.land/x/postgres@v0.4.6/mod.ts';
 import { sqlTableCreate } from './db-init.js';
 import { filmsData } from './test-data/films.js';
 import { actorsData } from './test-data/actors.js';
@@ -6,9 +6,9 @@ import { actorFilmsData } from './test-data/actor_films.js';
 import 'https://deno.land/x/dotenv/load.ts';
 
 // connect to db
-PG_URI=postgres://uiikgqgj:cSjcLEFvsuAb7Q3bc6O5p2LYbyjWlw5t@suleiman.db.elephantsql.com:5432/uiikgqgj
-;
-export const db = new Client(PG_URI);
+const config =
+  'postgres://uiikgqgj:cSjcLEFvsuAb7Q3bc6O5p2LYbyjWlw5t@suleiman.db.elephantsql.com:5432/uiikgqgj';
+export const db = new Client(config);
 await db.connect();
 
 export async function createDb() {
