@@ -1,4 +1,4 @@
-import { React, useObsidian } from '../../../deps.ts';
+import { React, useObsidian } from '../../deps.ts';
 
 declare global {
   namespace JSX {
@@ -182,4 +182,5 @@ const CardDisplay = (props: any) => {
     </article>
   );
 };
+
 export default CardDisplay;

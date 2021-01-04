@@ -218,7 +218,13 @@ function CardsContainer(props: any) {
           setReleaseYear={setReleaseYear}
         />
       </div>
-      <CardsDisplay id="cards-display" display={display} />
+      <CardsDisplay
+        id="cards-display"
+        display={display}
+        genre={genre}
+        setQueryTime={setQueryTime}
+        setResponse={setResponse}
+      />
       <Dashboard
         id="dashboard"
         queryTime={queryTime}
