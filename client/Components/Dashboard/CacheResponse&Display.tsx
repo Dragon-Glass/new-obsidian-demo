@@ -1,5 +1,5 @@
 import { React, useObsidian } from '../../../deps.ts';
-import reactBootstrap from 'https://cdn.skypack.dev/react-bootstrap';
+// import reactBootstrap from 'https://cdn.skypack.dev/react-bootstrap';
 // import { Button } from 'https://cdn.skypack.dev/react-bootstrap';
 
 declare global {
@@ -17,46 +17,47 @@ declare global {
 }
 
 const CacheResponseDisplay = (props: any) => {
-  const [cache, setCache] = (React as any).useState({
-    ROOT_QUERY: {
-      'movies(sort:{release:ASC})': ['Movie~1', 'Movie~5', 'Movie~4'],
-    },
-    ROOT_MUTATION: {
-      "addMovie(input:{title:'TheFugitive',releaseYear:1993,genre:ACTION})":
-        'Movie~5',
-    },
+  const { cache, clearCache, setCache } = useObsidian();
+  // const [cache, setCache] = (React as any).useState({
+  //   ROOT_QUERY: {
+  //     'movies(sort:{release:ASC})': ['Movie~1', 'Movie~5', 'Movie~4'],
+  //   },
+  //   ROOT_MUTATION: {
+  //     "addMovie(input:{title:'TheFugitive',releaseYear:1993,genre:ACTION})":
+  //       'Movie~5',
+  //   },
 
-    'Movie~1': {
-      id: '1',
-      title: 'Indiana Jones and the Last Crusade',
-      genre: 'ACTION',
-      releaseYear: 1989,
-      isFavorite: false,
-    },
-    'Movie~4': {
-      id: '4',
-      title: 'Air Force One',
-      genre: 'ACTION',
-      releaseYear: 1997,
-      isFavorite: false,
-    },
+  //   'Movie~1': {
+  //     id: '1',
+  //     title: 'Indiana Jones and the Last Crusade',
+  //     genre: 'ACTION',
+  //     releaseYear: 1989,
+  //     isFavorite: false,
+  //   },
+  //   'Movie~4': {
+  //     id: '4',
+  //     title: 'Air Force One',
+  //     genre: 'ACTION',
+  //     releaseYear: 1997,
+  //     isFavorite: false,
+  //   },
 
-    'Movie~5': {
-      id: '5',
-      title: 'The Fugitive',
-      genre: 'ACTION',
-      releaseYear: 1993,
-      isFavorite: false,
-    },
-  });
-  function clearCache(e: any) {
-    e.preventDefault();
-    console.log('clicked');
-    setCache({
-      ROOT_QUERY: {},
-      ROOT_MUTATION: {},
-    });
-  }
+  //   'Movie~5': {
+  //     id: '5',
+  //     title: 'The Fugitive',
+  //     genre: 'ACTION',
+  //     releaseYear: 1993,
+  //     isFavorite: false,
+  //   },
+  // });
+  // function clearCache(e: any) {
+  //   e.preventDefault();
+  //   console.log('clicked');
+  //   setCache({
+  //     ROOT_QUERY: {},
+  //     ROOT_MUTATION: {},
+  //   });
+  // }
   const response = `{
     data: {
       movies: [
@@ -95,9 +96,12 @@ const CacheResponseDisplay = (props: any) => {
       ],
     },
   }`;
-
+  function onClick() {
+    console.log('clicked');
+    clearCache();
+  }
   function createCache() {
-    return Object.entries(cache).reduce((acc: any, pair: any, i) => {
+    return Object.entries(cache.storage).reduce((acc: any, pair: any, i) => {
       if (typeof pair[1] === 'object') {
         const insidePair = [];
         for (const key in pair[1]) {
@@ -138,7 +142,7 @@ const CacheResponseDisplay = (props: any) => {
             {cachedPair}
             {'}'}
           </code>
-          <button id="clear-cache" onClick={clearCache}>
+          <button type="button" id="clear-cache" onClick={onClick}>
             Clear Cache
           </button>
         </pre>

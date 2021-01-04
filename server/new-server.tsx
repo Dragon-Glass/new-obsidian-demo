@@ -1,6 +1,7 @@
 import { Application, Router } from 'https://deno.land/x/oak@v6.0.1/mod.ts';
 import { React, ReactDOMServer } from '../deps.ts';
 import { ObsidianRouter } from '../serverDeps.ts';
+import { createDb } from './db/db.ts';
 import resolvers from './resolvers.ts';
 import types from './schema.ts';
 import App from '../client/app.tsx';
@@ -21,6 +22,9 @@ app.use(async (ctx, next) => {
   const ms = Date.now() - start;
   ctx.response.headers.set('X-Response-Time', `${ms}ms`);
 });
+// create and seed DB
+await createDb();
+
 // Create Route
 const router = new Router();
 

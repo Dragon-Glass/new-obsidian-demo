@@ -13,7 +13,7 @@ declare global {
   }
 }
 const Dashboard = (props: any) => {
-  const { query, cache, clearCache } = useObsidian();
+  const { query, cache, setCache, clearCache } = useObsidian();
   return (
     <div className="dashboard">
       <h1>Dashboard</h1>
