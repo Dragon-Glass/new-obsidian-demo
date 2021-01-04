@@ -104,7 +104,12 @@ const CardsContainer = () => {
   return (
     <>
       <div className="cardsContainer">
-        <CardsDisplay display={display} genre={genre} />
+        <CardsDisplay
+          display={display}
+          genre={genre}
+          setQueryTime={setQueryTime}
+          setResponse={setResponse}
+        />
         {/* <QueryDisplay fetchData={fetchAllMovies} /> */}
         {/* <MutationDisplay /> */}
       </div>

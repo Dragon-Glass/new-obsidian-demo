@@ -1,4 +1,4 @@
-import { React } from '../../deps.ts';
+import { React, useObsidian } from '../../deps.ts';
 
 declare global {
   namespace JSX {
@@ -20,42 +20,50 @@ declare global {
 
 const CardDisplay = (props: any) => {
   const [nickName, setNickName] = (React as any).useState('');
-  const [popup, setPopup] = (React as any).useState(false);
   const [value, setValue] = (React as any).useState('');
 
-  const togglePopup = (e: any) => {
-    e.preventDefault();
-    setPopup(!popup);
-  };
+  const { mutate } = useObsidian();
 
   if (props.display === 'Movies') {
+    const { title, releaseYear, actors = [], genre, id } = props.info;
     const handleChange = (event: any) => {
       setValue(event.target.value);
     };
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = async (event: any) => {
       const associateActorWithMovie = `
     mutation {
-      associateActorWithMovie(input:${event.target.value}){
+      associateActorWithMovie(input:{movieId:${id}, actorId:${
+        props.actorList[event.target.value]
+      }, respType:MOVIE}){
         __typename
+        title
+        actors
       }
     }
   `;
-      // mutate(associateActorWithMovie)
+      const start = Date.now();
+      const res = await mutate(associateActorWithMovie);
+      props.setQueryTime(Date.now() - start);
+      props.setResponse(JSON.stringify(res.data));
+
       event.preventDefault();
     };
 
-    const { title, releaseYear, actors = [], genre, id } = props.info;
-    // const deleteMovie => (id:any) => {
-    //   const deleteMovieMutation = `mutation {deleteMovie(id:${id}){
-    //     id
-    //     title
-    //   }
-    //   }`;
-    //   // mutate(deleteMovie, {toDelete=true});
-    // }
+    const deleteMovie = async (id: any) => {
+      const deleteMovieMutation = `mutation {deleteMovie(id:${id}){
+            id
+            title
+          }
+          }`;
+      const start = Date.now();
+      const res = await mutate(deleteMovieMutation, { toDelete: true });
+      props.setQueryTime(Date.now() - start);
+      props.setResponse(JSON.stringify(res.data));
+    };
     const arrOfOptions: any = [];
-    props.actorList.forEach((actor: any) => {
+    const arrOfActors = Object.keys(props.actorList);
+    arrOfActors.forEach((actor: any) => {
       arrOfOptions.push(<option value={actor}>{actor}</option>);
     });
     return (
@@ -77,24 +85,33 @@ const CardDisplay = (props: any) => {
           </label>
           <input type="submit" value="Submit" />
         </form>
-        <button>Delete Movie</button>
+        <button onClick={deleteMovie}>Delete Movie</button>
       </article>
     );
   }
 
+  const { firstName, lastName, movies = [], nickname = '', id } = props.info;
   const handleChange = (event: any) => {
     setValue(event.target.value);
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     const associateActorWithMovie = `
   mutation {
-    associateActorWithMovie(input:${event.target.value}){
+    associateActorWithMovie(input:{actorId:${id},movieId: ${
+      props.movieList[event.target.value]
+    }, respType:ACTOR}){
       __typename
+      firstName
+      lastName
+      movies
     }
   }
 `;
-    // mutate(associateActorWithMovie);
+    const start = Date.now();
+    const res = await mutate(associateActorWithMovie);
+    props.setQueryTime(Date.now() - start);
+    props.setResponse(JSON.stringify(res.data));
     event.preventDefault();
   };
   const updateNickname = `
@@ -110,25 +127,31 @@ const CardDisplay = (props: any) => {
   const handleChangeNickname = (event: any) => {
     setNickName(event.target.value);
   };
-  const handleSubmitNickname = (event: any) => {
-    // mutate(updateNickname);
+  const handleSubmitNickname = async (event: any) => {
+    const start = Date.now();
+    const res = await mutate(updateNickname);
+    props.setQueryTime(Date.now() - start);
+    props.setResponse(JSON.stringify(res.data));
     event.preventDefault();
   };
 
-  const { firstName, lastName, movies = [], nickname = '' } = props.info;
   const arrOfOptions: any = [];
-  props.movieList.forEach((movie: any) => {
+  const arrOfMovies = Object.keys(props.movieList);
+  arrOfMovies.forEach((movie: any) => {
     arrOfOptions.push(<option value={movie}>{movie}</option>);
   });
 
-  // const deleteActor => (id:any) => {
-  //   const deleteActorMutation = `mutation {deleteActor(id:${id}){
-  //     id
-  //     firstName
-  //   }
-  //   }`;
-  //   // mutate(deleteActor, {toDelete=true});
-  // }
+  const deleteActor = async (id: any) => {
+    const deleteActorMutation = `mutation {deleteActor(id:${id}){
+      id
+      firstName
+    }
+    }`;
+    const start = Date.now();
+    const res = await mutate(deleteActorMutation, { toDelete: true });
+    props.setQueryTime(Date.now() - start);
+    props.setResponse(JSON.stringify(res.data));
+  };
   return (
     <article className="card actorCard">
       <div className="actorHeadContainer">
@@ -155,7 +178,7 @@ const CardDisplay = (props: any) => {
         </label>
         <input type="submit" value="Submit" />
       </form>
-      <button>Delete Actor</button>
+      <button onClick={deleteActor}>Delete Actor</button>
     </article>
   );
 };

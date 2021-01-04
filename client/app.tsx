@@ -1,4 +1,4 @@
-import { React, ReactDOMServer } from '../deps.ts';
+import { React, ReactDOMServer, ObsidianWrapper } from '../deps.ts';
 import CardsContainer from './Card_Components/CardsContainer.tsx';
 
 declare global {
