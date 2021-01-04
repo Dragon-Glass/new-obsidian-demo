@@ -7,7 +7,7 @@ import {
 
 import {
   ObsidianRouter,
-  gql
-} from '../obsidian/mod.ts';
+  gql,
+} from 'https://github.com/oslabs-beta/obsidian/raw/master/mod.ts';
 
 export { Application, Router, Context, send, ObsidianRouter, gql };
