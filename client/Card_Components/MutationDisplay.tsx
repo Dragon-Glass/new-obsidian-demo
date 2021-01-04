@@ -14,30 +14,29 @@ declare global {
 }
 
 const MutationDisplay = (props: any) => {
-  const [reset, setReset] = (React as any).useState('');
-  
+ 
   return (
     <div className="mutationDisplay">
-      <form className="create-movieCard">
+      <form className="create-movieCard" onSubmit={props.addMovieCard}>
         <h3>Enter your movie details</h3>
         <div className="createCharFields">
           <label htmlFor="title">Title: </label>
-          <input name="title" value={props.title} onChange={props.setTitle} />
+          <input name="title" value={props.title} onChange={props.onChange} />
         </div>
         <div className="createCharFields">
           <label htmlFor="releaseYear">Release Year: </label>
           <input
             name="releaseYear"
             value={props.releaseYear}
-            onChange={props.setReleaseYear}
+            onChange={props.onChange}
           />
         </div>
         <div className="createCharFields">
           <label htmlFor="genre">Genre: </label>
           <select
             id="genres"
-            value={props.dropGenre}
-            onChange={props.setDropGenre}
+            value={props.cardGenre}
+            onChange={props.setCardGenre}
           >
             <option value="ACTION">ACTION</option>
             <option value="SCIFI">SCIFI</option>
@@ -47,19 +46,19 @@ const MutationDisplay = (props: any) => {
             <option value="ADVENTURE">ADVENTURE</option>
           </select>
         </div>
-        <button type="button" onClick={props.addMovieCard}>
+        <button>
           Add Movie
         </button>
       </form>
 
-      <form className="create-movieCard">
+      <form className="create-movieCard" onSubmit={props.addActorCard}>
         <h3>Enter your actor details</h3>
         <div className="createCharFields">
           <label htmlFor="firstName">First Name: </label>
           <input
             name="firstName"
             value={props.firstName}
-            onChange={props.setFirstName}
+            onChange={props.onChange}
           />
         </div>
         <div className="createCharFields">
@@ -67,12 +66,12 @@ const MutationDisplay = (props: any) => {
             htmlFor="las
         tName"
           >
-            Last Name:{' '}
+            Last Name:
           </label>
           <input
             name="lastName"
             value={props.lastName}
-            onChange={props.setLastName}
+            onChange={props.onChange}
           />
         </div>
         <div className="createCharFields">
@@ -80,10 +79,10 @@ const MutationDisplay = (props: any) => {
           <input
             name="nickname"
             value={props.nickname}
-            onChange={props.setNickname}
+            onChange={props.onChange}
           />
         </div>
-        <button type="button" onClick={props.addActorCard}>
+        <button>
           Add Actor
         </button>
       </form>

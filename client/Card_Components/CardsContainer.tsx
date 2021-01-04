@@ -2,7 +2,7 @@ import { React, useObsidian } from '../../deps.ts';
 // import CardsDisplay from './CardsDisplay.tsx';
 import QueryDisplay from './QueryDisplay.tsx';
 import MutationDisplay from './MutationDisplay.tsx';
-import { Cache } from '../../../obsidian/src/CacheClassBrowser.js';
+import Cache from '../../../obsidian/src/CacheClassBrowser.js';
 
 declare global {
   namespace JSX {
@@ -11,6 +11,15 @@ declare global {
     }
   }
 }
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  nickname: '',
+  title: '',
+  releaseYear: '',
+};
+
 const useInput = (init: any) => {
   const [value, setValue] = (React as any).useState(init);
   const onChange = (e: any) => {
@@ -24,14 +33,22 @@ const CardsContainer = () => {
   const [queryTime, setQueryTime] = (React as any).useState(0);
   const [response, setResponse] = (React as any).useState('');
   const [display, setDisplay] = (React as any).useState('');
-  const [dropGenre, setDropGenre] = useInput('');
   const [genre, setGenre] = useInput('');
-  const [title, setTitle] = useInput('');
-  const [releaseYear, setReleaseYear] = useInput('');
-  const [firstName, setFirstName] = useInput('');
-  const [lastName, setLastName] = useInput('');
-  const [nickname, setNickname] = useInput('');
-  // change state dependent on fetch request
+  const [cardGenre, setCardGenre] = useInput('')
+  
+  const [
+    { firstName, lastName, nickname, title, releaseYear},
+    setState,
+  ] = (React as any).useState(initialState);
+
+  const clearState = () => {
+    setState({ ...initialState });
+  };
+
+  const onChange = (e: any) => {
+    const { name, value } = e.target;
+    setState((prevState: any) => ({ ...prevState, [name]: value }));
+  };
 
   const allMoviesQuery = `
     query { 
@@ -68,7 +85,7 @@ const CardsContainer = () => {
 
   const allMoviesByGenre = `
     query {
-      movies(input: {genre: ${dropGenre}}){
+      movies(input: {genre: ${genre}}){
         id
         title
         releaseYear
@@ -99,7 +116,7 @@ const CardsContainer = () => {
 
   const addMovie = `
     mutation {
-    addMovie(input: {title: "${title}", releaseYear: ${releaseYear}, genre: ${dropGenre} }) {
+    addMovie(input: {title: "${title}", releaseYear: ${releaseYear}, genre: ${cardGenre} }) {
       id
       title
       releaseYear
@@ -160,6 +177,7 @@ const CardsContainer = () => {
   };
 
   const addMovieCard = async (e: any) => {
+    e.preventDefault();
     const start = Date.now();
     const res = await mutate(addMovie);
     // option obj with update key on
@@ -167,10 +185,12 @@ const CardsContainer = () => {
     setResponse(res.data.addMovie);
     setDisplay('all movies');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    await clearState();
     console.log('add movie', res);
   };
 
   const addActorCard = async (e: any) => {
+    e.preventDefault();
     const start = Date.now();
     const res = await mutate(addActor);
     if (res.data.addActor.nickname === '') {
@@ -180,7 +200,7 @@ const CardsContainer = () => {
     setResponse(res.data.addActor);
     setDisplay('all actors');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
-
+    await clearState();
     console.log('add card', res);
     console.log('cache', cache.storage);
   };
@@ -193,8 +213,8 @@ const CardsContainer = () => {
         allActors={fetchAllActors}
         byGenre={fetchMoviesByGenre}
         byYear={fetchReleaseYear}
-        dropGenre={dropGenre}
-        setDropGenre={setDropGenre}
+        genre={genre}
+        setGenre={setGenre}
       />
       <MutationDisplay
         addMovieCard={addMovieCard}
@@ -204,13 +224,9 @@ const CardsContainer = () => {
         nickname={nickname}
         title={title}
         releaseYear={releaseYear}
-        dropGenre={dropGenre}
-        setDropGenre={setDropGenre}
-        setTitle={setTitle}
-        setFirstName={setFirstName}
-        setLastName={setLastName}
-        setNickname={setNickname}
-        setReleaseYear={setReleaseYear}
+        cardGenre={cardGenre}
+        setCardGenre={setCardGenre}
+        onChange={onChange}
       />
     </div>
   );
