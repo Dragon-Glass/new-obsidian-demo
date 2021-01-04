@@ -79,7 +79,7 @@ body {
 #query-mutation button,
 .query-display input {
   align-self: center;
-  background-color: #a563e7;
+  background-color: #e8d4ee;
   border: none;
   color: black;
   padding: 0.6rem 1.5rem;
@@ -96,7 +96,9 @@ body {
 .mutation-display label {
   margin-top: 0.6rem;
 }
-
+.mutation-display h3 {
+  padding-top: 0.5rem;
+}
 #cards-display {
   align-items: center;
   grid-column: 2/3;
@@ -327,7 +329,7 @@ path.bullHead {
   display: block;
   padding: 20px;
   margin: 1vw;
-  max-height: 200px;
+  max-height: 300px;
   /* overflow: scroll; */
   overflow-y: scroll;
   overflow-x: hidden;

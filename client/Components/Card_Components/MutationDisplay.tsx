@@ -23,11 +23,11 @@ const MutationDisplay = (props: any) => {
       <form className="create-movieCard">
         <h5>Enter your movie details</h5>
         <div className="createCharFields">
-          <label class="form-label" htmlFor="title">
+          <label className="form-label" htmlFor="title">
             Title:{' '}
           </label>
           <input
-            class="form-control"
+            className="form-control"
             name="title"
             value={props.title}
             onChange={props.setTitle}
@@ -35,11 +35,11 @@ const MutationDisplay = (props: any) => {
           />
         </div>
         <div className="createCharFields">
-          <label class="form-label" htmlFor="releaseYear">
+          <label className="form-label" htmlFor="releaseYear">
             Release Year:{' '}
           </label>
           <input
-            class="form-control"
+            className="form-control"
             name="releaseYear"
             value={props.releaseYear}
             onChange={props.setReleaseYear}
@@ -47,11 +47,11 @@ const MutationDisplay = (props: any) => {
           />
         </div>
         <div className="createCharFields">
-          <label class="form-label" htmlFor="genre">
+          <label className="form-label" htmlFor="genre">
             Genre:{' '}
           </label>
           <select
-            class="form-select"
+            className="form-select"
             id="genres"
             value={props.dropGenre}
             onChange={props.setDropGenre}
@@ -73,11 +73,11 @@ const MutationDisplay = (props: any) => {
       <form className="create-movieCard">
         <h5>Enter your actor details</h5>
         <div className="createCharFields">
-          <label class="form-label" htmlFor="firstName">
+          <label className="form-label" htmlFor="firstName">
             First Name:{' '}
           </label>
           <input
-            class="form-control"
+            className="form-control"
             name="firstName"
             value={props.firstName}
             onChange={props.setFirstName}
@@ -86,14 +86,14 @@ const MutationDisplay = (props: any) => {
         </div>
         <div className="createCharFields">
           <label
-            class="form-label"
+            className="form-label"
             htmlFor="las
         tName"
           >
             Last Name:
           </label>
           <input
-            class="form-control"
+            className="form-control"
             name="lastName"
             value={props.lastName}
             onChange={props.setLastName}
@@ -101,11 +101,11 @@ const MutationDisplay = (props: any) => {
           />
         </div>
         <div className="createCharFields">
-          <label class="form-label" htmlFor="nickname">
+          <label className="form-label" htmlFor="nickname">
             Nickname:{' '}
           </label>
           <input
-            class="form-control"
+            className="form-control"
             name="nickname"
             value={props.nickname}
             onChange={props.setNickname}

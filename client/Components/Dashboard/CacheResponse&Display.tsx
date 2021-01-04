@@ -1,4 +1,5 @@
 import { React, useObsidian } from '../../../deps.ts';
+import { Cache } from '../../../../obsidian/src/CacheClassBrowser.js';
 // import { useQueriesContext } from '../Card_Components/CardsContainer.tsx';
 // import reactBootstrap from 'https://cdn.skypack.dev/react-bootstrap';
 // import { Button } from 'https://cdn.skypack.dev/react-bootstrap';
@@ -21,6 +22,11 @@ const CacheResponseDisplay = (props: any) => {
   // const { queryTime, gqlRequest, response } = useQueriesContext();
   const { cache, clearCache, setCache } = useObsidian();
   const { response } = props;
+  function onClick(e: any) {
+    console.log('clicked');
+    clearCache();
+    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+  }
   function createCache() {
     return Object.entries(cache.storage).reduce((acc: any, pair: any, i) => {
       if (typeof pair[1] === 'object') {
@@ -61,7 +67,7 @@ const CacheResponseDisplay = (props: any) => {
             {cachedPair}
             {'}'}
           </code>
-          <button type="button" id="clear-cache" onClick={clearCache}>
+          <button type="button" id="clear-cache" onClick={onClick}>
             Clear Cache
           </button>
         </pre>
