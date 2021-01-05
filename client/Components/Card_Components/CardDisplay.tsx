@@ -19,6 +19,20 @@ declare global {
 }
 
 const CardDisplay = (props: any) => {
+  const allMoviesQuery = `query { 
+    movies {
+      id
+      title
+      releaseYear
+      actors {
+        id
+        firstName
+        lastName
+      }
+      genre
+    }
+  }
+`;
   const [nickName, setNickName] = (React as any).useState('');
   const [value, setValue] = (React as any).useState('');
   const { query, mutate, cache, setCache, clearCache } = useObsidian();
@@ -59,6 +73,8 @@ const CardDisplay = (props: any) => {
           }`;
       const res = await mutate(deleteMovieMutation, { toDelete: true });
       console.log('res', res);
+      const newResponse = query(allMoviesQuery);
+      console.log('newResponse', newResponse);
       setTimeout(() => setCache(new Cache(cache.storage)), 1);
     };
 

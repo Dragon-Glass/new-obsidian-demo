@@ -14,7 +14,6 @@ const realCodeStyles: any = codeStyles;
 const CodeBlock = realRSH.Prism;
 const { dracula } = realCodeStyles;
 
-dracula['pre[class*="language-"]'].background = 'rgba(5, 5, 5, 0.93)';
 export {
   React,
   ReactDOMServer,

@@ -46,7 +46,7 @@ const CardsDisplay = (props: any) => {
   };
 
   if (props.display === 'all movies') {
-    let resp = JSON.parse(props.response);
+    let resp = props.response;
     // fetch()
     // const movieActors = findActors(res.data.actors);
     // cache.storage.ROOT_QUERY.movies
@@ -60,6 +60,7 @@ const CardsDisplay = (props: any) => {
           // actorList={allActors}
           setQueryTime={props.setQueryTime}
           setResponse={props.setResponse}
+          response={props.response}
         ></CardDisplay>
       );
     });
@@ -68,38 +69,38 @@ const CardsDisplay = (props: any) => {
     return [cards];
   }
 
-  // if (props.display === 'all actors') {
-  //   let resp = JSON.parse(props.response);
+  if (props.display === 'all actors') {
+    let resp = props.response;
 
-  //   // let actorMovies: any = [];
-  //   // const obj: any = {};
-  //   // actors.forEach((actor: any) => {
-  //   //   if (Array.isArray(actor.movies)) {
-  //   //     actor.movies.forEach((movie: any) => {
-  //   //       let mov = cache.storage[movie].title;
-  //   //       obj[mov] = cache.storage[movie].id;
-  //   //     });
-  //   //   } else {
-  //   //     let movie = actor.movies;
-  //   //     let mov = cache.storage[movie].title;
-  //   //     obj[mov] = cache.storage[movie].id;
-  //   //   }
-  //   // });
-  //   console.log(resp);
-  //   resp.actors.forEach((actor: any) => {
-  //     cards.push(
-  //       <CardDisplay
-  //         info={actor}
-  //         key={actor.id}
-  //         display={'Actors'}
-  //         //movieList={obj}
-  //         setQueryTime={props.setQueryTime}
-  //         setResponse={props.setResponse}
-  //       ></CardDisplay>
-  //     );
-  //   });
-  //   return [cards];
-  // }
+    // let actorMovies: any = [];
+    // const obj: any = {};
+    // actors.forEach((actor: any) => {
+    //   if (Array.isArray(actor.movies)) {
+    //     actor.movies.forEach((movie: any) => {
+    //       let mov = cache.storage[movie].title;
+    //       obj[mov] = cache.storage[movie].id;
+    //     });
+    //   } else {
+    //     let movie = actor.movies;
+    //     let mov = cache.storage[movie].title;
+    //     obj[mov] = cache.storage[movie].id;
+    //   }
+    // });
+    console.log(resp);
+    resp.actors.forEach((actor: any) => {
+      cards.push(
+        <CardDisplay
+          info={actor}
+          key={actor.id}
+          display={'Actors'}
+          //movieList={obj}
+          setQueryTime={props.setQueryTime}
+          setResponse={props.setResponse}
+        ></CardDisplay>
+      );
+    });
+    return [cards];
+  }
 
   if (props.display === 'by genre') {
     let resp = JSON.parse(props.response);
