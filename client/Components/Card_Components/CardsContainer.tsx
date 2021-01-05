@@ -1,8 +1,7 @@
-import { React, useObsidian } from '../../../deps.ts';
+import { React, useObsidian, BrowserCache } from '../../../deps.ts';
 import CardsDisplay from './CardsDisplay.tsx';
 import QueryDisplay from './QueryDisplay.tsx';
 import MutationDisplay from './MutationDisplay.tsx';
-import { Cache } from '../../../../obsidian/src/CacheClassBrowser.js';
 import Dashboard from '../Dashboard/Dashboard.tsx';
 
 declare global {
@@ -142,7 +141,7 @@ function CardsContainer(props: any) {
     console.log('data', JSON.stringify(res));
     console.log('response', response);
     setDisplay('all movies');
-    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('all movies', res);
   };
 
@@ -153,7 +152,7 @@ function CardsContainer(props: any) {
     setQueryTime(Date.now() - start);
     setResponse(JSON.stringify(res.data));
     setDisplay('all actors');
-    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('all actors', res);
   };
 
@@ -164,7 +163,7 @@ function CardsContainer(props: any) {
     setQueryTime(Date.now() - start);
     setResponse(JSON.stringify(res.data));
     setDisplay('by genre');
-    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('by genre', res);
   };
 
@@ -175,7 +174,7 @@ function CardsContainer(props: any) {
     setQueryTime(Date.now() - start);
     setResponse(JSON.stringify(res.data));
     setDisplay('by year');
-    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('by year', res);
   };
 
@@ -188,7 +187,7 @@ function CardsContainer(props: any) {
     setQueryTime(Date.now() - start);
     setResponse(JSON.stringify(res.data));
     setDisplay('all movies');
-    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     await clearState();
     console.log('add movie', res);
   };
@@ -204,7 +203,7 @@ function CardsContainer(props: any) {
     setQueryTime(Date.now() - start);
     setResponse(JSON.stringify(res.data));
     setDisplay('all actors');
-    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     await clearState();
     console.log('add card', res);
     console.log('cache', cache.storage);

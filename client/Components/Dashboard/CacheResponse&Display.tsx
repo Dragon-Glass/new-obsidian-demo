@@ -1,5 +1,4 @@
-import { React, useObsidian } from '../../../deps.ts';
-import { Cache } from '../../../../obsidian/src/CacheClassBrowser.js';
+import { React, useObsidian, BrowserCache } from '../../../deps.ts';
 // import { useQueriesContext } from '../Card_Components/CardsContainer.tsx';
 // import reactBootstrap from 'https://cdn.skypack.dev/react-bootstrap';
 // import { Button } from 'https://cdn.skypack.dev/react-bootstrap';
@@ -25,7 +24,7 @@ const CacheResponseDisplay = (props: any) => {
   function onClick(e: any) {
     console.log('clicked');
     clearCache();
-    setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
   }
   function createCache() {
     return Object.entries(cache.storage).reduce((acc: any, pair: any, i) => {

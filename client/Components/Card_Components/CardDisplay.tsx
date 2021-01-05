@@ -1,5 +1,4 @@
-import { React, useObsidian } from '../../../deps.ts';
-import { Cache } from '../../../../obsidian/src/CacheClassBrowser.js';
+import { React, useObsidian, BrowserCache } from '../../../deps.ts';
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -59,7 +58,7 @@ const CardDisplay = (props: any) => {
           }`;
       const res = await mutate(deleteMovieMutation, { toDelete: true });
       console.log('res', res);
-      setTimeout(() => setCache(new Cache(cache.storage)), 1);
+      setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     };
 
     // const findActors = (arrOfMovies: any) => {

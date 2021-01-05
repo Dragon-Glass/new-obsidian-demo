@@ -6,7 +6,7 @@ import { createDb } from './server/db/db.ts';
 import resolvers from './server/resolvers.ts';
 import types from './server/schema.ts';
 import App from './client/app.tsx';
-import { staticFileMiddleware } from '../staticFileMiddleware.ts';
+import { staticFileMiddleware } from './staticFileMiddleware.ts';
 
 const PORT = 3000;
 const app = new Application();
