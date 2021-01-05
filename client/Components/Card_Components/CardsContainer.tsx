@@ -1,13 +1,15 @@
-import { React, useObsidian } from '../../deps.ts';
-// import CardsDisplay from './CardsDisplay.tsx';
+import { React, useObsidian } from '../../../deps.ts';
+import CardsDisplay from './CardsDisplay.tsx';
 import QueryDisplay from './QueryDisplay.tsx';
 import MutationDisplay from './MutationDisplay.tsx';
-import Cache from '../../../obsidian/src/CacheClassBrowser.js';
+import Cache from '../../../../obsidian/src/CacheClassBrowser.js';
+import Dashboard from '../Dashboard/Dashboard.tsx';
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
       div: any;
+      h2: any;
     }
   }
 }
@@ -28,16 +30,17 @@ const useInput = (init: any) => {
   return [value, onChange];
 };
 
-const CardsContainer = () => {
+function CardsContainer(props: any) {
   const { query, mutate, cache, setCache, clearCache } = useObsidian();
   const [queryTime, setQueryTime] = (React as any).useState(0);
+  const [gqlRequest, setGqlRequest] = (React as any).useState('');
   const [response, setResponse] = (React as any).useState('');
   const [display, setDisplay] = (React as any).useState('');
   const [genre, setGenre] = useInput('');
-  const [cardGenre, setCardGenre] = useInput('')
-  
+  const [cardGenre, setCardGenre] = useInput('');
+
   const [
-    { firstName, lastName, nickname, title, releaseYear},
+    { firstName, lastName, nickname, title, releaseYear },
     setState,
   ] = (React as any).useState(initialState);
 
@@ -50,8 +53,7 @@ const CardsContainer = () => {
     setState((prevState: any) => ({ ...prevState, [name]: value }));
   };
 
-  const allMoviesQuery = `
-    query { 
+  const allMoviesQuery = `query { 
       movies {
         id
         title
@@ -66,8 +68,7 @@ const CardsContainer = () => {
     }
   `;
 
-  const allActorsQuery = `
-    query {
+  const allActorsQuery = `query {
       actors {
         id
         firstName
@@ -83,8 +84,7 @@ const CardsContainer = () => {
     }
   `;
 
-  const allMoviesByGenre = `
-    query {
+  const allMoviesByGenre = `query {
       movies(input: {genre: ${genre}}){
         id
         title
@@ -98,8 +98,7 @@ const CardsContainer = () => {
     }
   `;
 
-  const moviesByReleaseYear = `
-  query {
+  const moviesByReleaseYear = `query {
     movies(input: {order : ASC }) {
       id
       title
@@ -114,8 +113,7 @@ const CardsContainer = () => {
 }
   `;
 
-  const addMovie = `
-    mutation {
+  const addMovie = `mutation {
     addMovie(input: {title: "${title}", releaseYear: ${releaseYear}, genre: ${cardGenre} }) {
       id
       title
@@ -125,8 +123,7 @@ const CardsContainer = () => {
   }
   `;
 
-  const addActor = `
-    mutation {
+  const addActor = `mutation {
     addActor(input: {firstName: "${firstName}", lastName: "${lastName}", nickname: "${nickname}" }) {
       id
       firstName
@@ -137,40 +134,46 @@ const CardsContainer = () => {
   `;
 
   const fetchAllMovies = async (e: any) => {
+    setGqlRequest(allMoviesQuery);
     const start = Date.now();
     const res = await query(allMoviesQuery);
     setQueryTime(Date.now() - start);
-    setResponse(res.data.movie);
+    setResponse(JSON.stringify(res.data));
+    console.log('data', JSON.stringify(res));
+    console.log('response', response);
     setDisplay('all movies');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     console.log('all movies', res);
   };
 
   const fetchAllActors = async (e: any) => {
+    setGqlRequest(allActorsQuery);
     const start = Date.now();
     const res = await query(allActorsQuery);
     setQueryTime(Date.now() - start);
-    setResponse(res.data.actor);
+    setResponse(JSON.stringify(res.data));
     setDisplay('all actors');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     console.log('all actors', res);
   };
 
   const fetchMoviesByGenre = async (e: any) => {
+    setGqlRequest(allMoviesByGenre);
     const start = Date.now();
     const res = await query(allMoviesByGenre);
     setQueryTime(Date.now() - start);
-    setResponse(res.data.movies);
+    setResponse(JSON.stringify(res.data));
     setDisplay('by genre');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     console.log('by genre', res);
   };
 
   const fetchReleaseYear = async (e: any) => {
+    setGqlRequest(moviesByReleaseYear);
     const start = Date.now();
     const res = await query(moviesByReleaseYear);
     setQueryTime(Date.now() - start);
-    setResponse(res.data.movies);
+    setResponse(JSON.stringify(res.data));
     setDisplay('by year');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     console.log('by year', res);
@@ -178,11 +181,12 @@ const CardsContainer = () => {
 
   const addMovieCard = async (e: any) => {
     e.preventDefault();
+    setGqlRequest(addMovie);
     const start = Date.now();
     const res = await mutate(addMovie);
     // option obj with update key on
     setQueryTime(Date.now() - start);
-    setResponse(res.data.addMovie);
+    setResponse(JSON.stringify(res.data));
     setDisplay('all movies');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     await clearState();
@@ -191,13 +195,14 @@ const CardsContainer = () => {
 
   const addActorCard = async (e: any) => {
     e.preventDefault();
+    setGqlRequest(addActor);
     const start = Date.now();
     const res = await mutate(addActor);
     if (res.data.addActor.nickname === '') {
       res.data.addActor.nickname = null;
     }
     setQueryTime(Date.now() - start);
-    setResponse(res.data.addActor);
+    setResponse(JSON.stringify(res.data));
     setDisplay('all actors');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
     await clearState();
@@ -206,30 +211,40 @@ const CardsContainer = () => {
   };
 
   return (
-    <div className="cardsContainer">
-      {/* <CardsDisplay display={display} /> */}
-      <QueryDisplay
-        allMovies={fetchAllMovies}
-        allActors={fetchAllActors}
-        byGenre={fetchMoviesByGenre}
-        byYear={fetchReleaseYear}
-        genre={genre}
-        setGenre={setGenre}
-      />
-      <MutationDisplay
-        addMovieCard={addMovieCard}
-        addActorCard={addActorCard}
-        firstName={firstName}
-        lastName={lastName}
-        nickname={nickname}
-        title={title}
-        releaseYear={releaseYear}
-        cardGenre={cardGenre}
-        setCardGenre={setCardGenre}
-        onChange={onChange}
+    <div id="cardsContainer">
+      <div id="query-mutation">
+        <h2>Make Requests</h2>
+        <QueryDisplay
+          id="query-display"
+          allMovies={fetchAllMovies}
+          allActors={fetchAllActors}
+          byGenre={fetchMoviesByGenre}
+          byYear={fetchReleaseYear}
+          genre={genre}
+          setGenre={setGenre}
+        />
+        <MutationDisplay
+          id="mutation-display"
+          addMovieCard={addMovieCard}
+          addActorCard={addActorCard}
+          firstName={firstName}
+          lastName={lastName}
+          nickname={nickname}
+          title={title}
+          releaseYear={releaseYear}
+          cardGenre={cardGenre}
+          setCardGenre={setCardGenre}
+          onChange={onChange}
+        />
+      </div>
+      <CardsDisplay id="cards-display" display={display} />
+      <Dashboard
+        id="dashboard"
+        queryTime={queryTime}
+        gqlRequest={gqlRequest}
+        response={response}
       />
     </div>
   );
-};
-
-export default CardsContainer;
+}
+export { CardsContainer };

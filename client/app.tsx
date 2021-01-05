@@ -1,5 +1,6 @@
 import { React, ReactDOMServer, ObsidianWrapper } from '../deps.ts';
-import CardsContainer from './Card_Components/CardsContainer.tsx';
+// import Dashboard from './Components/Dashboard/Dashboard.tsx';
+import { CardsContainer } from './Components/Card_Components/CardsContainer.tsx';
 
 declare global {
   namespace JSX {
@@ -15,7 +16,7 @@ const App = () => {
   return (
     <ObsidianWrapper>
       <div className="app">
-        <h1>Hello! i was ready before i got here</h1>
+        <h1>Brangelina DEMO</h1>
         <CardsContainer />
       </div>
     </ObsidianWrapper>
