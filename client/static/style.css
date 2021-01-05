@@ -47,10 +47,10 @@ body {
 #cardsContainer {
   display: grid;
   grid-template-columns: 1fr 3.5fr 1fr;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   background: rgba(0, 0, 0, 0.6);
   padding: 1rem;
+  justify-content: center;
 }
 #cardsContainer h1 {
   color: #cc99ff;
@@ -102,12 +102,35 @@ body {
 #cards-display {
   align-items: center;
   grid-column: 2/3;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 1rem;
+}
+#no-data {
+  position: absolute;
+  top: 50%;
+  right: 30%;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+#no-data h1 {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: rgb(148, 201, 236);
+}
+article {
+  max-width: 250px;
+  padding: 0.5rem;
+  margin: 0.6rem;
+  min-height: 250px;
 }
 .pinkATags a {
   color: #e83e8c !important;
   text-decoration: none;
 }
-
 a:hover {
   text-decoration: underline;
 }

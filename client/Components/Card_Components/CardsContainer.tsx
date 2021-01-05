@@ -220,13 +220,15 @@ function CardsContainer(props: any) {
           setReleaseYear={setReleaseYear}
         />
       </div>
-      <CardsDisplay
-        id="cards-display"
-        display={display}
-        genre={genre}
-        setQueryTime={setQueryTime}
-        setResponse={setResponse}
-      />
+      <div id="cards-display">
+        <CardsDisplay
+          display={display}
+          genre={genre}
+          setQueryTime={setQueryTime}
+          setResponse={setResponse}
+          response={response}
+        />
+      </div>
       <Dashboard
         id="dashboard"
         queryTime={queryTime}
