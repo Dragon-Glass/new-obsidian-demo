@@ -25,58 +25,75 @@ const CardDisplay = (props: any) => {
   const { mutate } = useObsidian();
 
   if (props.display === 'Movies') {
-    const { title, releaseYear, actors = [], genre, id } = props.info;
+    const { title, releaseYear, actors = [], id } = props.info;
     const handleChange = (event: any) => {
       setValue(event.target.value);
     };
 
     const handleSubmit = async (event: any) => {
-      const associateActorWithMovie = `
-    mutation {
-      associateActorWithMovie(input:{movieId:${id}, actorId:${
-        props.actorList[event.target.value]
-      }, respType:MOVIE}){
-        __typename
-        title
-        actors
-      }
-    }
-  `;
-      const start = Date.now();
-      const res = await mutate(associateActorWithMovie);
-      props.setQueryTime(Date.now() - start);
-      props.setResponse(JSON.stringify(res.data));
+      //     const associateActorWithMovie = `
+      //   mutation {
+      //     associateActorWithMovie(input:{movieId:${id}, actorId:${
+      //       objOfActors[event.target.value]
+      //     }, respType:MOVIE}){
+      //       __typename
+      //       title
+      //       actors
+      //     }
+      //   }
+      // `;
+      // const start = Date.now();
+      // const res = await mutate(associateActorWithMovie);
+      // props.setQueryTime(Date.now() - start);
+      // props.setResponse(JSON.stringify(res.data));
 
       event.preventDefault();
     };
 
-    const deleteMovie = async (id: any) => {
-      const deleteMovieMutation = `mutation {deleteMovie(id:${id}){
+    const deleteMovie = async (e: any) => {
+      console.log(e.target.parentNode.id);
+
+      const deleteMovieMutation = `mutation {deleteMovie(id:${e.target.parentNode.id}){
             id
             title
           }
           }`;
-      const start = Date.now();
       const res = await mutate(deleteMovieMutation, { toDelete: true });
-      props.setQueryTime(Date.now() - start);
-      props.setResponse(JSON.stringify(res.data));
     };
+
+    // const findActors = (arrOfMovies: any) => {
+    //   const output: any = {};
+    //   arrOfMovies.forEach((actor: any) => {
+    //     let act = actor.firstName + ' ' + actor.lastName;
+    //     output[act] = actor.id;
+    //   });
+    //   return output;
+    // };
+
+    // console.log(JSON.parse(props.actorList));
+    // const arr = JSON.parse(props.actorList);
+    // const objOfActors = findActors(arr.actors);
     const arrOfOptions: any = [];
-    const arrOfActors = Object.keys(props.actorList);
-    arrOfActors.forEach((actor: any) => {
-      arrOfOptions.push(<option value={actor}>{actor}</option>);
+    // console.log(props.actorList.actors);
+    let outputActor: any = '';
+    actors.forEach((actor: any) => {
+      outputActor = outputActor + actor.firstName + ' ' + actor.lastName + ', ';
     });
+    // const arrOfActors = Object.keys(objOfActors);
+    // arrOfActors.forEach((actor: any) => {
+    //   arrOfOptions.push(<option value={actor}>{actor}</option>);
+    // });
     return (
-      <article className="card movieCard">
+      <article className="card movieCard" id={props.id}>
         <div className="movieHeadContainer">
           <h3 className="movieTitle">{title}</h3>
         </div>
         <ul className="movieDetailsList">
           <li className="movDetail"> Release Year: {releaseYear}</li>
-          <li className="movDetail"> Actors: {actors}</li>
-          <li className="movDetail"> Genre: {genre}</li>
+          <li className="movDetail"> Actors: {outputActor}</li>
+          {/* <li className="movDetail"> Genre: {genre}</li> */}
         </ul>
-        <form onSubmit={handleSubmit}>
+        {/* <form onSubmit={handleSubmit}>
           <label>
             Add Actor
             <select value={value} onChange={handleChange}>
@@ -84,7 +101,7 @@ const CardDisplay = (props: any) => {
             </select>
           </label>
           <input type="submit" value="Submit" />
-        </form>
+        </form> */}
         <button onClick={deleteMovie}>Delete Movie</button>
       </article>
     );

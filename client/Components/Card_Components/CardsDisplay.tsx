@@ -11,7 +11,8 @@ declare global {
 }
 
 const CardsDisplay = (props: any) => {
-  const { cache } = useObsidian();
+  const { cache, query } = useObsidian();
+  const [allActors, setAllActors] = (React as any).useState('');
   const cards: any = [];
 
   if (!cache.storage.ROOT_QUERY) {
@@ -22,51 +23,78 @@ const CardsDisplay = (props: any) => {
     );
   }
   const findActors = (arrOfMovies: any) => {
-    let movieActors: any = [];
-    const obj: any = {};
-    arrOfMovies.forEach((movie: any) => {
-      movie.actors.forEach((actor: any) => {
-        let act =
-          cache.storage[actor].firstName + ' ' + cache.storage[actor].lastName;
-        obj[act] = actor.id;
-      });
+    const output: any = {};
+    arrOfMovies.forEach((actor: any) => {
+      let act = actor.firstName + ' ' + actor.lastName;
+      output[act] = actor.id;
     });
-    return obj;
+    return output;
+  };
+
+  const allActorsQuery = `query {
+    actors {
+      id
+      firstName
+      lastName
+    }
+  }
+`;
+
+  const fetch = async () => {
+    let output = await query(allActorsQuery);
+    setAllActors(output.data);
   };
 
   if (props.display === 'all movies') {
-    const movies = cache.storage.ROOT_QUERY['movies'];
-    const movieActors = findActors(movies);
-    movies.forEach((movie: any) => {
+    let resp = JSON.parse(props.response);
+    // fetch();
+    console.log('res', allActors);
+    // const movieActors = findActors(res.data.actors);
+    resp.movies.forEach((movie: any) => {
       cards.push(
         <CardDisplay
-          info={cache.storage[movie]}
-          key={cache.storage[movie].id}
+          info={movie}
+          key={movie.id}
+          id={movie.id}
           display={'Movies'}
-          actorList={movieActors}
+          // actorList={allActors}
+          setQueryTime={props.setQueryTime}
+          setResponse={props.setResponse}
         ></CardDisplay>
       );
     });
-    return <div>{cards}</div>;
+
+    console.log('working');
+    return [cards];
   }
 
   if (props.display === 'all actors') {
-    const actors = cache.storage.ROOT_QUERY['actors'];
-    let actorMovies: any = [];
-    const obj: any = {};
-    actors.forEach((actor: any) => {
-      actor.movies.forEach((movie: any) => {
-        let mov = cache.storage[movie].title;
-        obj[mov] = movie.id;
-      });
-    });
-    actors.forEach((actor: any) => {
+    let resp = JSON.parse(props.response);
+
+    // let actorMovies: any = [];
+    // const obj: any = {};
+    // actors.forEach((actor: any) => {
+    //   if (Array.isArray(actor.movies)) {
+    //     actor.movies.forEach((movie: any) => {
+    //       let mov = cache.storage[movie].title;
+    //       obj[mov] = cache.storage[movie].id;
+    //     });
+    //   } else {
+    //     let movie = actor.movies;
+    //     let mov = cache.storage[movie].title;
+    //     obj[mov] = cache.storage[movie].id;
+    //   }
+    // });
+    console.log(resp);
+    resp.actors.forEach((actor: any) => {
       cards.push(
         <CardDisplay
-          info={cache.storage[actor]}
-          key={cache.storage[actor].id}
+          info={actor}
+          key={actor.id}
           display={'Actors'}
-          movieList={actorMovies}
+          //movieList={obj}
+          setQueryTime={props.setQueryTime}
+          setResponse={props.setResponse}
         ></CardDisplay>
       );
     });
@@ -74,15 +102,18 @@ const CardsDisplay = (props: any) => {
   }
 
   if (props.display === 'by genre') {
-    const movies = cache.storage.ROOT_QUERY[`movies(input: ${props.genre})`];
-    let movieActors = findActors(movies);
-    movies.forEach((movie: any) => {
+    let resp = JSON.parse(props.response);
+
+    // let movieActors = findActors(movies);
+    resp.movies.forEach((movie: any) => {
       cards.push(
         <CardDisplay
-          info={cache.storage[movie]}
-          key={cache.storage[movie].id}
+          info={movie}
+          key={movie.id}
           display={'Movies'}
-          actorList={movieActors}
+          // actorList={movieActors}
+          setQueryTime={props.setQueryTime}
+          setResponse={props.setResponse}
         ></CardDisplay>
       );
     });
@@ -90,19 +121,23 @@ const CardsDisplay = (props: any) => {
   }
 
   if (props.display === 'by year') {
-    const movies = cache.storage.ROOT_QUERY['movies(input:ASC)'];
-    let movieActors = findActors(movies);
-    movies.forEach((movie: any) => {
+    let resp = JSON.parse(props.response);
+    // let movieActors = findActors(movies);
+    console.log('heheheh', resp);
+    resp.movies.forEach((movie: any) => {
       cards.push(
         <CardDisplay
-          info={cache.storage[movie]}
-          key={cache.storage[movie].id}
+          info={movie}
+          key={movie.id}
+          id={movie.id}
           display={'Movies'}
-          actorList={movieActors}
+          // actorList={movieActors}
+          setQueryTime={props.setQueryTime}
+          setResponse={props.setResponse}
         ></CardDisplay>
       );
     });
-    return { cards };
+    return [cards];
   }
   return [cards];
 };

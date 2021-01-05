@@ -224,6 +224,7 @@ function CardsContainer(props: any) {
         genre={genre}
         setQueryTime={setQueryTime}
         setResponse={setResponse}
+        response={response}
       />
       <Dashboard
         id="dashboard"
