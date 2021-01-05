@@ -4,7 +4,9 @@ import ReactDom from 'https://dev.jspm.io/react-dom';
 import {
   ObsidianWrapper,
   useObsidian,
-} from '../obsidian/src/ObsidianWrapper.jsx';
+  BrowserCache,
+} from 'https://github.com/oslabs-beta/obsidian/raw/master/clientMod.ts';
+
 import rsh from 'https://dev.jspm.io/react-syntax-highlighter';
 import codeStyles from 'https://dev.jspm.io/npm:react-syntax-highlighter@15.3.1/dist/cjs/styles/prism';
 
@@ -15,12 +17,14 @@ const CodeBlock = realRSH.Prism;
 const { dracula } = realCodeStyles;
 
 dracula['pre[class*="language-"]'].background = 'rgba(5, 5, 5, 0.93)';
+
 export {
+  BrowserCache,
+  ObsidianWrapper,
+  useObsidian,
   React,
   ReactDOMServer,
   ReactDom,
-  ObsidianWrapper,
-  useObsidian,
   CodeBlock,
   dracula,
 };
