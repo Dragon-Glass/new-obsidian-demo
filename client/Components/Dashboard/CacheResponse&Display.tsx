@@ -13,7 +13,7 @@ declare global {
       br: any;
       pre: any;
       code: any;
-      Button: any;
+      button: any;
     }
   }
 }

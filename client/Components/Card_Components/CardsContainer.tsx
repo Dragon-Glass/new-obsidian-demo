@@ -4,6 +4,7 @@ import QueryDisplay from './QueryDisplay.tsx';
 import MutationDisplay from './MutationDisplay.tsx';
 import { Cache } from '../../../../obsidian/src/CacheClassBrowser.js';
 import Dashboard from '../Dashboard/Dashboard.tsx';
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -12,6 +13,15 @@ declare global {
     }
   }
 }
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  nickname: '',
+  title: '',
+  releaseYear: '',
+};
+
 const useInput = (init: any) => {
   const [value, setValue] = (React as any).useState(init);
   const onChange = (e: any) => {
@@ -26,14 +36,22 @@ function CardsContainer(props: any) {
   const [gqlRequest, setGqlRequest] = (React as any).useState('');
   const [response, setResponse] = (React as any).useState('');
   const [display, setDisplay] = (React as any).useState('');
-  const [dropGenre, setDropGenre] = useInput('');
   const [genre, setGenre] = useInput('');
-  const [title, setTitle] = useInput('');
-  const [releaseYear, setReleaseYear] = useInput('');
-  const [firstName, setFirstName] = useInput('');
-  const [lastName, setLastName] = useInput('');
-  const [nickname, setNickname] = useInput('');
-  // change state dependent on fetch request
+  const [cardGenre, setCardGenre] = useInput('');
+
+  const [
+    { firstName, lastName, nickname, title, releaseYear },
+    setState,
+  ] = (React as any).useState(initialState);
+
+  const clearState = () => {
+    setState({ ...initialState });
+  };
+
+  const onChange = (e: any) => {
+    const { name, value } = e.target;
+    setState((prevState: any) => ({ ...prevState, [name]: value }));
+  };
 
   const allMoviesQuery = `query { 
       movies {
@@ -67,7 +85,7 @@ function CardsContainer(props: any) {
   `;
 
   const allMoviesByGenre = `query {
-      movies(input: {genre: ${dropGenre}}){
+      movies(input: {genre: ${genre}}){
         id
         title
         releaseYear
@@ -96,7 +114,7 @@ function CardsContainer(props: any) {
   `;
 
   const addMovie = `mutation {
-    addMovie(input: {title: "${title}", releaseYear: ${releaseYear}, genre: ${dropGenre} }) {
+    addMovie(input: {title: "${title}", releaseYear: ${releaseYear}, genre: ${cardGenre} }) {
       id
       title
       releaseYear
@@ -162,6 +180,7 @@ function CardsContainer(props: any) {
   };
 
   const addMovieCard = async (e: any) => {
+    e.preventDefault();
     setGqlRequest(addMovie);
     const start = Date.now();
     const res = await mutate(addMovie);
@@ -170,10 +189,12 @@ function CardsContainer(props: any) {
     setResponse(JSON.stringify(res.data));
     setDisplay('all movies');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
+    await clearState();
     console.log('add movie', res);
   };
 
   const addActorCard = async (e: any) => {
+    e.preventDefault();
     setGqlRequest(addActor);
     const start = Date.now();
     const res = await mutate(addActor);
@@ -184,7 +205,7 @@ function CardsContainer(props: any) {
     setResponse(JSON.stringify(res.data));
     setDisplay('all actors');
     setTimeout(() => setCache(new Cache(cache.storage)), 1);
-
+    await clearState();
     console.log('add card', res);
     console.log('cache', cache.storage);
   };
@@ -199,8 +220,8 @@ function CardsContainer(props: any) {
           allActors={fetchAllActors}
           byGenre={fetchMoviesByGenre}
           byYear={fetchReleaseYear}
-          dropGenre={dropGenre}
-          setDropGenre={setDropGenre}
+          genre={genre}
+          setGenre={setGenre}
         />
         <MutationDisplay
           id="mutation-display"
@@ -211,13 +232,9 @@ function CardsContainer(props: any) {
           nickname={nickname}
           title={title}
           releaseYear={releaseYear}
-          dropGenre={dropGenre}
-          setDropGenre={setDropGenre}
-          setTitle={setTitle}
-          setFirstName={setFirstName}
-          setLastName={setLastName}
-          setNickname={setNickname}
-          setReleaseYear={setReleaseYear}
+          cardGenre={cardGenre}
+          setCardGenre={setCardGenre}
+          onChange={onChange}
         />
       </div>
       <div id="cards-display">

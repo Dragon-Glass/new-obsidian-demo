@@ -18,7 +18,7 @@ declare global {
 
 const QueryDisplay = (props: any) => {
   const handleSubmit = (e: any) => {
-    props.byGenre(props.dropGenre);
+    props.byGenre(props.genre);
     e.preventDefault();
   };
 
@@ -42,8 +42,8 @@ const QueryDisplay = (props: any) => {
           <div id="dropdown-content">
             <select
               id="genres"
-              value={props.dropGenre}
-              onChange={props.setDropGenre}
+              value={props.genre}
+              onChange={props.setGenre}
               className="form-select"
             >
               <option value="">Select the genre</option>
