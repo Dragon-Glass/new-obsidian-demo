@@ -6,6 +6,7 @@ import {
   useObsidian,
   BrowserCache,
 } from 'https://github.com/oslabs-beta/obsidian/raw/master/clientMod.ts';
+// } from '../obsidian/clientMod.ts';
 export {
   BrowserCache,
   ObsidianWrapper,
