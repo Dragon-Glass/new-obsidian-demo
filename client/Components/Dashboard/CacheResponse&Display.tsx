@@ -75,7 +75,7 @@ const CacheResponseDisplay = (props: any) => {
         <pre className="pre-block">
           Response:
           <code className="code-block" id="code-yellow">
-            {response}
+            {JSON.stringify(response)}
           </code>
         </pre>
       </div>
