@@ -14,23 +14,6 @@ const CardsDisplay = (props: any) => {
   const { cache, query } = useObsidian();
   const [allActors, setAllActors] = (React as any).useState('');
   const cards: any = [];
-
-  if (!Object.keys(cache.storage.ROOT_QUERY).length) {
-    return (
-      <div id="no-data">
-        <h1> Fetch some movies... </h1>
-      </div>
-    );
-  }
-  const findActors = (arrOfMovies: any) => {
-    const output: any = {};
-    arrOfMovies.forEach((actor: any) => {
-      let act = actor.firstName + ' ' + actor.lastName;
-      output[act] = actor.id;
-    });
-    return output;
-  };
-
   const allActorsQuery = `query {
     actors {
       id
@@ -44,8 +27,22 @@ const CardsDisplay = (props: any) => {
     let output = await query(allActorsQuery);
     setAllActors(output.data);
   };
+  const findActors = (arrOfMovies: any) => {
+    const output: any = {};
+    arrOfMovies.forEach((actor: any) => {
+      let act = actor.firstName + ' ' + actor.lastName;
+      output[act] = actor.id;
+    });
+    return output;
+  };
 
-  if (props.display === 'all movies') {
+  if (!Object.keys(cache.storage.ROOT_QUERY).length) {
+    return (
+      <div id="no-data">
+        <h1> Fetch some movies... </h1>
+      </div>
+    );
+  } else if (props.display === 'all movies') {
     let resp = props.response;
     // fetch()
     // const movieActors = findActors(res.data.actors);
@@ -67,25 +64,23 @@ const CardsDisplay = (props: any) => {
 
     console.log('working');
     return [cards];
-  }
-
-  if (props.display === 'all actors') {
+  } else if (props.display === 'all actors') {
     let resp = props.response;
 
-    // let actorMovies: any = [];
-    // const obj: any = {};
-    // actors.forEach((actor: any) => {
-    //   if (Array.isArray(actor.movies)) {
-    //     actor.movies.forEach((movie: any) => {
-    //       let mov = cache.storage[movie].title;
-    //       obj[mov] = cache.storage[movie].id;
-    //     });
-    //   } else {
-    //     let movie = actor.movies;
-    //     let mov = cache.storage[movie].title;
-    //     obj[mov] = cache.storage[movie].id;
-    //   }
-    // });
+    let actorMovies: any = [];
+    const obj: any = {};
+    resp.actors.forEach((actor: any) => {
+      if (Array.isArray(actor.movies)) {
+        actor.movies.forEach((movie: any) => {
+          let mov = movie.title;
+          obj[mov] = movie.id;
+        });
+      } else {
+        let movie = actor.movies;
+        let mov = movie.title;
+        obj[mov] = movie.id;
+      }
+    });
     console.log(resp);
     resp.actors.forEach((actor: any) => {
       cards.push(
@@ -93,17 +88,15 @@ const CardsDisplay = (props: any) => {
           info={actor}
           key={actor.id}
           display={'Actors'}
-          //movieList={obj}
+          movieList={obj}
           setQueryTime={props.setQueryTime}
           setResponse={props.setResponse}
         ></CardDisplay>
       );
     });
     return [cards];
-  }
-
-  if (props.display === 'by genre') {
-    let resp = JSON.parse(props.response);
+  } else if (props.display === 'by genre') {
+    let resp = props.response;
 
     // let movieActors = findActors(movies);
     resp.movies.forEach((movie: any) => {
@@ -119,10 +112,8 @@ const CardsDisplay = (props: any) => {
       );
     });
     return [cards];
-  }
-
-  if (props.display === 'by year') {
-    let resp = JSON.parse(props.response);
+  } else if (props.display === 'by year') {
+    let resp = props.response;
     // let movieActors = findActors(movies);
     console.log('heheheh', resp);
     resp.movies.forEach((movie: any) => {

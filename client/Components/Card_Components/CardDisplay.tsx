@@ -1,5 +1,4 @@
-import { React, useObsidian } from '../../../deps.ts';
-import { Cache } from '../../../../obsidian/src/CacheClassBrowser.js';
+import { React, useObsidian, BrowserCache } from '../../../deps.ts';
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -75,7 +74,7 @@ const CardDisplay = (props: any) => {
       console.log('res', res);
       const newResponse = query(allMoviesQuery);
       console.log('newResponse', newResponse);
-      setTimeout(() => setCache(new Cache(cache.storage)), 1);
+      setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     };
 
     // const findActors = (arrOfMovies: any) => {
@@ -124,19 +123,18 @@ const CardDisplay = (props: any) => {
         </button>
       </article>
     );
-  }
+  } else if (props.display === 'Actors') {
+    const { firstName, lastName, movies = [], nickname = '', id } = props.info;
+    const handleChange = (event: any) => {
+      setValue(event.target.value);
+    };
 
-  const { firstName, lastName, movies = [], nickname = '', id } = props.info;
-  const handleChange = (event: any) => {
-    setValue(event.target.value);
-  };
-
-  const handleSubmit = async (event: any) => {
-    const associateActorWithMovie = `
+    const handleSubmit = async (event: any) => {
+      const associateActorWithMovie = `
   mutation {
     associateActorWithMovie(input:{actorId:${id},movieId: ${
-      props.movieList[event.target.value]
-    }, respType:ACTOR}){
+        props.movieList[event.target.value]
+      }, respType:ACTOR}){
       __typename
       firstName
       lastName
@@ -144,13 +142,13 @@ const CardDisplay = (props: any) => {
     }
   }
 `;
-    const start = Date.now();
-    const res = await mutate(associateActorWithMovie);
-    props.setQueryTime(Date.now() - start);
-    props.setResponse(JSON.stringify(res.data));
-    event.preventDefault();
-  };
-  const updateNickname = `
+      // const start = Date.now();
+      // const res = await mutate(associateActorWithMovie);
+      // props.setQueryTime(Date.now() - start);
+      // props.setResponse(JSON.stringify(res.data));
+      event.preventDefault();
+    };
+    const updateNickname = `
     mutation {
       updateNickname(input: ${nickName}){
         __typename
@@ -160,62 +158,67 @@ const CardDisplay = (props: any) => {
     }
   `;
 
-  const handleChangeNickname = (event: any) => {
-    setNickName(event.target.value);
-  };
-  const handleSubmitNickname = async (event: any) => {
-    const start = Date.now();
-    const res = await mutate(updateNickname);
-    props.setQueryTime(Date.now() - start);
-    props.setResponse(JSON.stringify(res.data));
-    event.preventDefault();
-  };
+    const handleChangeNickname = (event: any) => {
+      setNickName(event.target.value);
+    };
+    const handleSubmitNickname = async (event: any) => {
+      const start = Date.now();
+      const res = await mutate(updateNickname);
+      props.setQueryTime(Date.now() - start);
+      props.setResponse(JSON.stringify(res.data));
+      event.preventDefault();
+    };
 
-  const arrOfOptions: any = [];
-  const arrOfMovies = Object.keys(props.movieList);
-  arrOfMovies.forEach((movie: any) => {
-    arrOfOptions.push(<option value={movie}>{movie}</option>);
-  });
-
-  const deleteActor = async (id: any) => {
-    const deleteActorMutation = `mutation {deleteActor(id:${id}){
+    const arrOfOptions: any = [];
+    // const arrOfMovies = Object.keys(props.movieList);
+    // arrOfMovies.forEach((movie: any) => {
+    //   arrOfOptions.push(<option value={movie}>{movie}</option>);
+    // });
+    let outputMovie: any = '';
+    movies.forEach((movie: any) => {
+      outputMovie = outputMovie + movie.title + ', ';
+    });
+    const deleteActor = async (id: any) => {
+      const deleteActorMutation = `mutation {deleteActor(id:${id}){
       id
       firstName
     }
     }`;
-    const start = Date.now();
-    const res = await mutate(deleteActorMutation, { toDelete: true });
-    props.setQueryTime(Date.now() - start);
-    props.setResponse(JSON.stringify(res.data));
-  };
-  return (
-    <article className="card actorCard">
-      <div className="actorHeadContainer">
-        <h3 className="actorName">{firstName}</h3>
-      </div>
-      <ul className="actorDetailsList">
-        <li className="actorDetail"> Last Name: {lastName}</li>
-        <li className="actorDetail"> Movies: {movies}</li>
-        <li className="actorDetail"> Nickname: {nickname}</li>
-      </ul>
-      <form onSubmit={handleSubmitNickname}>
-        <label>
-          Nickname:
-          <input type="text" value={value} onChange={handleChangeNickname} />
-        </label>
-        <input className="btn btn-primary" type="submit" value="Submit" />
-      </form>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Add Movie
-          <select value={value} onChange={handleChange}>
-            {arrOfOptions}
-          </select>
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      <button onClick={deleteActor}>Delete Actor</button>
-    </article>
-  );
+      const start = Date.now();
+      const res = await mutate(deleteActorMutation, { toDelete: true });
+      props.setQueryTime(Date.now() - start);
+      props.setResponse(JSON.stringify(res.data));
+    };
+
+    return (
+      <article className="card actorCard">
+        <div className="actorHeadContainer">
+          <h3 className="actorName">{firstName}</h3>
+        </div>
+        <ul className="actorDetailsList">
+          <li className="actorDetail"> Last Name: {lastName}</li>
+          <li className="actorDetail"> Movies: {outputMovie}</li>
+          <li className="actorDetail"> Nickname: {nickname}</li>
+        </ul>
+        <form onSubmit={handleSubmitNickname}>
+          <label>
+            Nickname:
+            <input type="text" value={value} onChange={handleChangeNickname} />
+          </label>
+          <input className="btn btn-primary" type="submit" value="Submit" />
+        </form>
+        {/* <form onSubmit={handleSubmit}>
+          <label>
+            Add Movie
+            <select value={value} onChange={handleChange}>
+              [arrOfOptions]
+            </select>
+          </label>
+          <input type="submit" value="Submit" />
+        </form> */}
+        <button onClick={deleteActor}>Delete Actor</button>
+      </article>
+    );
+  }
 };
 export default CardDisplay;

@@ -6,7 +6,7 @@ import { actorFilmsData } from './test-data/actor_films.js';
 import 'https://deno.land/x/dotenv/load.ts';
 
 // connect to db
-
+const config = Deno.env.get('PG_URI');
 export const db = new Client(config);
 await db.connect();
 

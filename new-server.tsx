@@ -1,11 +1,12 @@
 import { Application, Router } from 'https://deno.land/x/oak@v6.0.1/mod.ts';
-import { React, ReactDOMServer } from '../deps.ts';
-import { ObsidianRouter } from '../serverDeps.ts';
-import { createDb } from './db/db.ts';
-import resolvers from './resolvers.ts';
-import types from './schema.ts';
-import App from '../client/app.tsx';
-import { staticFileMiddleware } from '../staticFileMiddleware.ts';
+
+import { React, ReactDOMServer } from './deps.ts';
+import { ObsidianRouter } from './serverDeps.ts';
+import { createDb } from './server/db/db.ts';
+import resolvers from './server/resolvers.ts';
+import types from './server/schema.ts';
+import App from './client/app.tsx';
+import { staticFileMiddleware } from './staticFileMiddleware.ts';
 
 const PORT = 3000;
 const app = new Application();

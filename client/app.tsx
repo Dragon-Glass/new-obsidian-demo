@@ -4,12 +4,12 @@ import { CardsContainer } from './Components/Card_Components/CardsContainer.tsx'
 
 declare global {
   namespace JSX {
-    interface IntrinsicElements {
-      button: any;
-      div: any;
-      h1: any;
-      p: any;
-    }
+    // interface IntrinsicElements {
+    //   button: any;
+    //   div: any;
+    //   h1: any;
+    //   p: any;
+    // }
   }
 }
 const App = () => {
