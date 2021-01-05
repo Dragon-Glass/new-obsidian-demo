@@ -49,7 +49,7 @@ const CardsDisplay = (props: any) => {
     let resp = JSON.parse(props.response);
     // fetch()
     // const movieActors = findActors(res.data.actors);
-    // cache.storage.ROOT_QUERY.
+    // cache.storage.ROOT_QUERY.movies
     resp.movies.forEach((movie: any) => {
       cards.push(
         <CardDisplay

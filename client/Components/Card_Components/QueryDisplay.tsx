@@ -46,6 +46,7 @@ const QueryDisplay = (props: any) => {
               onChange={props.setDropGenre}
               className="form-select"
             >
+              <option value="">Select the genre</option>
               <option value="ACTION">ACTION</option>
               <option value="SCIFI">SCIFI</option>
               <option value="DRAMA">DRAMA</option>

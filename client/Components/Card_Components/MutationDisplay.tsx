@@ -57,6 +57,7 @@ const MutationDisplay = (props: any) => {
             onChange={props.setDropGenre}
             required
           >
+            <option value="">Select the genre</option>
             <option value="ACTION">ACTION</option>
             <option value="SCIFI">SCIFI</option>
             <option value="DRAMA">DRAMA</option>

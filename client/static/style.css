@@ -127,6 +127,10 @@ article {
   margin: 0.6rem;
   min-height: 250px;
 }
+article button {
+  background-color: rgb(69, 2, 75);
+  color: white;
+}
 .pinkATags a {
   color: #e83e8c !important;
   text-decoration: none;
