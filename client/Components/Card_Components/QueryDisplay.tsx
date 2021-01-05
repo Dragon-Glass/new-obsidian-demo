@@ -45,6 +45,7 @@ const QueryDisplay = (props: any) => {
               value={props.genre}
               onChange={props.setGenre}
               className="form-select"
+              required
             >
               <option value="">Select the genre</option>
               <option value="ACTION">ACTION</option>
