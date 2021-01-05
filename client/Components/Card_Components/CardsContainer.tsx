@@ -8,6 +8,7 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       div: any;
+      h2: any;
     }
   }
 }
@@ -191,6 +192,7 @@ function CardsContainer(props: any) {
   return (
     <div id="cardsContainer">
       <div id="query-mutation">
+        <h2>Make Requests</h2>
         <QueryDisplay
           id="query-display"
           allMovies={fetchAllMovies}

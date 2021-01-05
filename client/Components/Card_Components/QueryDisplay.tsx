@@ -11,6 +11,7 @@ declare global {
       select: any;
       option: any;
       form: any;
+      h3: any;
     }
   }
 }
@@ -23,13 +24,18 @@ const QueryDisplay = (props: any) => {
 
   return (
     <>
-      <div className="queryDisplay">
+      <div className="query-display">
+        <h3>Make a query:</h3>
         <button type="button" id="fetchAllMovies" onClick={props.allMovies}>
           All Movies
         </button>
         <button type="button" id="fetchAllActors" onClick={props.allActors}>
           All Actors
         </button>
+        <button type="button" id="fetchByYear" onClick={props.byYear}>
+          Movies by Release Year
+        </button>
+
         <form onSubmit={handleSubmit}>
           {/* <label id="genre-label">
             Movies by Genre */}
@@ -38,6 +44,7 @@ const QueryDisplay = (props: any) => {
               id="genres"
               value={props.dropGenre}
               onChange={props.setDropGenre}
+              class="form-select"
             >
               <option value="ACTION">ACTION</option>
               <option value="SCIFI">SCIFI</option>
@@ -50,9 +57,6 @@ const QueryDisplay = (props: any) => {
           {/* </label> */}
           <input type="submit" value="Movies by Genre" />
         </form>
-        <button type="button" id="fetchByYear" onClick={props.byYear}>
-          Movies by Release Year
-        </button>
       </div>
     </>
   );
