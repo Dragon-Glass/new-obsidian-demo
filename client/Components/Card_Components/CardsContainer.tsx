@@ -137,6 +137,7 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allMoviesQuery);
     setQueryTime(Date.now() - start);
+    setDisplay('');
     setResponse(res.data);
     console.log('data', JSON.stringify(res));
     console.log('response', response);
@@ -150,6 +151,7 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allActorsQuery);
     setQueryTime(Date.now() - start);
+    setDisplay('');
     setResponse(res.data);
     setDisplay('all actors');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
@@ -161,6 +163,7 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allMoviesByGenre);
     setQueryTime(Date.now() - start);
+    setDisplay('');
     setResponse(res.data);
     setDisplay('by genre');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
@@ -172,6 +175,7 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(moviesByReleaseYear);
     setQueryTime(Date.now() - start);
+    setDisplay('');
     setResponse(res.data);
     setDisplay('by year');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
@@ -185,6 +189,7 @@ function CardsContainer(props: any) {
     const res = await mutate(addMovie);
     // option obj with update key on
     setQueryTime(Date.now() - start);
+    setDisplay('');
     setResponse(res.data);
     setDisplay('all movies');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
@@ -202,6 +207,7 @@ function CardsContainer(props: any) {
     }
     setQueryTime(Date.now() - start);
     setResponse(res.data);
+    setDisplay('');
     setDisplay('all actors');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     await clearState();
