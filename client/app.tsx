@@ -1,5 +1,6 @@
-import { React, ObsidianWrapper } from '../deps.ts';
-import Test from './test.tsx';
+import { React, ReactDOMServer, ObsidianWrapper } from '../deps.ts';
+// import Dashboard from './Components/Dashboard/Dashboard.tsx';
+import { CardsContainer } from './Components/Card_Components/CardsContainer.tsx';
 
 declare global {
   namespace JSX {
@@ -13,12 +14,12 @@ declare global {
 }
 const App = () => {
   return (
-    <div className="app">
-      <h1>Hello! i was ready before i got here</h1>
-      <ObsidianWrapper>
-        <Test />
-      </ObsidianWrapper>
-    </div>
+    <ObsidianWrapper>
+      <div className="app">
+        <h1>OBSIDIAN 2.0 DEMO</h1>
+        <CardsContainer />
+      </div>
+    </ObsidianWrapper>
   );
 };
 export default App;

@@ -1,4 +1,4 @@
-import { Client } from 'https://deno.land/x/postgres/mod.ts';
+import { Client } from 'https://deno.land/x/postgres@v0.4.6/mod.ts';
 import { sqlTableCreate } from './db-init.js';
 import { filmsData } from './test-data/films.js';
 import { actorsData } from './test-data/actors.js';
