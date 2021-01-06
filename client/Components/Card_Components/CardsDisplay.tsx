@@ -43,7 +43,7 @@ const CardsDisplay = (props: any) => {
       </div>
     );
   } else if (props.display === 'all movies') {
-    let resp = props.response;
+    let resp = props.cardsResponse;
     // fetch()
     // const movieActors = findActors(res.data.actors);
     // cache.storage.ROOT_QUERY.movies
@@ -54,10 +54,11 @@ const CardsDisplay = (props: any) => {
           key={movie.id}
           id={movie.id}
           display={'Movies'}
+          setDisplay={props.setDisplay}
           // actorList={allActors}
           setQueryTime={props.setQueryTime}
-          setResponse={props.setResponse}
-          response={props.response}
+          setCardsResponse={props.setCardsResponse}
+          cardsResponse={props.cardsResponse}
         ></CardDisplay>
       );
     });
@@ -65,7 +66,7 @@ const CardsDisplay = (props: any) => {
     console.log('working');
     return [cards];
   } else if (props.display === 'all actors') {
-    let resp = props.response;
+    let resp = props.cardsResponse;
 
     let actorMovies: any = [];
     const obj: any = {};
@@ -90,7 +91,8 @@ const CardsDisplay = (props: any) => {
           display={'Actors'}
           movieList={obj}
           setQueryTime={props.setQueryTime}
-          setResponse={props.setResponse}
+          setCardsResponse={props.setCardsResponse}
+          cardsResponse={props.cardsResponse}
         ></CardDisplay>
       );
     });
@@ -107,13 +109,14 @@ const CardsDisplay = (props: any) => {
           display={'Movies'}
           // actorList={movieActors}
           setQueryTime={props.setQueryTime}
-          setResponse={props.setResponse}
+          setCardsResponse={props.setCardsResponse}
+          cardsResponse={props.cardsResponse}
         ></CardDisplay>
       );
     });
     return [cards];
   } else if (props.display === 'by year') {
-    let resp = props.response;
+    let resp = props.cardsResponse;
     // let movieActors = findActors(movies);
     console.log('heheheh', resp);
     resp.movies.forEach((movie: any) => {
@@ -125,7 +128,8 @@ const CardsDisplay = (props: any) => {
           display={'Movies'}
           // actorList={movieActors}
           setQueryTime={props.setQueryTime}
-          setResponse={props.setResponse}
+          setCardsResponse={props.setCardsResponse}
+          cardsResponse={props.cardsResponse}
         ></CardDisplay>
       );
     });

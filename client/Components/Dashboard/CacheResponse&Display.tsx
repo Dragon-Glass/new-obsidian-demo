@@ -16,7 +16,7 @@ declare global {
 
 const CacheResponseDisplay = (props: any) => {
   const { cache, clearCache, setCache } = useObsidian();
-  const { response } = props;
+  const { dashResponse } = props;
   function onClick(e: any) {
     console.log('clicked');
     clearCache();
@@ -80,7 +80,7 @@ const CacheResponseDisplay = (props: any) => {
         <pre className="pre-block">
           Response:
           <code className="code-block" id="code-yellow">
-            {JSON.stringify(response)}
+            {JSON.stringify(dashResponse)}
           </code>
         </pre>
       </div>
