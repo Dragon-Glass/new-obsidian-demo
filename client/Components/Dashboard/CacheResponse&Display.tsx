@@ -46,13 +46,16 @@ const CacheResponseDisplay = (props: any) => {
             {insidePair} {'}'}
           </p>
         );
+      } else if (pair[1] === 'DELETED') {
+        acc.push(
+          <p key={`pair${i}`}>
+            <span style={{ color: '#ff66ff' }}>
+              {JSON.stringify(pair[0])} :{' '}
+            </span>{' '}
+            {JSON.stringify(pair[1])}
+          </p>
+        );
       }
-      acc.push(
-        <p key={`pair${i}`}>
-          <span style={{ color: '#ff66ff' }}>{JSON.stringify(pair[0])} : </span>{' '}
-          {JSON.stringify(pair[1])}
-        </p>
-      );
       return acc;
     }, []);
   }
