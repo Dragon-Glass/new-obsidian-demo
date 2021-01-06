@@ -15,14 +15,14 @@ declare global {
   }
 }
 const Dashboard = (props: any) => {
-  const { queryTime, gqlRequest, response } = props;
+  const { queryTime, gqlRequest, dashResponse } = props;
   const { query, cache, setCache, clearCache } = useObsidian();
   return (
     // <CardsContainer>
     <div>
       <h2 style={{ color: '#e83e8c', textAlign: 'center' }}>Dashboard</h2>
       <TimerQueryDisplay queryTime={queryTime} gqlRequest={gqlRequest} />
-      <CacheResponseDisplay response={response} />
+      <CacheResponseDisplay dashResponse={dashResponse} />
     </div>
     /* </CardsContainer> */
   );

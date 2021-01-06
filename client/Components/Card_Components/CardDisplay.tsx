@@ -32,6 +32,22 @@ const CardDisplay = (props: any) => {
     }
   }
 `;
+
+  const allActorsQuery = `query {
+  actors {
+    id
+    firstName
+    lastName
+    nickname
+    movies {
+      id
+      title
+      releaseYear
+      genre
+    }
+  }
+}
+`;
   const [nickName, setNickName] = (React as any).useState('');
   const [value, setValue] = (React as any).useState('');
   const { query, mutate, cache, setCache, clearCache } = useObsidian();
@@ -71,10 +87,12 @@ const CardDisplay = (props: any) => {
           }
           }`;
       const res = await mutate(deleteMovieMutation, { toDelete: true });
+      await setCache(new BrowserCache(cache.storage));
       console.log('res', res);
-      const newResponse = query(allMoviesQuery);
+      const newResponse = await query(allMoviesQuery);
+      props.setCardsResponse(newResponse.data);
+      props.setDisplay('all movies');
       console.log('newResponse', newResponse);
-      setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     };
 
     // const findActors = (arrOfMovies: any) => {
@@ -165,7 +183,7 @@ const CardDisplay = (props: any) => {
       const start = Date.now();
       const res = await mutate(updateNickname);
       props.setQueryTime(Date.now() - start);
-      props.setResponse(JSON.stringify(res.data));
+      props.setCardsResponse(JSON.stringify(res.data));
       event.preventDefault();
     };
 
@@ -178,16 +196,21 @@ const CardDisplay = (props: any) => {
     movies.forEach((movie: any) => {
       outputMovie = outputMovie + movie.title + ', ';
     });
-    const deleteActor = async (id: any) => {
+    const deleteActor = async (e: any) => {
       const deleteActorMutation = `mutation {deleteActor(id:${id}){
       id
       firstName
     }
     }`;
-      const start = Date.now();
+      console.log(e.target.parentNode.id);
+
       const res = await mutate(deleteActorMutation, { toDelete: true });
-      props.setQueryTime(Date.now() - start);
-      props.setResponse(JSON.stringify(res.data));
+      await setCache(new BrowserCache(cache.storage));
+      console.log('res', res);
+      const newResponse = await query(allActorsQuery);
+      props.setCardsResponse(newResponse.data);
+      props.setDisplay('all actors');
+      console.log('newResponse', newResponse);
     };
 
     return (

@@ -33,7 +33,8 @@ function CardsContainer(props: any) {
   const { query, mutate, cache, setCache, clearCache } = useObsidian();
   const [queryTime, setQueryTime] = (React as any).useState(0);
   const [gqlRequest, setGqlRequest] = (React as any).useState('');
-  const [response, setResponse] = (React as any).useState('');
+  const [dashResponse, setDashResponse] = (React as any).useState('');
+  const [cardsResponse, setCardsResponse] = (React as any).useState('');
   const [display, setDisplay] = (React as any).useState('');
   const [genre, setGenre] = useInput('');
   const [cardGenre, setCardGenre] = useInput('');
@@ -138,9 +139,9 @@ function CardsContainer(props: any) {
     const res = await query(allMoviesQuery);
     setQueryTime(Date.now() - start);
     setDisplay('');
-    setResponse(res.data);
+    setDashResponse(res.data);
+    setCardsResponse(res.data);
     console.log('data', JSON.stringify(res));
-    console.log('response', response);
     setDisplay('all movies');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('all movies', res);
@@ -152,7 +153,8 @@ function CardsContainer(props: any) {
     const res = await query(allActorsQuery);
     setQueryTime(Date.now() - start);
     setDisplay('');
-    setResponse(res.data);
+    setDashResponse(res.data);
+    setCardsResponse(res.data);
     setDisplay('all actors');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('all actors', res);
@@ -164,7 +166,8 @@ function CardsContainer(props: any) {
     const res = await query(allMoviesByGenre);
     setQueryTime(Date.now() - start);
     setDisplay('');
-    setResponse(res.data);
+    setDashResponse(res.data);
+    setCardsResponse(res.data);
     setDisplay('by genre');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('by genre', res);
@@ -176,7 +179,8 @@ function CardsContainer(props: any) {
     const res = await query(moviesByReleaseYear);
     setQueryTime(Date.now() - start);
     setDisplay('');
-    setResponse(res.data);
+    setDashResponse(res.data);
+    setCardsResponse(res.data);
     setDisplay('by year');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('by year', res);
@@ -187,12 +191,13 @@ function CardsContainer(props: any) {
     setGqlRequest(addMovie);
     const start = Date.now();
     const res = await mutate(addMovie);
-    // option obj with update key on
     setQueryTime(Date.now() - start);
+    await setCache(new BrowserCache(cache.storage));
+    setDashResponse(res.data);
     setDisplay('');
-    setResponse(res.data);
+    const newRes = await query(allMoviesQuery);
+    setCardsResponse(newRes.data);
     setDisplay('all movies');
-    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     await clearState();
     console.log('add movie', res);
   };
@@ -202,14 +207,16 @@ function CardsContainer(props: any) {
     setGqlRequest(addActor);
     const start = Date.now();
     const res = await mutate(addActor);
+    setQueryTime(Date.now() - start);
+    await setCache(new BrowserCache(cache.storage));
     if (res.data.addActor.nickname === '') {
       res.data.addActor.nickname = null;
     }
-    setQueryTime(Date.now() - start);
-    setResponse(res.data);
+    setDashResponse(res.data);
     setDisplay('');
+    const newRes = await query(allActorsQuery);
+    setCardsResponse(newRes.data);
     setDisplay('all actors');
-    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     await clearState();
     console.log('add card', res);
     console.log('cache', cache.storage);
@@ -245,17 +252,18 @@ function CardsContainer(props: any) {
       <div id="cards-display">
         <CardsDisplay
           display={display}
+          setDisplay={setDisplay}
           genre={genre}
           setQueryTime={setQueryTime}
-          setResponse={setResponse}
-          response={response}
+          setCardsResponse={setCardsResponse}
+          cardsResponse={cardsResponse}
         />
       </div>
       <Dashboard
         id="dashboard"
         queryTime={queryTime}
         gqlRequest={gqlRequest}
-        response={response}
+        dashResponse={dashResponse}
       />
     </div>
   );
