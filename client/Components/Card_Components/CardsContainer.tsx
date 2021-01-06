@@ -56,10 +56,12 @@ function CardsContainer(props: any) {
   const allMoviesQuery = `query { 
       movies {
         id
+        __typename
         title
         releaseYear
         actors {
           id
+          __typename
           firstName
           lastName
         }
@@ -71,11 +73,13 @@ function CardsContainer(props: any) {
   const allActorsQuery = `query {
       actors {
         id
+        __typename
         firstName
         lastName
         nickname
         movies {
           id
+          __typename
           title
           releaseYear
           genre
@@ -87,10 +91,12 @@ function CardsContainer(props: any) {
   const allMoviesByGenre = `query {
       movies(input: {genre: ${genre}}){
         id
+        __typename
         title
         releaseYear
         actors {
           id
+          __typename
           firstName
           lastName
         }
@@ -101,10 +107,12 @@ function CardsContainer(props: any) {
   const moviesByReleaseYear = `query {
     movies(input: {order : ASC }) {
       id
+      __typename
       title
       releaseYear
       actors {
         id
+        __typename
         firstName
         lastName
       }
@@ -119,7 +127,13 @@ function CardsContainer(props: any) {
       title
       releaseYear
       genre
+      actors {
+        id
+        firstName
+        lastName
+      }
     }
+   
   }
   `;
 
@@ -129,6 +143,12 @@ function CardsContainer(props: any) {
       firstName
       lastName
       nickname
+      movies {
+        id
+        title
+        releaseYear
+        genre
+      }
     }
   }
   `;
@@ -186,40 +206,103 @@ function CardsContainer(props: any) {
     console.log('by year', res);
   };
 
+  const newMovieCacheUpdate = async (cache: any, respObj: any) => {
+    const result = await cache.read(allMoviesQuery);
+    const newMovie = respObj.data.addMovie;
+    if (result) {
+      const { movies } = result.data;
+      const updatedMovieArr = [newMovie, ...movies];
+      const updatedRespObj = { data: { movies: updatedMovieArr } };
+      await cache.write(allMoviesQuery, updatedRespObj);
+    }
+    // updating movies by release year
+    const resultRelease = await cache.read(moviesByReleaseYear);
+    if (resultRelease) {
+      const { movies } = resultRelease.data;
+      const updatedMovieArr = [newMovie, ...movies];
+      const updatedMovieReleaseArr = updatedMovieArr.sort(
+        (movie1, movie2) => movie1.releaseYear - movie2.releaseYear
+      );
+      const updatedRespReleaseObj = {
+        data: { movies: updatedMovieReleaseArr },
+      };
+      await cache.write(moviesByReleaseYear, updatedRespReleaseObj);
+    }
+    // updating movies by genre
+    const movieGenre = newMovie.genre;
+    const allMoviesByGenre = `query {
+      movies(input: {genre: ${movieGenre}}){
+        id
+        __typename
+        title
+        releaseYear
+        actors {
+          id
+          __typename
+          firstName
+          lastName
+        }
+      }
+    }
+  `;
+    const resultGenre = await cache.read(allMoviesByGenre);
+    if (resultGenre) {
+      const { movies } = resultGenre.data;
+      const updatedMovieGenreArr = [...movies, newMovie];
+      const updatedRespGenreObj = {
+        data: { movies: updatedMovieGenreArr },
+      };
+      await cache.write(allMoviesByGenre, updatedRespGenreObj);
+    }
+  };
+
   const addMovieCard = async (e: any) => {
     e.preventDefault();
     setGqlRequest(addMovie);
     const start = Date.now();
-    const res = await mutate(addMovie);
+    const res = await mutate(addMovie, { update: newMovieCacheUpdate });
     setQueryTime(Date.now() - start);
-    await setCache(new BrowserCache(cache.storage));
     setDashResponse(res.data);
-    setDisplay('');
-    const newRes = await query(allMoviesQuery);
-    setCardsResponse(newRes.data);
-    setDisplay('all movies');
+    setTimeout(async () => {
+      const newRes = await query(allMoviesQuery);
+      setDisplay('');
+      setCardsResponse(newRes.data);
+      setDisplay('all movies');
+    }, 1);
+    await setCache(new BrowserCache(cache.storage));
     await clearState();
     console.log('add movie', res);
+  };
+
+  const newActorCacheUpdate = async (cache: any, respObj: any) => {
+    const result = await cache.read(allActorsQuery);
+    if (!result) return;
+    const { actors } = result.data;
+    const newActor = respObj.data.addActor;
+    const updatedActorArr = [newActor, ...actors];
+    const updatedRespObj = { data: { actors: updatedActorArr } };
+    await cache.write(allActorsQuery, updatedRespObj);
   };
 
   const addActorCard = async (e: any) => {
     e.preventDefault();
     setGqlRequest(addActor);
     const start = Date.now();
-    const res = await mutate(addActor);
+    const res = await mutate(addActor, { update: newActorCacheUpdate });
     setQueryTime(Date.now() - start);
-    await setCache(new BrowserCache(cache.storage));
     if (res.data.addActor.nickname === '') {
       res.data.addActor.nickname = null;
     }
     setDashResponse(res.data);
-    setDisplay('');
-    const newRes = await query(allActorsQuery);
-    setCardsResponse(newRes.data);
-    setDisplay('all actors');
+    setTimeout(async () => {
+      const newRes = await query(allActorsQuery);
+      setDisplay('');
+      setCardsResponse(newRes.data);
+      setDisplay('all actors');
+    }, 1);
+    await setCache(new BrowserCache(cache.storage));
     await clearState();
     console.log('add card', res);
-    console.log('cache', cache.storage);
   };
 
   return (
