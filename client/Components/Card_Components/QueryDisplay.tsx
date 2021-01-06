@@ -50,6 +50,7 @@ const QueryDisplay = (props: any) => {
               <option value="">Select the genre</option>
               <option value="ACTION">ACTION</option>
               <option value="SCIFI">SCIFI</option>
+              <option value="DRAMA">DRAMA</option>
               <option value="COMEDY">COMEDY</option>
               <option value="ROMANCE">ROMANCE</option>
               <option value="ADVENTURE">ADVENTURE</option>
