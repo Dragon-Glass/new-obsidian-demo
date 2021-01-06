@@ -41,11 +41,11 @@ const QueryDisplay = (props: any) => {
             Movies by Genre */}
           <div id="dropdown-content">
             <select
+              required
               id="genres"
               value={props.genre}
               onChange={props.setGenre}
               className="form-select"
-              required
             >
               <option value="">Select the genre</option>
               <option value="ACTION">ACTION</option>
