@@ -82,7 +82,6 @@ const CardsDisplay = (props: any) => {
         obj[mov] = movie.id;
       }
     });
-    console.log(resp);
     resp.actors.forEach((actor: any) => {
       cards.push(
         <CardDisplay
@@ -98,7 +97,7 @@ const CardsDisplay = (props: any) => {
     });
     return [cards];
   } else if (props.display === 'by genre') {
-    let resp = props.response;
+    let resp = props.cardsResponse;
 
     // let movieActors = findActors(movies);
     resp.movies.forEach((movie: any) => {
@@ -118,7 +117,6 @@ const CardsDisplay = (props: any) => {
   } else if (props.display === 'by year') {
     let resp = props.cardsResponse;
     // let movieActors = findActors(movies);
-    console.log('heheheh', resp);
     resp.movies.forEach((movie: any) => {
       cards.push(
         <CardDisplay

@@ -6,17 +6,13 @@ import {
   useObsidian,
   BrowserCache,
 } from 'https://github.com/oslabs-beta/obsidian/raw/master/clientMod.ts';
+// } from '../obsidian/clientMod.ts';
 
 import rsh from 'https://dev.jspm.io/react-syntax-highlighter';
-import codeStyles from 'https://dev.jspm.io/npm:react-syntax-highlighter@15.3.1/dist/cjs/styles/prism';
 
 const realRSH: any = rsh;
-const realCodeStyles: any = codeStyles;
 
 const CodeBlock = realRSH.Prism;
-// const { dracula } = realCodeStyles;
-
-// dracula['pre[class*="language-"]'].background = 'rgba(5, 5, 5, 0.93)';
 
 export {
   BrowserCache,
@@ -26,5 +22,4 @@ export {
   ReactDOMServer,
   ReactDom,
   CodeBlock,
-  // dracula,
 };
