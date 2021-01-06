@@ -1,7 +1,4 @@
 import { React, useObsidian, BrowserCache } from '../../../deps.ts';
-// import { useQueriesContext } from '../Card_Components/CardsContainer.tsx';
-// import reactBootstrap from 'https://cdn.skypack.dev/react-bootstrap';
-// import { Button } from 'https://cdn.skypack.dev/react-bootstrap';
 
 declare global {
   namespace JSX {
@@ -18,7 +15,6 @@ declare global {
 }
 
 const CacheResponseDisplay = (props: any) => {
-  // const { queryTime, gqlRequest, response } = useQueriesContext();
   const { cache, clearCache, setCache } = useObsidian();
   const { response } = props;
   function onClick(e: any) {
@@ -50,6 +46,15 @@ const CacheResponseDisplay = (props: any) => {
             {insidePair} {'}'}
           </p>
         );
+      } else if (pair[1] === 'DELETED') {
+        acc.push(
+          <p key={`pair${i}`}>
+            <span style={{ color: '#ff66ff' }}>
+              {JSON.stringify(pair[0])} :{' '}
+            </span>{' '}
+            {JSON.stringify(pair[1])}
+          </p>
+        );
       }
       return acc;
     }, []);
@@ -75,7 +80,7 @@ const CacheResponseDisplay = (props: any) => {
         <pre className="pre-block">
           Response:
           <code className="code-block" id="code-yellow">
-            {response}
+            {JSON.stringify(response)}
           </code>
         </pre>
       </div>
