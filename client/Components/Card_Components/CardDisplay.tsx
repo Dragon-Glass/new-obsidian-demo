@@ -103,15 +103,21 @@ const CardDisplay = (props: any) => {
         <form onSubmit={handleSubmit}>
           <label>
             Add Actor
-            <select value={value} onChange={handleChange}>
+            <select
+              className="form-select"
+              value={value}
+              onChange={handleChange}
+            >
               {arrOfOptions}
             </select>
           </label>
-          <input type="submit" value="Submit" />
+          <input
+            className="btn btn-outline-secondary"
+            type="submit"
+            value="Submit"
+          />
         </form>
-        <button className="btn btn-primary" onClick={deleteMovie}>
-          Delete Movie
-        </button>
+        <button onClick={deleteMovie}>Delete Movie</button>
       </article>
     );
   } else if (props.display === 'Actors') {
@@ -216,16 +222,28 @@ const CardDisplay = (props: any) => {
               onChange={handleChangeNickname}
             />
           </label>
-          <input className="btn btn-primary" type="submit" value="Submit" />
+          <input
+            className="btn btn-outline-secondary"
+            type="submit"
+            value="Submit"
+          />
         </form>
         <form onSubmit={handleSubmit} id={props.id}>
           <label>
-            Add Movie
-            <select value={valueMovie} onChange={handleChange}>
+            Add Movie <br />
+            <select
+              className="form-select"
+              value={valueMovie}
+              onChange={handleChange}
+            >
               {arrOfOptions}
             </select>
           </label>
-          <input type="submit" value="Submit" />
+          <input
+            className="btn btn-outline-secondary"
+            type="submit"
+            value="Submit"
+          />
         </form>
         <button onClick={deleteActor}>Delete Actor</button>
       </article>

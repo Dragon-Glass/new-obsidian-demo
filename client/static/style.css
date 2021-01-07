@@ -42,7 +42,7 @@ body {
 }
 #clear-cache:hover {
   background-color: #e2d3f0;
-  border: 1px solid black;
+  border: 0.5px solid black;
 }
 .app h1 {
   color: #cc99ff;
@@ -89,6 +89,18 @@ body {
   margin: 1rem;
   border-radius: 3px;
   text-align: center;
+}
+button {
+  align-self: center;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 1rem;
+  transition: 0.3s;
 }
 #query-mutation button,
 .query-display input {
@@ -149,6 +161,14 @@ article {
 article button {
   background-color: rgb(69, 2, 75);
   color: white;
+  margin-top: 0.6rem;
+}
+article button:hover {
+  background-color: #e8d4ee;
+  color: black;
+}
+article select {
+  max-width: 70%;
 }
 .pinkATags a {
   color: #e83e8c !important;
