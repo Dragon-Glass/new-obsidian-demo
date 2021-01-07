@@ -5,7 +5,7 @@ import {
   ObsidianWrapper,
   useObsidian,
   BrowserCache,
-} from 'https://github.com/oslabs-beta/obsidian/raw/master/clientMod.ts';
+} from 'https://deno.land/x/obsidian/clientMod.ts';
 // } from '../obsidian/clientMod.ts';
 
 import rsh from 'https://dev.jspm.io/react-syntax-highlighter';

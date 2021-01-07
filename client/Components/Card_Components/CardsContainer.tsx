@@ -321,7 +321,7 @@ function CardsContainer(props: any) {
   return (
     <div id="cardsContainer">
       <div id="query-mutation">
-        <h2>Make Requests</h2>
+        <h2>Requests</h2>
         <QueryDisplay
           id="query-display"
           allMovies={fetchAllMovies}
