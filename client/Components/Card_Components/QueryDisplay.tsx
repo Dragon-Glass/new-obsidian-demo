@@ -25,7 +25,7 @@ const QueryDisplay = (props: any) => {
   return (
     <>
       <div className="query-display">
-        <h3>Make a query:</h3>
+        <h3>Make a query</h3>
         <button type="button" id="fetchAllMovies" onClick={props.allMovies}>
           All Movies
         </button>
@@ -37,8 +37,6 @@ const QueryDisplay = (props: any) => {
         </button>
 
         <form onSubmit={handleSubmit}>
-          {/* <label id="genre-label">
-            Movies by Genre */}
           <div id="dropdown-content">
             <select
               required
@@ -56,7 +54,6 @@ const QueryDisplay = (props: any) => {
               <option value="ADVENTURE">ADVENTURE</option>
             </select>
           </div>
-          {/* </label> */}
           <input type="submit" value="Movies by Genre" />
         </form>
       </div>
