@@ -116,18 +116,16 @@ const CardDisplay = (props: any) => {
           </li>
         </ul>
         <form onSubmit={handleSubmit}>
-          <label>
-            Add Actor
-            <select
-              className="form-select"
-              required
-              value={value}
-              onChange={handleChange}
-            >
-              <option value="">Select</option>
-              {arrOfOptions}
-            </select>
-          </label>
+          <label>Add Actor </label> <br />
+          <select
+            className="form-select"
+            required
+            value={value}
+            onChange={handleChange}
+          >
+            <option value="">Select</option>
+            {arrOfOptions}
+          </select>
           <input
             // className="btn btn-outline-secondary"
             type="submit"
@@ -229,13 +227,9 @@ const CardDisplay = (props: any) => {
     return (
       <article className="card actorCard" id={props.id}>
         <div className="actorHeadContainer">
-          <h4 className="actorName">{firstName}</h4>
+          <h4 className="actorName">{firstName + ' ' + lastName}</h4>
         </div>
         <ul className="list-group">
-          <li className="list-group-item">
-            {' '}
-            <span>Last Name: </span> {lastName}
-          </li>
           <li className="list-group-item">
             {' '}
             <span>Movies:</span> {outputMovie}
@@ -246,14 +240,12 @@ const CardDisplay = (props: any) => {
           </li>
         </ul>
         <form onSubmit={handleSubmitNickname}>
-          <label>
-            Nickname:
-            <input
-              type="text"
-              value={valueNickname}
-              onChange={handleChangeNickname}
-            />
-          </label>
+          <label>Nickname: </label> <br />
+          <input
+            type="text"
+            value={valueNickname}
+            onChange={handleChangeNickname}
+          />
           <input
             className="btn btn-outline-secondary"
             type="submit"
