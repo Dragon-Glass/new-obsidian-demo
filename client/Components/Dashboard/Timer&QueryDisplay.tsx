@@ -33,7 +33,7 @@ const TimerQueryDisplay = (props: any) => {
     <div className="timer-query">
       <div className="timer">
         <code className="code-block query-timer code-black" id="timer">
-          {`Request Timer: ${queryTime}ms`}
+          {`Request Timer ${queryTime}ms`}
         </code>
       </div>
       <div className="query">

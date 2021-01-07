@@ -154,7 +154,6 @@ button {
   color: rgb(148, 201, 236);
 }
 article {
-  max-width: 250px;
   padding: 0.5rem;
   margin: 0.6rem;
   min-height: 250px;
@@ -175,7 +174,7 @@ article button:hover {
   color: black;
 }
 article select {
-  max-width: 70%;
+  max-width: 50%;
 }
 article input[type='submit'] {
   background-color: #d8d7d8;
@@ -466,6 +465,7 @@ pre {
 }
 .timer {
   width: 100%;
+  text-align: center;
 }
 #timer {
   color: white;
