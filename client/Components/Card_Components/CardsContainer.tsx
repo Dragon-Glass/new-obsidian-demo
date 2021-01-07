@@ -38,6 +38,8 @@ function CardsContainer(props: any) {
   const [display, setDisplay] = (React as any).useState('');
   const [genre, setGenre] = useInput('');
   const [cardGenre, setCardGenre] = useInput('');
+  const [actorResponse, setActorResponse] = (React as any).useState('');
+  const [movieResponse, setMovieResponse] = (React as any).useState('');
 
   const [
     { firstName, lastName, nickname, title, releaseYear },
@@ -158,10 +160,11 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allMoviesQuery);
     setQueryTime(Date.now() - start);
+    const actorRes = await query(allActorsQuery);
+    setActorResponse(actorRes.data);
     setDisplay('');
     setDashResponse(res.data);
     setCardsResponse(res.data);
-    console.log('data', JSON.stringify(res));
     setDisplay('all movies');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('all movies', res);
@@ -172,6 +175,8 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allActorsQuery);
     setQueryTime(Date.now() - start);
+    const movieRes = await query(allMoviesQuery);
+    setMovieResponse(movieRes.data);
     setDisplay('');
     setDashResponse(res.data);
     setCardsResponse(res.data);
@@ -185,6 +190,8 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allMoviesByGenre);
     setQueryTime(Date.now() - start);
+    const actorRes = await query(allActorsQuery);
+    setActorResponse(actorRes.data);
     setDisplay('');
     setDashResponse(res.data);
     setCardsResponse(res.data);
@@ -198,6 +205,8 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(moviesByReleaseYear);
     setQueryTime(Date.now() - start);
+    const actorRes = await query(allActorsQuery);
+    setActorResponse(actorRes.data);
     setDisplay('');
     setDashResponse(res.data);
     setCardsResponse(res.data);
@@ -336,6 +345,8 @@ function CardsContainer(props: any) {
         <CardsDisplay
           display={display}
           setDisplay={setDisplay}
+          actorResponse={actorResponse}
+          movieResponse={movieResponse}
           genre={genre}
           setQueryTime={setQueryTime}
           setCardsResponse={setCardsResponse}
