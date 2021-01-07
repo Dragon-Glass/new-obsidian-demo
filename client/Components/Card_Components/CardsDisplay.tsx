@@ -58,6 +58,7 @@ const CardsDisplay = (props: any) => {
         <CardDisplay
           info={actor}
           key={actor.id}
+          id={actor.id}
           display={'Actors'}
           movieList={movieList}
           setQueryTime={props.setQueryTime}
