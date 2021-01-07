@@ -4,7 +4,7 @@ declare global {
     interface IntrinsicElements {
       div: any;
       article: any;
-      h3: any;
+      h4: any;
       ul: any;
       li: any;
       button: any;
@@ -31,7 +31,7 @@ const CardDisplay = (props: any) => {
     }
   }
 `;
-  const [nickName, setNickName] = (React as any).useState('');
+
   const [valueNickname, setValueNickname] = (React as any).useState('');
   const [valueMovie, setValueMovie] = (React as any).useState('');
   const [value, setValue] = (React as any).useState('');
@@ -53,19 +53,23 @@ const CardDisplay = (props: any) => {
         mutation {
           associateActorWithMovie (input:{actorId:${props.actorList[value]}, movieId:${e.target.parentNode.id}, respType:MOVIE}){
             ... on Movie{
-              title
-              __typename
               id
+              actors {
+                id
+                movies{
+                  id
+                }
+              }
             }
             ... on Actor{
-              __typename
-            firstName
-            id
+              id
             }
+          }
         }
       `;
+      console.log('gql queryStr', associateActorWithMovie);
       const res = await mutate(associateActorWithMovie);
-      console.log(res);
+      console.log('response from server', res);
       const newResponse = await query(allMoviesQuery);
       props.setCardsResponse(newResponse.data);
     };
@@ -93,26 +97,39 @@ const CardDisplay = (props: any) => {
     return (
       <article className="card movieCard" id={props.id}>
         <div className="movieHeadContainer">
-          <h3 className="movieTitle">{title}</h3>
+          <h4 className="movieTitle">{title}</h4>
         </div>
-        <ul className="movieDetailsList">
-          <li className="movDetail"> Release Year: {releaseYear}</li>
-          <li className="movDetail"> Actors: {outputActor}</li>
-          <li className="movDetail"> Genre: {genre}</li>
+        <ul className="list-group">
+          <li className="list-group-item">
+            {' '}
+            <span>Release Year:</span> {releaseYear}
+          </li>
+          <li className="list-group-item">
+            {' '}
+            <span>Actors: </span>
+            {outputActor}
+          </li>
+          <li className="list-group-item">
+            {' '}
+            <span> Genre: </span>
+            {genre}
+          </li>
         </ul>
         <form onSubmit={handleSubmit}>
           <label>
             Add Actor
             <select
               className="form-select"
+              required
               value={value}
               onChange={handleChange}
             >
+              <option value="">Select</option>
               {arrOfOptions}
             </select>
           </label>
           <input
-            className="btn btn-outline-secondary"
+            // className="btn btn-outline-secondary"
             type="submit"
             value="Submit"
           />
@@ -142,30 +159,35 @@ const CardDisplay = (props: any) => {
     };
     const handleSubmit = async (event: any) => {
       event.preventDefault();
-      console.log(event.target.parentNode);
       const associateActorWithMovie = `
   mutation addingActor{
     associateActorWithMovie(input:{actorId:${event.target.parentNode.id},movieId: ${props.movieList[valueMovie]}, respType:ACTOR}){
-      ...on Movie{
-        title
-        __typename
-        id
-      }
-      ...on Actor{
-        __typename
-      firstName
-      lastName
+    ... on Actor{
+          id
+          movies {
+            id
+            actors {
+              id
+            }
+          }
+        }
+        ... on Movie{
+          id
+        }
       }
     }
-  }
 `;
+      console.log('movieList', props.movieList);
+      console.log('valueMovie', valueMovie);
+      console.log('gql queryStr', associateActorWithMovie);
       const res = await mutate(associateActorWithMovie);
+      console.log('response fro, server', res);
       const newResponse = await query(allActorsQuery);
-      props.setCardResponse(newResponse.data);
+      props.setCardsResponse(newResponse.data);
     };
     const updateNickname = `
     mutation {
-      updateNickname(input:{actorId{${props.id}}nickname:${valueNickname}}){
+      updateNickname(input:{actorId:${props.id}, nickname: "${valueNickname}" }){
         __typename
         id
         nickname
@@ -177,9 +199,10 @@ const CardDisplay = (props: any) => {
     };
     const handleSubmitNickname = async (event: any) => {
       event.preventDefault();
-      const res = await mutate(updateNickname);
+      await mutate(updateNickname);
       const newResponse = await query(allActorsQuery);
-      props.setCardResponse(newResponse.data);
+      props.setCardsResponse(newResponse.data);
+      setValueNickname('');
     };
     const arrOfOptions: any = [];
     const arrOfMovies = Object.keys(props.movieList);
@@ -200,18 +223,27 @@ const CardDisplay = (props: any) => {
       await mutate(deleteActorMutation, { toDelete: true });
       await setCache(new BrowserCache(cache.storage));
       const newResponse = await query(allActorsQuery);
-      props.setCardResponse(newResponse.data);
+      props.setCardsResponse(newResponse.data);
       props.setDisplay('all actors');
     };
     return (
       <article className="card actorCard" id={props.id}>
         <div className="actorHeadContainer">
-          <h3 className="actorName">{firstName}</h3>
+          <h4 className="actorName">{firstName}</h4>
         </div>
-        <ul className="actorDetailsList">
-          <li className="actorDetail"> Last Name: {lastName}</li>
-          <li className="actorDetail"> Movies: {outputMovie}</li>
-          <li className="actorDetail"> Nickname: {nickname}</li>
+        <ul className="list-group">
+          <li className="list-group-item">
+            {' '}
+            <span>Last Name: </span> {lastName}
+          </li>
+          <li className="list-group-item">
+            {' '}
+            <span>Movies:</span> {outputMovie}
+          </li>
+          <li className="list-group-item">
+            {' '}
+            <span>Nickname:</span> {nickname}
+          </li>
         </ul>
         <form onSubmit={handleSubmitNickname}>
           <label>
@@ -233,14 +265,16 @@ const CardDisplay = (props: any) => {
             Add Movie <br />
             <select
               className="form-select"
+              required
               value={valueMovie}
               onChange={handleChange}
             >
+              <option value="">Select</option>
               {arrOfOptions}
             </select>
           </label>
           <input
-            className="btn btn-outline-secondary"
+            // className="btn btn-outline-secondary"
             type="submit"
             value="Submit"
           />

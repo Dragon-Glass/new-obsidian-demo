@@ -120,6 +120,7 @@ button {
 #query-mutation button:hover,
 .query-display input:hover {
   background-color: #cc99ff;
+  color: white;
 }
 #query-mutation h2 {
   color: #e83e8c;
@@ -140,7 +141,7 @@ button {
 #no-data {
   position: absolute;
   top: 50%;
-  right: 30%;
+  right: 40%;
   align-items: center;
   text-align: center;
   justify-content: center;
@@ -158,6 +159,12 @@ article {
   margin: 0.6rem;
   min-height: 250px;
 }
+article span {
+  font-weight: bold;
+}
+article label {
+  margin-top: 1rem;
+}
 article button {
   background-color: rgb(69, 2, 75);
   color: white;
@@ -169,6 +176,23 @@ article button:hover {
 }
 article select {
   max-width: 70%;
+}
+article input[type='submit'] {
+  background-color: #d8d7d8;
+  color: black;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 0.2rem;
+  transition: 0.3s;
+}
+article input[type='submit']:hover {
+  background-color: #7f7d81;
+  color: white;
 }
 .pinkATags a {
   color: #e83e8c !important;

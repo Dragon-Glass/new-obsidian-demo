@@ -17,7 +17,7 @@ const CardsDisplay = (props: any) => {
   if (!Object.keys(cache.storage.ROOT_QUERY).length) {
     return (
       <div id="no-data">
-        <h1> Fetch some movies... </h1>
+        <h1> Fetch some data... </h1>
       </div>
     );
   } else if (props.display === 'all movies') {
@@ -58,6 +58,7 @@ const CardsDisplay = (props: any) => {
         <CardDisplay
           info={actor}
           key={actor.id}
+          id={actor.id}
           display={'Actors'}
           movieList={movieList}
           setQueryTime={props.setQueryTime}

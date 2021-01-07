@@ -274,6 +274,8 @@ function CardsContainer(props: any) {
     setDashResponse(res.data);
     setTimeout(async () => {
       const newRes = await query(allMoviesQuery);
+      const actorRes = await query(allActorsQuery);
+      setActorResponse(actorRes.data);
       setDisplay('');
       setCardsResponse(newRes.data);
       setDisplay('all movies');
@@ -305,6 +307,8 @@ function CardsContainer(props: any) {
     setDashResponse(res.data);
     setTimeout(async () => {
       const newRes = await query(allActorsQuery);
+      const movieRes = await query(allMoviesQuery);
+      setMovieResponse(movieRes.data);
       setDisplay('');
       setCardsResponse(newRes.data);
       setDisplay('all actors');
