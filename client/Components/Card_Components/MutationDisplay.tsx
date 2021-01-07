@@ -15,15 +15,14 @@ declare global {
 }
 
 const MutationDisplay = (props: any) => {
- 
   return (
     <div className="mutation-display">
-      <h3>Make a mutation:</h3>
+      <h3>Make a mutation</h3>
       <form className="create-movieCard" onSubmit={props.addMovieCard}>
         <h5>Enter your movie details</h5>
         <div className="createCharFields">
           <label className="form-label" htmlFor="title">
-            Title:{' '}
+            Title{' '}
           </label>
           <input
             className="form-control"
@@ -35,7 +34,7 @@ const MutationDisplay = (props: any) => {
         </div>
         <div className="createCharFields">
           <label className="form-label" htmlFor="releaseYear">
-            Release Year:{' '}
+            Release Year{' '}
           </label>
           <input
             className="form-control"
@@ -46,9 +45,6 @@ const MutationDisplay = (props: any) => {
           />
         </div>
         <div className="createCharFields">
-          <label className="form-label" htmlFor="genre">
-            Genre:{' '}
-          </label>
           <select
             className="form-select"
             id="genres"
@@ -65,16 +61,14 @@ const MutationDisplay = (props: any) => {
             <option value="ADVENTURE">ADVENTURE</option>
           </select>
         </div>
-        <button>
-          Add Movie
-        </button>
+        <button>Add Movie</button>
       </form>
 
       <form className="create-movieCard" onSubmit={props.addActorCard}>
         <h5>Enter your actor details</h5>
         <div className="createCharFields">
           <label className="form-label" htmlFor="firstName">
-            First Name:{' '}
+            First Name{' '}
           </label>
           <input
             className="form-control"
@@ -90,7 +84,7 @@ const MutationDisplay = (props: any) => {
             htmlFor="las
         tName"
           >
-            Last Name:
+            Last Name
           </label>
           <input
             className="form-control"
@@ -102,7 +96,7 @@ const MutationDisplay = (props: any) => {
         </div>
         <div className="createCharFields">
           <label className="form-label" htmlFor="nickname">
-            Nickname:{' '}
+            Nickname{' '}
           </label>
           <input
             className="form-control"
@@ -111,9 +105,7 @@ const MutationDisplay = (props: any) => {
             onChange={props.onChange}
           />
         </div>
-        <button>
-          Add Actor
-        </button>
+        <button>Add Actor</button>
       </form>
     </div>
   );

@@ -306,7 +306,6 @@ const resolvers = {
               `,
             args: [input.movieId],
           });
-          console.log(result.rows);
           const MovieArr = result.rows[0];
           const MovieObj = {
             id: MovieArr[0],

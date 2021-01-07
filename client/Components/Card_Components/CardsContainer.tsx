@@ -33,10 +33,13 @@ function CardsContainer(props: any) {
   const { query, mutate, cache, setCache, clearCache } = useObsidian();
   const [queryTime, setQueryTime] = (React as any).useState(0);
   const [gqlRequest, setGqlRequest] = (React as any).useState('');
-  const [response, setResponse] = (React as any).useState('');
+  const [dashResponse, setDashResponse] = (React as any).useState('');
+  const [cardsResponse, setCardsResponse] = (React as any).useState('');
   const [display, setDisplay] = (React as any).useState('');
   const [genre, setGenre] = useInput('');
   const [cardGenre, setCardGenre] = useInput('');
+  const [actorResponse, setActorResponse] = (React as any).useState('');
+  const [movieResponse, setMovieResponse] = (React as any).useState('');
 
   const [
     { firstName, lastName, nickname, title, releaseYear },
@@ -55,10 +58,12 @@ function CardsContainer(props: any) {
   const allMoviesQuery = `query { 
       movies {
         id
+        __typename
         title
         releaseYear
         actors {
           id
+          __typename
           firstName
           lastName
         }
@@ -70,11 +75,13 @@ function CardsContainer(props: any) {
   const allActorsQuery = `query {
       actors {
         id
+        __typename
         firstName
         lastName
         nickname
         movies {
           id
+          __typename
           title
           releaseYear
           genre
@@ -86,10 +93,12 @@ function CardsContainer(props: any) {
   const allMoviesByGenre = `query {
       movies(input: {genre: ${genre}}){
         id
+        __typename
         title
         releaseYear
         actors {
           id
+          __typename
           firstName
           lastName
         }
@@ -100,10 +109,12 @@ function CardsContainer(props: any) {
   const moviesByReleaseYear = `query {
     movies(input: {order : ASC }) {
       id
+      __typename
       title
       releaseYear
       actors {
         id
+        __typename
         firstName
         lastName
       }
@@ -118,7 +129,13 @@ function CardsContainer(props: any) {
       title
       releaseYear
       genre
+      actors {
+        id
+        firstName
+        lastName
+      }
     }
+   
   }
   `;
 
@@ -128,6 +145,12 @@ function CardsContainer(props: any) {
       firstName
       lastName
       nickname
+      movies {
+        id
+        title
+        releaseYear
+        genre
+      }
     }
   }
   `;
@@ -137,10 +160,11 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allMoviesQuery);
     setQueryTime(Date.now() - start);
+    const actorRes = await query(allActorsQuery);
+    setActorResponse(actorRes.data);
     setDisplay('');
-    setResponse(res.data);
-    console.log('data', JSON.stringify(res));
-    console.log('response', response);
+    setDashResponse(res.data);
+    setCardsResponse(res.data);
     setDisplay('all movies');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('all movies', res);
@@ -151,8 +175,11 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allActorsQuery);
     setQueryTime(Date.now() - start);
+    const movieRes = await query(allMoviesQuery);
+    setMovieResponse(movieRes.data);
     setDisplay('');
-    setResponse(res.data);
+    setDashResponse(res.data);
+    setCardsResponse(res.data);
     setDisplay('all actors');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('all actors', res);
@@ -163,8 +190,11 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(allMoviesByGenre);
     setQueryTime(Date.now() - start);
+    const actorRes = await query(allActorsQuery);
+    setActorResponse(actorRes.data);
     setDisplay('');
-    setResponse(res.data);
+    setDashResponse(res.data);
+    setCardsResponse(res.data);
     setDisplay('by genre');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('by genre', res);
@@ -175,50 +205,123 @@ function CardsContainer(props: any) {
     const start = Date.now();
     const res = await query(moviesByReleaseYear);
     setQueryTime(Date.now() - start);
+    const actorRes = await query(allActorsQuery);
+    setActorResponse(actorRes.data);
     setDisplay('');
-    setResponse(res.data);
+    setDashResponse(res.data);
+    setCardsResponse(res.data);
     setDisplay('by year');
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
     console.log('by year', res);
+  };
+
+  const newMovieCacheUpdate = async (cache: any, respObj: any) => {
+    const result = await cache.read(allMoviesQuery);
+    const newMovie = respObj.data.addMovie;
+    if (result) {
+      const { movies } = result.data;
+      const updatedMovieArr = [newMovie, ...movies];
+      const updatedRespObj = { data: { movies: updatedMovieArr } };
+      await cache.write(allMoviesQuery, updatedRespObj);
+    }
+    // updating movies by release year
+    const resultRelease = await cache.read(moviesByReleaseYear);
+    if (resultRelease) {
+      const { movies } = resultRelease.data;
+      const updatedMovieArr = [newMovie, ...movies];
+      const updatedMovieReleaseArr = updatedMovieArr.sort(
+        (movie1, movie2) => movie1.releaseYear - movie2.releaseYear
+      );
+      const updatedRespReleaseObj = {
+        data: { movies: updatedMovieReleaseArr },
+      };
+      await cache.write(moviesByReleaseYear, updatedRespReleaseObj);
+    }
+    // updating movies by genre
+    const movieGenre = newMovie.genre;
+    const allMoviesByGenre = `query {
+      movies(input: {genre: ${movieGenre}}){
+        id
+        __typename
+        title
+        releaseYear
+        actors {
+          id
+          __typename
+          firstName
+          lastName
+        }
+      }
+    }
+  `;
+    const resultGenre = await cache.read(allMoviesByGenre);
+    if (resultGenre) {
+      const { movies } = resultGenre.data;
+      const updatedMovieGenreArr = [...movies, newMovie];
+      const updatedRespGenreObj = {
+        data: { movies: updatedMovieGenreArr },
+      };
+      await cache.write(allMoviesByGenre, updatedRespGenreObj);
+    }
   };
 
   const addMovieCard = async (e: any) => {
     e.preventDefault();
     setGqlRequest(addMovie);
     const start = Date.now();
-    const res = await mutate(addMovie);
-    // option obj with update key on
+    const res = await mutate(addMovie, { update: newMovieCacheUpdate });
     setQueryTime(Date.now() - start);
-    setDisplay('');
-    setResponse(res.data);
-    setDisplay('all movies');
-    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
+    setDashResponse(res.data);
+    setTimeout(async () => {
+      const newRes = await query(allMoviesQuery);
+      const actorRes = await query(allActorsQuery);
+      setActorResponse(actorRes.data);
+      setDisplay('');
+      setCardsResponse(newRes.data);
+      setDisplay('all movies');
+    }, 1);
+    await setCache(new BrowserCache(cache.storage));
     await clearState();
     console.log('add movie', res);
+  };
+
+  const newActorCacheUpdate = async (cache: any, respObj: any) => {
+    const result = await cache.read(allActorsQuery);
+    if (!result) return;
+    const { actors } = result.data;
+    const newActor = respObj.data.addActor;
+    const updatedActorArr = [newActor, ...actors];
+    const updatedRespObj = { data: { actors: updatedActorArr } };
+    await cache.write(allActorsQuery, updatedRespObj);
   };
 
   const addActorCard = async (e: any) => {
     e.preventDefault();
     setGqlRequest(addActor);
     const start = Date.now();
-    const res = await mutate(addActor);
+    const res = await mutate(addActor, { update: newActorCacheUpdate });
+    setQueryTime(Date.now() - start);
     if (res.data.addActor.nickname === '') {
       res.data.addActor.nickname = null;
     }
-    setQueryTime(Date.now() - start);
-    setResponse(res.data);
-    setDisplay('');
-    setDisplay('all actors');
-    setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
+    setDashResponse(res.data);
+    setTimeout(async () => {
+      const newRes = await query(allActorsQuery);
+      const movieRes = await query(allMoviesQuery);
+      setMovieResponse(movieRes.data);
+      setDisplay('');
+      setCardsResponse(newRes.data);
+      setDisplay('all actors');
+    }, 1);
+    await setCache(new BrowserCache(cache.storage));
     await clearState();
     console.log('add card', res);
-    console.log('cache', cache.storage);
   };
 
   return (
     <div id="cardsContainer">
       <div id="query-mutation">
-        <h2>Make Requests</h2>
+        <h2>Requests</h2>
         <QueryDisplay
           id="query-display"
           allMovies={fetchAllMovies}
@@ -245,17 +348,20 @@ function CardsContainer(props: any) {
       <div id="cards-display">
         <CardsDisplay
           display={display}
+          setDisplay={setDisplay}
+          actorResponse={actorResponse}
+          movieResponse={movieResponse}
           genre={genre}
           setQueryTime={setQueryTime}
-          setResponse={setResponse}
-          response={response}
+          setCardsResponse={setCardsResponse}
+          cardsResponse={cardsResponse}
         />
       </div>
       <Dashboard
         id="dashboard"
         queryTime={queryTime}
         gqlRequest={gqlRequest}
-        response={response}
+        dashResponse={dashResponse}
       />
     </div>
   );

@@ -16,7 +16,8 @@ const App = () => {
   return (
     <ObsidianWrapper>
       <div className="app">
-        <h1>OBSIDIAN 2.0 DEMO</h1>
+        <h1>OBSIDIAN DEMO </h1>
+        <h2>Brangelina Showcase</h2>
         <CardsContainer />
       </div>
     </ObsidianWrapper>

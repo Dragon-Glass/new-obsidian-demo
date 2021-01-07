@@ -32,7 +32,6 @@ const router = new Router();
 router.get('/', (ctx: any) => {
   try {
     const body = (ReactDOMServer as any).renderToString(<App />);
-    console.log('body', body);
     ctx.response.body = `<!DOCTYPE html>
       <html lang="en">
       <head>
