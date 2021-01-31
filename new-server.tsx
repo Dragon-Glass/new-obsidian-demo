@@ -2,7 +2,7 @@ import { Application, Router } from 'https://deno.land/x/oak@v6.0.1/mod.ts';
 
 import { React, ReactDOMServer } from './deps.ts';
 import { ObsidianRouter } from './serverDeps.ts';
-import { createDb } from './server/db/db.ts';
+// import { createDb } from './server/db/db.ts';
 import resolvers from './server/resolvers.ts';
 import types from './server/schema.ts';
 import App from './client/app.tsx';
@@ -24,7 +24,7 @@ app.use(async (ctx, next) => {
   ctx.response.headers.set('X-Response-Time', `${ms}ms`);
 });
 // create and seed DB
-await createDb();
+// await createDb();
 
 // Create Route
 const router = new Router();

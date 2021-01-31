@@ -23,12 +23,14 @@ const CacheResponseDisplay = (props: any) => {
     setTimeout(() => setCache(new BrowserCache(cache.storage)), 1);
   }
   function createCache() {
+    // returns an array of arrays
     return Object.entries(cache.storage).reduce((acc: any, pair: any, i) => {
       if (typeof pair[1] === 'object') {
         const insidePair = [];
+        let keyInc = 0;
         for (const key in pair[1]) {
           insidePair.push(
-            <p key={`keyPair${i}`}>
+            <p key={`${keyInc}keyPair${i}`}>
               <span style={{ color: '#cc99ff' }}>
                 {' '}
                 {JSON.stringify(key)} :{' '}
@@ -36,6 +38,7 @@ const CacheResponseDisplay = (props: any) => {
               {JSON.stringify(pair[1][key])},
             </p>
           );
+          keyInc++;
         }
         acc.push(
           <p key={`pair${i}`}>
