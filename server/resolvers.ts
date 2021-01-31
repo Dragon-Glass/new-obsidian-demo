@@ -1,5 +1,22 @@
-import { pool } from './db/db.ts';
+// import { pool } from './db/db.ts';
+import { Pool } from 'https://deno.land/x/postgres@v0.4.6/mod.ts';
 import { PoolClient } from 'https://deno.land/x/postgres@v0.4.6/client.ts';
+
+let pg_port: any = Deno.env.get('PG_PORT');
+if (typeof pg_port === 'string') {
+  pg_port = parseInt(pg_port);
+}
+
+const config = {
+  user: Deno.env.get('PG_USER'),
+  database: Deno.env.get('PG_DATABASE'),
+  password: Deno.env.get('PG_PASSWORD'),
+  hostname: Deno.env.get('PG_HOSTNAME'),
+  port: pg_port,
+};
+const POOL_CONNECTIONS = 6; // breaks at 10+ due to ElephantSQL
+
+let pool = new Pool(config, POOL_CONNECTIONS);
 
 const resolvers = {
   Query: {
@@ -8,6 +25,7 @@ const resolvers = {
       { input }: { input: { genre?: String; order?: String; actor?: String } }
     ) => {
       try {
+        console.log('i am in the movies resolver');
         const client: PoolClient = await pool.connect();
         const result = await client.query({
           text: 'SELECT * FROM obsidian_demo_schema.films;',
@@ -55,6 +73,9 @@ const resolvers = {
         return resObj;
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
     actors: async (_: any, { input }: { input: { film?: String } }) => {
@@ -90,12 +111,18 @@ const resolvers = {
               resObj = resObj.filter((obj) => arrOfIds.includes(obj.id));
             } catch (err) {
               console.log(err);
+              console.log('resetting connection');
+              pool.end();
+              pool = new Pool(config, POOL_CONNECTIONS);
             }
           }
         }
         return resObj;
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
   },
@@ -127,6 +154,9 @@ const resolvers = {
         return resObj;
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
   },
@@ -158,6 +188,9 @@ const resolvers = {
         return resObj;
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
   },
@@ -200,6 +233,9 @@ const resolvers = {
         return newMovieObj;
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
     deleteMovie: async (_: any, { id }: { id: String }) => {
@@ -224,6 +260,9 @@ const resolvers = {
         return deletedMovieObj;
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
     addActor: async (
@@ -253,6 +292,9 @@ const resolvers = {
         return newActorObj;
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
     deleteActor: async (_: any, { id }: { id: String }) => {
@@ -277,6 +319,9 @@ const resolvers = {
         return deletedActorObj;
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
     updateNickname: async (
@@ -305,6 +350,9 @@ const resolvers = {
         return updatedActorObj;
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
     associateActorWithMovie: async (
@@ -362,6 +410,9 @@ const resolvers = {
         }
       } catch (err) {
         console.log(err);
+        console.log('resetting connection');
+        pool.end();
+        pool = new Pool(config, POOL_CONNECTIONS);
       }
     },
   },

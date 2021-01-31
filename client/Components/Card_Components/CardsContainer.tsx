@@ -96,6 +96,7 @@ function CardsContainer(props: any) {
         __typename
         title
         releaseYear
+        genre
         actors {
           id
           __typename
