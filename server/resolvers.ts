@@ -25,7 +25,6 @@ const resolvers = {
       { input }: { input: { genre?: String; order?: String; actor?: String } }
     ) => {
       try {
-        console.log('i am in the movies resolver');
         const client: PoolClient = await pool.connect();
         const result = await client.query({
           text: 'SELECT * FROM obsidian_demo_schema.films;',

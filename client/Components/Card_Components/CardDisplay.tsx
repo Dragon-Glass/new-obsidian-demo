@@ -83,7 +83,7 @@ const CardDisplay = (props: any) => {
       await setCache(new BrowserCache(cache.storage));
       const newResponse = await query(allMoviesQuery);
       props.setCardsResponse(newResponse.data);
-      props.setDisplay('all movies');
+      // props.setDisplay('all movies');
     };
     const arrOfOptions: any = [];
     let outputActor: any = '';
@@ -91,8 +91,12 @@ const CardDisplay = (props: any) => {
       outputActor = outputActor + actor.firstName + ' ' + actor.lastName + ', ';
     });
     const arrOfActors = Object.keys(props.actorList);
-    arrOfActors.forEach((actor: any) => {
-      arrOfOptions.push(<option value={actor}>{actor}</option>);
+    arrOfActors.forEach((actor: any, index: number) => {
+      arrOfOptions.push(
+        <option key={`actor-${index}`} value={actor}>
+          {actor}
+        </option>
+      );
     });
     return (
       <article className="card movieCard" id={props.id}>
@@ -204,8 +208,12 @@ const CardDisplay = (props: any) => {
     };
     const arrOfOptions: any = [];
     const arrOfMovies = Object.keys(props.movieList);
-    arrOfMovies.forEach((movie: any) => {
-      arrOfOptions.push(<option value={movie}>{movie}</option>);
+    arrOfMovies.forEach((movie: any, index: number) => {
+      arrOfOptions.push(
+        <option key={`movie-${index}`} value={movie}>
+          {movie}
+        </option>
+      );
     });
     let outputMovie: any = '';
     movies.forEach((movie: any) => {
@@ -222,7 +230,7 @@ const CardDisplay = (props: any) => {
       await setCache(new BrowserCache(cache.storage));
       const newResponse = await query(allActorsQuery);
       props.setCardsResponse(newResponse.data);
-      props.setDisplay('all actors');
+      // props.setDisplay('all actors');
     };
     return (
       <article className="card actorCard" id={props.id}>
