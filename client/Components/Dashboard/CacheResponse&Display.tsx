@@ -30,33 +30,33 @@ const CacheResponseDisplay = (props: any) => {
         let keyInc = 0;
         for (const key in pair[1]) {
           insidePair.push(
-            <p key={`${keyInc}keyPair${i}`}>
+            <div key={`${keyInc}keyPair${i}`}>
               <span style={{ color: '#cc99ff' }}>
                 {' '}
                 {JSON.stringify(key)} :{' '}
               </span>{' '}
               {JSON.stringify(pair[1][key])},
-            </p>
+            </div>
           );
           keyInc++;
         }
         acc.push(
-          <p key={`pair${i}`}>
+          <div key={`pair${i}`}>
             <span style={{ color: '#ff66ff' }}>
               {JSON.stringify(pair[0])} :{' '}
             </span>{' '}
             {'{'}
             {insidePair} {'}'}
-          </p>
+          </div>
         );
       } else if (pair[1] === 'DELETED') {
         acc.push(
-          <p key={`pair${i}`}>
+          <div key={`pair${i}`}>
             <span style={{ color: '#ff66ff' }}>
               {JSON.stringify(pair[0])} :{' '}
             </span>{' '}
             {JSON.stringify(pair[1])}
-          </p>
+          </div>
         );
       }
       return acc;
